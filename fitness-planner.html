@@ -668,7 +668,7 @@ function renderAdmin(){
               '<button class="bep" onclick="togEP(this)">✏️ Changer le mdp</button>'+
               '<button class="bdl" onclick="delU(\''+h(n)+'\')">Supprimer</button>'+
             '</div>'+
-            '<button onclick="manageProg(\''+h(n)+'\')" style="width:100%;margin-top:8px;background:linear-gradient(135deg,#f6c846,#e8a020);color:#3d2510;border:none;border-radius:8px;padding:9px;font-family:\'Nunito\',sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(246,200,70,.35)">🏋️ Gérer son programme</button>'+
+            '<button class="btn-prog" data-user="'+h(n)+'" onclick="manageProg(this.dataset.user)" style="width:100%;margin-top:8px;background:linear-gradient(135deg,#f6c846,#e8a020);color:#3d2510;border:none;border-radius:8px;padding:9px;font-family:Nunito,sans-serif;font-size:.78rem;font-weight:800;cursor:pointer">\uD83C\uDFCB\uFE0F G\u00e9rer son programme</button>'+
             '<div class="epf"><div class="epr">'+
               '<input type="text" placeholder="Nouveau mot de passe...">'+
               '<button class="bsp" onclick="saveP(this,\''+h(n)+'\')">Sauver</button>'+
