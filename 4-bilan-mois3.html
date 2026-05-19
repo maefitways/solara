@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bilan Mensuel – Mois 3 – maefitways</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --cream:#fdf6e3; --yellow-light:#fef3c7; --yellow:#f6c846; --yellow-dark:#e8a020; --orange:#d97706; --orange-dark:#b45309; --text:#3d2b00; --text-light:#7c5a1a; --shadow:rgba(230,160,30,0.18); }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);font-family:'Nunito',sans-serif;color:var(--text);min-height:100vh;position:relative;overflow-x:hidden}
+  body::before{content:'';position:fixed;top:-80px;right:-80px;width:340px;height:340px;background:radial-gradient(circle,rgba(246,200,70,0.38) 0%,rgba(253,243,199,0.10) 70%,transparent 100%);border-radius:60% 40% 55% 45%;z-index:0;pointer-events:none}
+  body::after{content:'';position:fixed;bottom:-60px;left:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(232,160,32,0.28) 0%,rgba(253,243,199,0.08) 70%,transparent 100%);border-radius:45% 55% 40% 60%;z-index:0;pointer-events:none}
+  .container{max-width:720px;margin:0 auto;padding:48px 24px 80px;position:relative;z-index:1}
+  .header{text-align:center;margin-bottom:48px;animation:fadeDown 0.7s ease both}
+  .badge{display:inline-block;background:linear-gradient(135deg,var(--yellow),var(--orange));color:white;font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 18px;border-radius:99px;margin-bottom:14px}
+  .header .sun{font-size:2rem;margin-bottom:8px;display:block;animation:spin 8s linear infinite}
+  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  .header h1{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:700;color:var(--yellow-dark);line-height:1.15;text-shadow:0 2px 12px rgba(246,200,70,0.3)}
+  .header h1 span{color:var(--orange);font-style:italic}
+  .header .subtitle{margin-top:12px;font-size:1rem;color:var(--text-light);line-height:1.6;max-width:500px;margin-left:auto;margin-right:auto}
+  .brand{display:inline-block;margin-top:14px;font-size:0.85rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange-dark);border-top:1px solid var(--yellow);padding-top:8px}
+  .progress-wrap{background:rgba(246,200,70,0.18);border-radius:99px;height:8px;margin-bottom:40px;overflow:hidden}
+  .progress-bar{height:100%;background:linear-gradient(90deg,var(--yellow),var(--orange));border-radius:99px;transition:width 0.5s cubic-bezier(.4,0,.2,1);width:0%}
+  .progress-label{text-align:right;font-size:0.78rem;color:var(--text-light);margin-top:4px;margin-bottom:32px}
+  .question-card{background:linear-gradient(135deg,#fffbf0 60%,#fef3c7 100%);border:1.5px solid rgba(246,200,70,0.35);border-radius:20px;padding:32px 28px;margin-bottom:28px;box-shadow:0 4px 24px var(--shadow);animation:fadeUp 0.5s ease both;position:relative;overflow:hidden}
+  .question-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--yellow),var(--orange));border-radius:20px 20px 0 0}
+  .question-card.new-q::before{background:linear-gradient(90deg,var(--orange),#c2410c)}
+  .new-tag{display:inline-block;background:rgba(217,119,6,0.12);color:var(--orange);font-size:0.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:99px;border:1px solid rgba(217,119,6,0.25);margin-bottom:6px}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:none}}
+  .question-number{font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+  .question-text{font-family:'Playfair Display',serif;font-size:1.18rem;color:var(--orange-dark);line-height:1.5;margin-bottom:24px}
+  .question-sub{font-size:0.85rem;color:var(--text-light);font-style:italic;margin-bottom:20px;margin-top:-16px;line-height:1.5}
+  .options-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .option-label{display:flex;flex-direction:column;align-items:center;text-align:center;cursor:pointer;padding:14px 10px;border-radius:14px;border:2px solid rgba(246,200,70,0.4);background:rgba(255,251,240,0.8);transition:all 0.22s ease;position:relative}
+  .option-label:hover{border-color:var(--yellow);background:rgba(246,200,70,0.12);transform:translateY(-2px);box-shadow:0 4px 14px rgba(246,200,70,0.25)}
+  .option-label input[type="radio"],.option-label input[type="checkbox"]{position:absolute;opacity:0;width:0;height:0}
+  .option-label:has(input:checked){border-color:var(--orange);background:rgba(246,200,70,0.22);box-shadow:0 4px 16px rgba(230,160,30,0.25)}
+  .option-dot{width:22px;height:22px;border-radius:50%;border:2px solid rgba(246,200,70,0.6);background:var(--yellow-light);margin-bottom:8px;transition:all 0.2s ease;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .option-label input[type="radio"]:checked~.option-dot{background:var(--yellow);border-color:var(--orange);box-shadow:0 0 0 3px rgba(246,200,70,0.4)}
+  .option-label input[type="radio"]:checked~.option-dot::after{content:'✓';color:var(--orange-dark);font-weight:900;font-size:0.8rem}
+  .option-title{font-weight:700;font-size:0.82rem;color:var(--text-light);margin-bottom:4px;transition:color 0.2s;line-height:1.3}
+  .option-desc{font-size:0.72rem;color:#a07830;font-style:italic;line-height:1.3}
+  .option-label:has(input:checked) .option-title{color:var(--orange-dark)}
+  .option-check{width:20px;height:20px;border-radius:6px;border:2px solid rgba(246,200,70,0.6);background:var(--yellow-light);margin-bottom:8px;display:flex;align-items:center;justify-content:center;transition:all 0.2s ease;flex-shrink:0}
+  .option-label input[type="checkbox"]:checked~.option-check{background:var(--yellow);border-color:var(--orange);box-shadow:0 0 0 3px rgba(246,200,70,0.4)}
+  .option-label input[type="checkbox"]:checked~.option-check::after{content:'✓';font-size:0.8rem;color:var(--orange-dark);font-weight:800}
+  .option-label:has(input[type="checkbox"]:checked){border-color:var(--orange);background:rgba(246,200,70,0.22)}
+  .textarea-wrap textarea{width:100%;min-height:140px;border-radius:14px;border:2px solid rgba(246,200,70,0.4);background:rgba(255,251,240,0.9);padding:14px 16px;font-family:'Nunito',sans-serif;font-size:0.93rem;color:var(--text);resize:vertical;transition:border-color 0.2s,box-shadow 0.2s;outline:none}
+  .textarea-wrap textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(246,200,70,0.3)}
+  .textarea-wrap textarea::placeholder{color:#c9a060;font-style:italic}
+  .multi-hint{font-size:0.75rem;color:var(--orange);font-style:italic;margin-bottom:14px}
+  .coach-bubble{display:none;margin-top:18px;background:linear-gradient(135deg,rgba(246,200,70,0.18),rgba(232,160,32,0.12));border-left:3px solid var(--yellow);border-radius:0 14px 14px 14px;padding:14px 18px;position:relative;animation:bubbleIn 0.4s cubic-bezier(.34,1.56,.64,1) both}
+  .coach-bubble.visible{display:block}
+  @keyframes bubbleIn{from{opacity:0;transform:scale(0.92) translateY(8px)}to{opacity:1;transform:none}}
+  .coach-bubble::before{content:'🌟';position:absolute;top:-12px;left:-4px;font-size:1.1rem}
+  .coach-bubble p{font-size:0.88rem;color:var(--orange-dark);font-style:italic;line-height:1.55;margin:0}
+  .signature-card{background:linear-gradient(135deg,#fffbf0 60%,#fef3c7 100%);border:1.5px solid rgba(246,200,70,0.5);border-radius:20px;padding:32px 28px;margin-bottom:28px;box-shadow:0 4px 24px var(--shadow);position:relative;overflow:hidden}
+  .signature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--yellow),var(--orange));border-radius:20px 20px 0 0}
+  .signature-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--orange-dark);margin-bottom:20px;line-height:1.5}
+  .signature-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px}
+  .sig-field label{display:block;font-size:0.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+  .sig-field input[type="text"],.sig-field input[type="date"]{width:100%;border-radius:10px;border:2px solid rgba(246,200,70,0.4);background:rgba(255,251,240,0.9);padding:10px 14px;font-family:'Nunito',sans-serif;font-size:0.93rem;color:var(--text);outline:none;transition:border-color 0.2s,box-shadow 0.2s}
+  .sig-field input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(246,200,70,0.3)}
+  .engagement-check{display:flex;align-items:flex-start;gap:14px;cursor:pointer;padding:16px;border-radius:14px;border:2px solid rgba(246,200,70,0.4);background:rgba(255,251,240,0.8);transition:all 0.22s ease}
+  .engagement-check:hover{border-color:var(--yellow);background:rgba(246,200,70,0.1)}
+  .engagement-check:has(input:checked){border-color:var(--orange);background:rgba(246,200,70,0.2)}
+  .engagement-check input[type="checkbox"]{position:absolute;opacity:0;width:0;height:0}
+  .eng-box{width:24px;height:24px;border-radius:7px;border:2px solid rgba(246,200,70,0.7);background:var(--yellow-light);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.2s ease}
+  .engagement-check input:checked~.eng-box{background:var(--yellow);border-color:var(--orange);box-shadow:0 0 0 3px rgba(246,200,70,0.35)}
+  .engagement-check input:checked~.eng-box::after{content:'✓';font-size:0.9rem;color:var(--orange-dark);font-weight:900}
+  .eng-text{font-size:0.88rem;color:var(--text-light);line-height:1.6}
+  .eng-text strong{color:var(--orange-dark)}
+  .submit-wrap{text-align:center;margin-top:40px}
+  .btn-submit{background:linear-gradient(135deg,var(--yellow) 0%,var(--orange) 100%);color:white;border:none;border-radius:99px;padding:16px 52px;font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:700;letter-spacing:0.5px;cursor:pointer;box-shadow:0 6px 28px rgba(230,160,30,0.35);transition:transform 0.2s,box-shadow 0.2s}
+  .btn-submit:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 10px 36px rgba(230,160,30,0.45)}
+  .btn-download{background:linear-gradient(135deg,var(--yellow) 0%,var(--orange) 100%);color:white;border:none;border-radius:99px;padding:14px 40px;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;box-shadow:0 6px 28px rgba(230,160,30,0.35);transition:transform 0.2s,box-shadow 0.2s;display:inline-flex;align-items:center;gap:8px;margin-top:24px}
+  .btn-download:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 32px rgba(230,160,30,0.45)}
+  .thankyou{display:none;text-align:center;padding:60px 20px;animation:fadeUp 0.7s ease both}
+  .thankyou.visible{display:block}
+  .ty-sun{font-size:4rem;margin-bottom:16px;animation:spin 8s linear infinite;display:inline-block}
+  .thankyou h2{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--orange-dark);margin-bottom:12px}
+  .ty-sub{font-size:1.05rem;color:var(--text-light);font-style:italic;margin-bottom:32px}
+  .ty-card{background:linear-gradient(135deg,#fffbf0,#fef3c7);border:1.5px solid rgba(246,200,70,0.4);border-radius:20px;padding:28px 32px;margin:0 auto 28px;max-width:520px;text-align:left;box-shadow:0 4px 24px var(--shadow)}
+  .ty-card>p{font-size:0.92rem;color:var(--text-light);margin-bottom:20px;font-style:italic}
+  .ty-steps{display:flex;flex-direction:column;gap:16px}
+  .ty-step{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:rgba(255,255,255,0.6);border-radius:14px;border:1.5px solid rgba(246,200,70,0.3)}
+  .ty-icon{font-size:1.6rem;flex-shrink:0;margin-top:2px}
+  .ty-step div{display:flex;flex-direction:column;gap:2px}
+  .ty-step strong{font-size:0.95rem;color:var(--orange-dark)}
+  .ty-step span{font-size:0.83rem;color:var(--text-light);line-height:1.5}
+  .ty-closing{font-size:1rem;color:var(--text-light);margin-bottom:24px;line-height:1.7}
+  .ty-closing strong{color:var(--orange-dark)}
+  .thankyou .brand{margin-top:8px}
+  .form-section{display:block}
+  .form-section.hidden{display:none}
+  @media(max-width:520px){.options-grid{grid-template-columns:repeat(3,1fr)}.header h1{font-size:2rem}.question-text{font-size:1.05rem}.signature-fields{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <span class="badge">✨ Bilan — Semaines 9 à 12</span>
+    <span class="sun">☀️</span>
+    <h1>Bilan <span>Mois 3</span></h1>
+    <p class="subtitle">12 semaines de travail et de courage. Tu es encore là, et c'est une victoire immense. Prends le temps de faire ce bilan honnêtement. On est à un mois de la fin — autant que tes réponses soient vraies. 💛</p>
+    <span class="brand">by maefitways</span>
+  </div>
+
+  <div class="form-section" id="formSection">
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="progress-label" id="progressLabel">0 / 12 questions</div>
+
+    <form id="mainForm" novalidate>
+
+      <!-- Q1 SAME -->
+      <div class="question-card" style="animation-delay:0.05s">
+        <div class="question-number">Question 01</div>
+        <div class="question-text">Après 12 semaines de coaching, comment te sens-tu face à ta progression ?</div>
+        <p class="question-sub">💬 Compare avec le mois 2 — est-ce que ça a encore évolué ce mois-ci ?</p>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q1" value="toujours_sceptique" required><span class="option-dot"></span><span class="option-title">Toujours sceptique</span><span class="option-desc">J'ai du mal à voir ma progression même après 3 mois.</span></label>
+          <label class="option-label"><input type="radio" name="q1" value="mitigee"><span class="option-dot"></span><span class="option-title">Mitigée</span><span class="option-desc">Toujours des hauts et des bas — c'est encore mitigé pour moi.</span></label>
+          <label class="option-label"><input type="radio" name="q1" value="neutre"><span class="option-dot"></span><span class="option-title">Neutre</span><span class="option-desc">Je progresse tranquillement, à mon rythme.</span></label>
+          <label class="option-label"><input type="radio" name="q1" value="satisfaite"><span class="option-dot"></span><span class="option-title">Satisfaite</span><span class="option-desc">Je vois clairement des changements et je suis contente du chemin parcouru.</span></label>
+          <label class="option-label"><input type="radio" name="q1" value="fiere"><span class="option-dot"></span><span class="option-title">Fière et motivée</span><span class="option-desc">Ces 3 mois m'ont transformée et je suis impatiente de finir en beauté !</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q1"></div>
+      </div>
+
+      <!-- Q2 SAME -->
+      <div class="question-card" style="animation-delay:0.08s">
+        <div class="question-number">Question 02</div>
+        <div class="question-text">Comment évalues-tu ta confiance en toi aujourd'hui, comparé au mois 2 ?</div>
+        <p class="question-sub">💬 Est-ce que ce troisième mois a encore fait bouger les choses ?</p>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q2" value="en_baisse" required><span class="option-dot"></span><span class="option-title">En baisse</span><span class="option-desc">Je me sens moins confiante qu'au mois 2.</span></label>
+          <label class="option-label"><input type="radio" name="q2" value="pareil"><span class="option-dot"></span><span class="option-title">Identique</span><span class="option-desc">Mon niveau de confiance stagne depuis le mois 2.</span></label>
+          <label class="option-label"><input type="radio" name="q2" value="un_peu_plus"><span class="option-dot"></span><span class="option-title">Un peu plus</span><span class="option-desc">Je sens une progression par rapport au mois 2, même légère.</span></label>
+          <label class="option-label"><input type="radio" name="q2" value="bien_mieux"><span class="option-dot"></span><span class="option-title">Bien mieux</span><span class="option-desc">Ce troisième mois m'a clairement boostée en confiance.</span></label>
+          <label class="option-label"><input type="radio" name="q2" value="transformee"><span class="option-dot"></span><span class="option-title">Transformée</span><span class="option-desc">En 3 mois, ma façon de me voir a vraiment évolué.</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q2"></div>
+      </div>
+
+      <!-- Q3 SAME -->
+      <div class="question-card" style="animation-delay:0.11s">
+        <div class="question-number">Question 03</div>
+        <div class="question-text">Après 3 mois, est-ce qu'il reste encore des peurs du départ ?</div>
+        <p class="question-sub">💬 On est presque à la fin — lesquelles ont vraiment lâché ?</p>
+        <p class="multi-hint">✨ Tu peux en choisir plusieurs</p>
+        <div class="options-grid">
+          <label class="option-label"><input type="checkbox" name="q3" value="pas_capable"><span class="option-check"></span><span class="option-title">Je doute encore de mes capacités</span><span class="option-desc">Malgré 3 mois, je me demande encore si je suis vraiment capable.</span></label>
+          <label class="option-label"><input type="checkbox" name="q3" value="progres_lents"><span class="option-check"></span><span class="option-title">Les progrès trop lents</span><span class="option-desc">La patience reste mon grand défi.</span></label>
+          <label class="option-label"><input type="checkbox" name="q3" value="regard_autres"><span class="option-check"></span><span class="option-title">Le regard des autres</span><span class="option-desc">Je ne me sens pas encore totalement à l'aise en public.</span></label>
+          <label class="option-label"><input type="checkbox" name="q3" value="tenir_duree"><span class="option-check"></span><span class="option-title">Tenir sur la durée</span><span class="option-desc">J'ai peur de perdre ma motivation sur les prochains mois.</span></label>
+          <label class="option-label"><input type="checkbox" name="q3" value="plus_peur"><span class="option-check"></span><span class="option-title">Elles ont disparu !</span><span class="option-desc">3 mois ont suffi pour les dépasser. Je me sens vraiment libre !</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q3"></div>
+      </div>
+
+      <!-- Q4 SAME -->
+      <div class="question-card" style="animation-delay:0.14s">
+        <div class="question-number">Question 04</div>
+        <div class="question-text">Comment te sens-tu physiquement aujourd'hui, comparé au début du mois 3 ?</div>
+        <p class="question-sub">💬 Est-ce que ton corps a continué à progresser sur ce 3ème mois ?</p>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q4" value="plus_fatiguee" required><span class="option-dot"></span><span class="option-title">Plus fatiguée</span><span class="option-desc">Je me sens plus épuisée qu'au mois 2.</span></label>
+          <label class="option-label"><input type="radio" name="q4" value="douleurs"><span class="option-dot"></span><span class="option-title">Quelques douleurs</span><span class="option-desc">Des tensions qui persistent malgré 3 mois de pratique.</span></label>
+          <label class="option-label"><input type="radio" name="q4" value="pareil"><span class="option-dot"></span><span class="option-title">Stable</span><span class="option-desc">Je me sens pareille qu'au mois 2, sans évolution notable.</span></label>
+          <label class="option-label"><input type="radio" name="q4" value="mieux"><span class="option-dot"></span><span class="option-title">Encore mieux</span><span class="option-desc">Mon corps continue de progresser au fil des mois, je me sens plus forte.</span></label>
+          <label class="option-label"><input type="radio" name="q4" value="super_forme"><span class="option-dot"></span><span class="option-title">Au sommet !</span><span class="option-desc">Je suis au sommet de ma forme — 3 mois ont vraiment tout changé.</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q4"></div>
+      </div>
+
+      <!-- Q5 NEW -->
+      <div class="question-card new-q" style="animation-delay:0.17s">
+        <div class="question-number">Question 05</div>
+        <span class="new-tag">✦ Nouveau</span>
+        <div class="question-text">Ta régularité ce mois-ci, comparée aux mois précédents ?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q5" value="moins_reguliere" required><span class="option-dot"></span><span class="option-title">Moins régulière</span><span class="option-desc">J'ai eu plus de mal à tenir le rythme ce 3ème mois.</span></label>
+          <label class="option-label"><input type="radio" name="q5" value="pareil"><span class="option-dot"></span><span class="option-title">Pareil</span><span class="option-desc">Même niveau de régularité que les mois précédents.</span></label>
+          <label class="option-label"><input type="radio" name="q5" value="globalement"><span class="option-dot"></span><span class="option-title">Globalement bien</span><span class="option-desc">J'ai suivi la majorité du programme, avec quelques absences.</span></label>
+          <label class="option-label"><input type="radio" name="q5" value="plus_reguliere"><span class="option-dot"></span><span class="option-title">Plus régulière</span><span class="option-desc">J'ai mieux géré mon rythme qu'au mois 2.</span></label>
+          <label class="option-label"><input type="radio" name="q5" value="100"><span class="option-dot"></span><span class="option-title">100% présente</span><span class="option-desc">Aucune séance ratée en 3 mois. Je suis vraiment fière de moi !</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q5"></div>
+      </div>
+
+      <!-- Q6 SAME -->
+      <div class="question-card" style="animation-delay:0.20s">
+        <div class="question-number">Question 06</div>
+        <div class="question-text">Comment te sens-tu par rapport à ta motivation en ce début de dernier mois ?</div>
+        <p class="question-sub">💬 On approche de la fin — est-ce que la flamme tient toujours ?</p>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q6" value="effondree" required><span class="option-dot"></span><span class="option-title">En chute</span><span class="option-desc">Ma motivation est en baisse depuis le mois 2.</span></label>
+          <label class="option-label"><input type="radio" name="q6" value="hauts_bas"><span class="option-dot"></span><span class="option-title">Des hauts et des bas</span><span class="option-desc">Toujours des hauts et des bas — mais je reste dans la course.</span></label>
+          <label class="option-label"><input type="radio" name="q6" value="stable"><span class="option-dot"></span><span class="option-title">Stable</span><span class="option-desc">Je maintiens un cap régulier depuis le début.</span></label>
+          <label class="option-label"><input type="radio" name="q6" value="en_hausse"><span class="option-dot"></span><span class="option-title">En hausse</span><span class="option-desc">Je suis encore plus motivée qu'au mois 2 — la fin m'booste !</span></label>
+          <label class="option-label"><input type="radio" name="q6" value="au_top"><span class="option-dot"></span><span class="option-title">Au top !</span><span class="option-desc">Au top depuis 3 mois — je veux finir en beauté !</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q6"></div>
+      </div>
+
+      <!-- Q7 SAME -->
+      <div class="question-card" style="animation-delay:0.23s">
+        <div class="question-number">Question 07</div>
+        <div class="question-text">Quand tu te regardes dans le miroir aujourd'hui — comment tu te sens comparé au début du mois 3 ?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q7" value="plus_dur" required><span class="option-dot"></span><span class="option-title">Plus difficile</span><span class="option-desc">Je suis encore très critique envers moi-même malgré 3 mois.</span></label>
+          <label class="option-label"><input type="radio" name="q7" value="pareil"><span class="option-dot"></span><span class="option-title">Pareil</span><span class="option-desc">Mon regard sur moi n'a pas vraiment évolué ce mois-ci.</span></label>
+          <label class="option-label"><input type="radio" name="q7" value="un_peu_mieux"><span class="option-dot"></span><span class="option-title">Un peu mieux</span><span class="option-desc">Je me regarde avec un peu plus de bienveillance qu'au mois 2.</span></label>
+          <label class="option-label"><input type="radio" name="q7" value="bien_mieux"><span class="option-dot"></span><span class="option-title">Bien mieux</span><span class="option-desc">Je vois des changements importants et je suis vraiment fière.</span></label>
+          <label class="option-label"><input type="radio" name="q7" value="transforme"><span class="option-dot"></span><span class="option-title">Transformé</span><span class="option-desc">En 3 mois, mon regard sur moi-même a profondément changé.</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q7"></div>
+      </div>
+
+      <!-- Q8 SAME -->
+      <div class="question-card" style="animation-delay:0.26s">
+        <div class="question-number">Question 08</div>
+        <div class="question-text">Ce mois-ci, as-tu encore eu tendance à être dure avec toi-même ?</div>
+        <p class="question-sub">💬 Compare avec le mois 2 — est-ce que tu progresses sur ce point ?</p>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q8" value="encore_plus" required><span class="option-dot"></span><span class="option-title">Encore plus</span><span class="option-desc">Je suis encore très dure avec moi-même ce mois-ci.</span></label>
+          <label class="option-label"><input type="radio" name="q8" value="autant"><span class="option-dot"></span><span class="option-title">Autant</span><span class="option-desc">Pas d'évolution par rapport au mois 2 sur ce point.</span></label>
+          <label class="option-label"><input type="radio" name="q8" value="un_peu_moins"><span class="option-dot"></span><span class="option-title">Un peu moins</span><span class="option-desc">Je me relève plus vite qu'au mois 2 quand ça ne va pas.</span></label>
+          <label class="option-label"><input type="radio" name="q8" value="bien_moins"><span class="option-dot"></span><span class="option-title">Bien moins</span><span class="option-desc">Je suis clairement plus bienveillante avec moi-même qu'au mois 2.</span></label>
+          <label class="option-label"><input type="radio" name="q8" value="pas_du_tout"><span class="option-dot"></span><span class="option-title">Pas du tout</span><span class="option-desc">La bienveillance envers moi-même est une vraie habitude maintenant.</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q8"></div>
+      </div>
+
+      <!-- Q9 NEW -->
+      <div class="question-card new-q" style="animation-delay:0.29s">
+        <div class="question-number">Question 09</div>
+        <span class="new-tag">✦ Nouveau</span>
+        <div class="question-text">Qu'est-ce qui a été le plus difficile durant ce troisième mois ?</div>
+        <p class="multi-hint">✨ Tu peux en choisir plusieurs</p>
+        <div class="options-grid">
+          <label class="option-label"><input type="checkbox" name="q9" value="maintenir_rythme"><span class="option-check"></span><span class="option-title">Maintenir le rythme</span><span class="option-desc">Le mois 3 a été plus dur à tenir que les précédents.</span></label>
+          <label class="option-label"><input type="checkbox" name="q9" value="plateau"><span class="option-check"></span><span class="option-title">L'impression de plateau</span><span class="option-desc">L'impression de plateau s'est installée ce mois.</span></label>
+          <label class="option-label"><input type="checkbox" name="q9" value="mental"><span class="option-check"></span><span class="option-title">Le mental</span><span class="option-desc">Gérer les doutes et garder la motivation si près de la fin.</span></label>
+          <label class="option-label"><input type="checkbox" name="q9" value="intensite"><span class="option-check"></span><span class="option-title">L'intensité</span><span class="option-desc">L'intensité du programme — c'est de plus en plus challengeant.</span></label>
+          <label class="option-label"><input type="checkbox" name="q9" value="rien"><span class="option-check"></span><span class="option-title">Rien de difficile</span><span class="option-desc">Honnêtement rien n'a été difficile — je suis dans mon rythme !</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q9"></div>
+      </div>
+
+      <!-- Q10 NEW -->
+      <div class="question-card new-q" style="animation-delay:0.32s">
+        <div class="question-number">Question 10</div>
+        <span class="new-tag">✦ Nouveau</span>
+        <div class="question-text">En 3 mois de coaching, quelle est la plus grande transformation que tu observes chez toi ?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q10" value="physique" required><span class="option-dot"></span><span class="option-title">Mon corps</span><span class="option-desc">Mon corps a vraiment changé depuis le début du programme.</span></label>
+          <label class="option-label"><input type="radio" name="q10" value="mental"><span class="option-dot"></span><span class="option-title">Mon mental</span><span class="option-desc">Mon rapport à moi-même a profondément évolué en 3 mois.</span></label>
+          <label class="option-label"><input type="radio" name="q10" value="habitudes"><span class="option-dot"></span><span class="option-title">Mes habitudes</span><span class="option-desc">Le mouvement et le soin de moi sont devenus naturels.</span></label>
+          <label class="option-label"><input type="radio" name="q10" value="confiance"><span class="option-dot"></span><span class="option-title">Ma confiance</span><span class="option-desc">Je me sens beaucoup plus sûre de moi sur tous les plans.</span></label>
+          <label class="option-label"><input type="radio" name="q10" value="tout"><span class="option-dot"></span><span class="option-title">Tout ça à la fois !</span><span class="option-desc">Corps, mental, habitudes et confiance — tout a évolué en 3 mois.</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q10"></div>
+      </div>
+
+      <!-- Q11 NEW -->
+      <div class="question-card new-q" style="animation-delay:0.35s">
+        <div class="question-number">Question 11</div>
+        <span class="new-tag">✦ Nouveau</span>
+        <div class="question-text">Pour ce dernier mois, sur quoi tu aimerais qu'on se concentre en priorité ?</div>
+        <p class="multi-hint">✨ Tu peux en choisir plusieurs</p>
+        <div class="options-grid">
+          <label class="option-label"><input type="checkbox" name="q11" value="physique"><span class="option-check"></span><span class="option-title">La progression physique</span><span class="option-desc">Finir fort avec un maximum de résultats visibles pour le dernier mois.</span></label>
+          <label class="option-label"><input type="checkbox" name="q11" value="mental"><span class="option-check"></span><span class="option-title">Le travail mental</span><span class="option-desc">Ancrer les gains mentaux pour qu'ils durent après le programme.</span></label>
+          <label class="option-label"><input type="checkbox" name="q11" value="regularite"><span class="option-check"></span><span class="option-title">La régularité</span><span class="option-desc">Consolider les habitudes pour les garder après la fin du programme.</span></label>
+          <label class="option-label"><input type="checkbox" name="q11" value="alimentation"><span class="option-check"></span><span class="option-title">L'alimentation</span><span class="option-desc">Intégrer l'alimentation pour des résultats encore plus visibles.</span></label>
+          <label class="option-label"><input type="checkbox" name="q11" value="surprise"><span class="option-check"></span><span class="option-title">Je te fais confiance</span><span class="option-desc">Je te fais confiance pour finir le programme en beauté !</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q11"></div>
+      </div>
+
+      <!-- Q12 Espace libre -->
+      <div class="question-card" style="animation-delay:0.38s">
+        <div class="question-number">Question 12 — Ton espace libre 🌸</div>
+        <div class="question-text">Comment tu te sens vraiment après 3 mois ? Qu'est-ce que tu veux me dire avant ce dernier mois ?</div>
+        <p class="question-sub">Exprime-toi librement — ce que ces 3 mois t'ont apporté, ce qui reste à travailler, comment tu te sens aujourd'hui, et ce que tu veux aller chercher dans ce dernier mois. 💛</p>
+        <div class="textarea-wrap">
+          <textarea name="message_libre" rows="7" placeholder="Ex : 3 mois déjà... Je réalise à quel point j'ai changé depuis le début. Ce qui me semblait impossible en semaine 1 est devenu normal. Pour ce dernier mois, j'aimerais vraiment travailler sur... ✨"></textarea>
+        </div>
+      </div>
+
+      <!-- SIGNATURE -->
+      <div class="signature-card">
+        <div class="question-number">Engagement 🤝</div>
+        <p class="signature-title">Je certifie avoir répondu à ce bilan avec sincérité et honnêteté, pour que mon accompagnement continue à être vraiment adapté à moi et à mon évolution.</p>
+        <div class="signature-fields">
+          <div class="sig-field"><label for="sig-prenom">Mon prénom</label><input type="text" id="sig-prenom" name="prenom" placeholder="Ex : Léa" required></div>
+          <div class="sig-field"><label for="sig-date">Date</label><input type="date" id="sig-date" name="date_signature" required></div>
+        </div>
+        <label class="engagement-check">
+          <input type="checkbox" id="engagement" name="engagement" required>
+          <span class="eng-box"></span>
+          <span class="eng-text">✅ Je coche cette case pour confirmer que <strong>j'ai répondu avec sincérité</strong> et que je suis prête à donner tout ce que j'ai pour ce dernier mois.</span>
+        </label>
+      </div>
+
+      <div class="submit-wrap">
+        <button type="submit" class="btn-submit">Envoyer mon bilan ☀️</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- THANK YOU -->
+  <div class="thankyou" id="thankyou">
+    <div class="ty-sun">🌟</div>
+    <h2>3 mois. Tu y es presque ! 🌟</h2>
+    <p class="ty-sub">8 semaines de travail, d'effort et de courage — et tu es encore là, plus forte qu'au départ. Je suis immensément fière de toi. 💛</p>
+    <div class="ty-card">
+      <p>Le dernier mois s'ouvre — voilà ce que je t'invite à faire :</p>
+      <div class="ty-steps">
+        <div class="ty-step"><span class="ty-icon">🗂️</span><div><strong>Retourne sur la plateforme</strong><span>et découvre ton programme final qui vient de se débloquer.</span></div></div>
+        <div class="ty-step"><span class="ty-icon">👀</span><div><strong>Fais un tour de chaque section</strong><span>pour découvrir ce que j'ai préparé spécialement pour ce dernier mois.</span></div></div>
+        <div class="ty-step"><span class="ty-icon">🚀</span><div><strong>Lance-toi dans ce dernier mois</strong><span>— avec toute l'énergie et la confiance que tu as construites. La ligne d'arrivée est en vue !</span></div></div>
+      </div>
+    </div>
+    <button class="btn-download" id="downloadBtn">📄 Télécharger mon récapitulatif</button>
+    <p class="ty-closing" style="margin-top:24px">Je suis tellement fière de toi. <strong>Un dernier mois, et on y est ! 💛</strong></p>
+    <span class="brand">by maefitways</span>
+  </div>
+
+</div>
+<script>
+  var form=document.getElementById('mainForm');
+  var progressBar=document.getElementById('progressBar');
+  var progressLabel=document.getElementById('progressLabel');
+  var totalQuestions=12;
+  document.getElementById('sig-date').valueAsDate=new Date();
+
+  var coachMessages={
+    q1:{
+      toujours_sceptique:"Merci pour cette honnêteté. 8 semaines de travail, c'est immense — même si tu ne le vois pas encore. Je vais t'aider à mettre en lumière tout ce qui a changé en toi. 💛",
+      mitigee:"Les hauts et les bas font partie du vrai parcours. Ce qui compte, c'est que tu sois encore là après 3 mois. Et tu l'es. C'est une victoire en soi. 🌸",
+      neutre:"Progresser à son rythme, c'est souvent la progression la plus solide. Les changements durables arrivent doucement — et ils arrivent. 🌱",
+      satisfaite:"Voir clairement le chemin parcouru après 2 mois, c'est magnifique ! Tu as travaillé dur pour ça. Ce dernier mois va tout couronner. Tu es prête. ✨",
+      fiere:"Cette fierté, elle est entièrement méritée ! 3 mois de transformation — physique, mentale, profonde. Tu n'es plus la même qu'au jour 1. 🚀"
+    },
+    q2:{
+      en_baisse:"Je t'entends. Parfois le milieu du parcours est le moment le plus difficile. On va prendre soin de cette confiance ensemble dans la suite. 💛",
+      pareil:"La confiance prend du temps — c'est un muscle qu'on entraîne. Les bases sont là, ce dernier mois va tout consolider. 🌸",
+      un_peu_plus:"Une progression, même légère, c'est une progression ! En 2 mois, tu as déjà tellement changé. Le mois 4 va amplifier encore tout ça. ✨",
+      bien_mieux:"Ce boost de confiance en 2 mois, c'est le résultat de ton travail quotidien. Tu construis quelque chose de solide. 💪",
+      transformee:"En 2 mois, changer profondément sa façon de se voir — c'est une transformation rare et précieuse. Tu rayonnes. 🌟"
+    },
+    q3:{
+      pas_capable:"Ces doutes persistent — et c'est okay. Mais 2 mois de présence sont la preuve concrète que tu en es capable. On continue à bâtir cette certitude. 💛",
+      progres_lents:"La patience reste ton grand défi — et je t'entends. Mais ton corps enregistre tout, même ce que tu ne vois pas encore. Chaque semaine compte. 🌸",
+      regard_autres:"Ce travail sur le regard des autres, on le poursuit ensemble. Peu à peu, ton regard sur toi devient plus fort que tout le reste. ✨",
+      tenir_duree:"Cette peur de la durée est normale — mais tu as déjà tenu 2 mois. C'est la meilleure preuve que tu peux continuer. 💪",
+      plus_peur:"En 2 mois, tu as réussi à te libérer de peurs qui te bloquaient. C'est une transformation profonde dont tu peux être très fière. 🌟"
+    },
+    q4:{
+      plus_fatiguee:"Important à savoir ! Je vais ajuster le programme pour que tu puisses récupérer et progresser sans t'épuiser. Ton corps a besoin d'être écouté. 💛",
+      douleurs:"On va s'en occuper dans la suite du programme. La récupération fait partie de la progression — on ne l'oublie pas. 🌿",
+      pareil:"Stable, c'est déjà bien ! Ton corps consolide ce qu'il a appris ces 2 derniers mois. Le mois 4 va le relancer. ✨",
+      mieux:"Continuer à progresser physiquement au mois 2, c'est excellent ! Ton corps répond vraiment bien au programme. 💪",
+      super_forme:"3 mois et tu es au sommet de ta forme ! Ton corps est en feu — et le mois 3 va en profiter pour aller encore plus loin. 🚀"
+    },
+    q5:{
+      moins_reguliere:"Le mois 2 est souvent le plus difficile à tenir. Merci de l'admettre — ça va m'aider à adapter la suite pour que le mois 3 soit plus fluide pour toi. 💛",
+      pareil:"Maintenir le même rythme au mois 2, c'est déjà une belle performance. On va continuer à consolider ça. 🌸",
+      globalement:"Globalement régulière sur 2 mois — c'est vraiment bien ! La constance, même imparfaite, crée les résultats durables. ✨",
+      plus_reguliere:"Plus régulière au mois 2 qu'au mois 1 — c'est une belle progression ! Les habitudes s'ancrent vraiment. 💪",
+      "100":"100% présente sur 3 mois consécutifs — c'est tout simplement exceptionnel et tu peux en être extrêmement fière ! 🌟"
+    },
+    q6:{
+      effondree:"Je t'entends — et c'est courageux de le dire. Une motivation qui baisse au mois 2, ça arrive. On va trouver ensemble ce qui va te refaire vibrer pour la suite. 💛",
+      hauts_bas:"Toujours en dents de scie — mais tu es encore là. C'est ça qui compte le plus. On va travailler à rendre le mois 3 plus stable. 🌸",
+      stable:"Stable sur 2 mois, c'est rare et précieux ! Cette constance, c'est ce qui va te porter très loin. ✨",
+      en_hausse:"Encore plus motivée au mois 2 qu'au mois 1 — c'est le signe que tu as vraiment trouvé ton rythme et ton chemin. 💪",
+      au_top:"Au top pendant 2 mois — tu portes quelque chose d'exceptionnel en toi. Le mois 4 va être incroyable. 🌟"
+    },
+    q7:{
+      plus_dur:"Merci pour cette honnêteté. On va mettre encore plus l'accent sur le travail du regard dans la suite. Tu mérites tellement de douceur. 💛",
+      pareil:"Ce regard prend du temps à changer — c'est normal. Les graines sont plantées depuis 2 mois. Elles vont germer. 🌸",
+      un_peu_mieux:"Un peu plus de bienveillance en 2 mois — c'est une vraie victoire silencieuse. Continue dans ce sens. 🌱",
+      bien_mieux:"Commencer à se sentir fière de soi dans le miroir après 2 mois — c'est magnifique. Tu te reconnais. ✨",
+      transforme:"En 2 mois, changer profondément son regard sur soi — c'est la plus belle des transformations. Elle vient de l'intérieur. 🌟"
+    },
+    q8:{
+      encore_plus:"On va vraiment travailler cet axe dans le mois 3 — apprendre à se relever avec douceur plutôt qu'avec sévérité. Tu mérites mieux que cette critique intérieure. 💛",
+      autant:"Ce travail prend du temps — et c'est normal. On continue à y aller ensemble, semaine après semaine. 🌸",
+      un_peu_moins:"Un peu plus de douceur envers toi-même au fil des semaines — c'est une belle évolution. On continue dans ce sens. ✨",
+      bien_moins:"Clairement plus bienveillante avec toi-même qu'au début — c'est une transformation intérieure dont tu peux être fière. 💪",
+      pas_du_tout:"Avoir intégré la bienveillance envers soi-même en 2 mois — c'est une victoire immense qui va tout changer pour la suite. 🌟"
+    },
+    q9:{
+      maintenir_rythme:"Le mois 2 est souvent le plus difficile — et tu l'as traversé. Je vais adapter la structure du mois 3 pour que le rythme soit plus naturel. 💛",
+      plateau:"Cette impression de plateau est frustrante — et très courante. Ton corps s'adapte avant de relancer. Le mois 4 est conçu pour briser ce plateau. 🌸",
+      mental:"Le mental, c'est souvent l'ennemi numéro 1. Mais tu as continué malgré lui — et c'est une force immense. On continue ce travail. ✨",
+      intensite:"Je prends note ! On va calibrer le niveau d'intensité pour que tu sois challengée sans être dépassée. L'équilibre est clé. 💪",
+      rien:"Un mois 2 sans grande difficulté — c'est une excellente nouvelle ! Tu es vraiment dans ton rythme. Le mois 3 va exploiter ça. 🌟"
+    },
+    q10:{
+      physique:"Des changements physiques concrets après 2 mois — c'est la récompense de ton travail quotidien. Ton corps t'a entendue. 💛",
+      mental:"La transformation mentale est souvent la plus profonde et la plus durable. Changer sa façon de se parler et de se voir — c'est révolutionnaire. 🌸",
+      habitudes:"Intégrer de nouvelles habitudes dans son quotidien, c'est l'une des victoires les plus importantes. Elles vont te porter pour toujours. ✨",
+      confiance:"La confiance qui grandit — dans le sport et dans la vie. C'est ça, le vrai objectif de tout ce travail. Tu l'as atteint. 💪",
+      tout:"Corps, mental, habitudes et confiance — tout a bougé en 2 mois. C'est une transformation complète dont tu peux être immensément fière. 🌟"
+    },
+    q11:{
+      physique:"On va aller chercher encore plus de progression physique dans le mois 3 — ton corps est prêt pour ça. 💪",
+      mental:"Ce travail intérieur, on le continue et on l'approfondit. Tu mérites de continuer à te voir avec bienveillance et fierté. 🌸",
+      regularite:"On va construire des routines encore plus solides dans le mois 3 pour que la régularité devienne naturelle. ✨",
+      alimentation:"Super — on va intégrer davantage cet axe dans la suite. L'alimentation et l'entraînement, c'est une équipe gagnante. 🌿",
+      surprise:"J'adore cette confiance ! Je t'ai préparé quelque chose de spécial pour le mois 3, adapté à exactement où tu en es. 💛"
+    }
+  };
+
+  function showCoachBubble(name,value){
+    var b=document.getElementById('bubble-'+name);
+    if(!b)return;
+    var m=coachMessages[name];
+    if(!m)return;
+    var msg=m[value]||m['default'];
+    if(!msg)return;
+    b.innerHTML='<p>'+msg+'</p>';
+    b.classList.remove('visible');
+    requestAnimationFrame(function(){requestAnimationFrame(function(){b.classList.add('visible');});});
+  }
+  function updateProgress(){
+    var answered=new Set();
+    document.querySelectorAll('input[type="radio"]:checked').forEach(function(el){answered.add(el.name);});
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(function(el){answered.add(el.name);});
+    var count=answered.size;
+    progressBar.style.width=Math.round((count/totalQuestions)*100)+'%';
+    progressLabel.textContent=count+' / '+totalQuestions+' questions';
+  }
+  document.querySelectorAll('input[type="radio"]').forEach(function(el){
+    el.addEventListener('change',function(){updateProgress();showCoachBubble(this.name,this.value);});
+  });
+  document.querySelectorAll('input[type="checkbox"]').forEach(function(el){
+    el.addEventListener('change',function(){
+      updateProgress();
+      if(document.querySelectorAll('input[name="'+this.name+'"]:checked').length>0)showCoachBubble(this.name,this.value);
+    });
+  });
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var eng=document.getElementById('engagement');
+    if(!eng.checked){alert("Merci de cocher la case d\u2019engagement pour confirmer ta sinc\u00e9rit\u00e9 \uD83D\uDC9B");eng.closest('.engagement-check').style.border='2px solid #e74c3c';eng.closest('.engagement-check').scrollIntoView({behavior:'smooth',block:'center'});return;}
+    var p=document.getElementById('sig-prenom');
+    if(!p.value.trim()){alert("N\u2019oublie pas de renseigner ton pr\u00e9nom \uD83C\uDF38");p.style.borderColor='#e74c3c';p.focus();return;}
+    document.getElementById('formSection').classList.add('hidden');
+    document.getElementById('thankyou').classList.add('visible');
+    window.scrollTo({top:0,behavior:'smooth'});
+    setTimeout(function(){var btn=document.getElementById('downloadBtn');if(btn)btn.addEventListener('click',downloadRecap);},100);
+  });
+
+  function downloadRecap(){
+    var fd=new FormData(form);
+    var prenom=fd.get('prenom')||'Coach\u00e9e';
+    var dateSign=fd.get('date_signature')||new Date().toLocaleDateString('fr-FR');
+    var questions={
+      q1:{title:"Apr\u00e8s 12 semaines, comment te sens-tu face \u00e0 ta progression ?",options:{toujours_sceptique:{label:"Toujours sceptique",desc:"J'ai du mal \u00e0 voir ma progression m\u00eame apr\u00e8s 2 mois."},mitigee:{label:"Mitig\u00e9e",desc:"Des hauts et des bas \u2014 je progresse mais c'est encore difficile."},neutre:{label:"Neutre",desc:"Je progresse tranquillement, \u00e0 mon rythme."},satisfaite:{label:"Satisfaite",desc:"Je vois clairement des changements et je suis contente du chemin parcouru."},fiere:{label:"Fi\u00e8re et motiv\u00e9e",desc:"Ces 2 mois m'ont transform\u00e9e et je veux aller encore plus loin !"}}},
+      q2:{title:"Comment \u00e9values-tu ta confiance en toi aujourd'hui, compar\u00e9 au mois 1 ?",options:{en_baisse:{label:"En baisse",desc:"Je me sens moins confiante qu'au mois 2."},pareil:{label:"Identique",desc:"Mon niveau de confiance n'a pas vraiment boug\u00e9 ce mois-ci."},un_peu_plus:{label:"Un peu plus",desc:"Je sens une progression par rapport au mois 1, m\u00eame l\u00e9g\u00e8re."},bien_mieux:{label:"Bien mieux",desc:"Ce mois m'a clairement boost\u00e9e en confiance."},transformee:{label:"Transform\u00e9e",desc:"En 3 mois, ma fa\u00e7on de me voir a profond\u00e9ment chang\u00e9."}}},
+      q3:{title:"Apr\u00e8s 2 mois, est-ce qu'il reste encore des peurs du d\u00e9part ?",options:{pas_capable:{label:"Je doute encore de mes capacit\u00e9s",desc:"Malgr\u00e9 3 mois, je me demande encore si je vais vraiment y arriver."},progres_lents:{label:"Les progr\u00e8s trop lents",desc:"La patience reste mon grand d\u00e9fi."},regard_autres:{label:"Le regard des autres",desc:"Je ne me sens pas encore totalement \u00e0 l'aise en public."},tenir_duree:{label:"Tenir sur la dur\u00e9e",desc:"J'ai peur de perdre ma motivation sur les prochains mois."},plus_peur:{label:"Elles ont disparu !",desc:"3 mois ont suffi pour les d\u00e9passer. Je me sens libre."}}},
+      q4:{title:"Comment te sens-tu physiquement aujourd'hui, compar\u00e9 au d\u00e9but du mois 3 ?",options:{plus_fatiguee:{label:"Plus fatigu\u00e9e",desc:"Je me sens plus \u00e9puis\u00e9e que le mois dernier."},douleurs:{label:"Quelques douleurs",desc:"Des tensions qui persistent malgré 3 mois de pratique."},pareil:{label:"Stable",desc:"Je me sens pareille qu'au mois 2, sans évolution notable."},mieux:{label:"Encore mieux",desc:"Mon corps continue de progresser, je me sens plus l\u00e9g\u00e8re et forte."},super_forme:{label:"Au sommet !",desc:"Je suis au sommet de ma forme — 3 mois ont vraiment tout changé."}}},
+      q5:{title:"Ta r\u00e9gularit\u00e9 ce mois-ci, compar\u00e9e au mois 1 ?",options:{moins_reguliere:{label:"Moins r\u00e9guli\u00e8re",desc:"J'ai eu plus de mal \u00e0 tenir le rythme ce mois-ci."},pareil:{label:"Pareil",desc:"M\u00eame niveau de r\u00e9gularit\u00e9 que le mois dernier."},globalement:{label:"Globalement bien",desc:"J'ai suivi la majorit\u00e9 du programme avec quelques rat\u00e9s."},plus_reguliere:{label:"Plus r\u00e9guli\u00e8re",desc:"J'ai mieux g\u00e9r\u00e9 mon rythme que le mois 1."},"100":{label:"100% pr\u00e9sente",desc:"Aucune s\u00e9ance rat\u00e9e. Je suis en feu !"}}},
+      q6:{title:"Comment te sens-tu par rapport \u00e0 ta motivation en ce moment ?",options:{effondree:{label:"En chute",desc:"Ma motivation a clairement baiss\u00e9 par rapport au mois 1."},hauts_bas:{label:"Des hauts et des bas",desc:"Toujours en dents de scie \u2014 des semaines difficiles, des semaines top."},stable:{label:"Stable",desc:"Ni en hausse ni en baisse \u2014 je maintiens un cap r\u00e9gulier."},en_hausse:{label:"En hausse",desc:"Je suis encore plus motiv\u00e9e qu'au mois 1 !"},au_top:{label:"Au top !",desc:"Ma motivation est \u00e0 son maximum depuis le d\u00e9but."}}},
+      q7:{title:"Quand tu te regardes dans le miroir aujourd'hui \u2014 comment tu te sens compar\u00e9 au tout d\u00e9but ?",options:{plus_dur:{label:"Plus difficile",desc:"Je suis encore plus critique envers moi-m\u00eame qu'au d\u00e9part."},pareil:{label:"Pareil",desc:"Mon regard sur moi n'a pas vraiment \u00e9volu\u00e9 en 2 mois."},un_peu_mieux:{label:"Un peu mieux",desc:"Je me regarde avec un peu plus de bienveillance qu'au mois 2."},bien_mieux:{label:"Bien mieux",desc:"Je vois des changements et je commence vraiment \u00e0 \u00eatre fi\u00e8re."},transforme:{label:"Transform\u00e9",desc:"En 2 mois, mon regard sur moi-m\u00eame a profond\u00e9ment chang\u00e9."}}},
+      q8:{title:"As-tu encore eu tendance \u00e0 \u00eatre dure avec toi-m\u00eame ce mois-ci ?",options:{encore_plus:{label:"Encore plus",desc:"Je me suis encore plus critiqu\u00e9e ce mois-ci."},autant:{label:"Autant",desc:"Pas de changement sur ce point \u2014 c'est encore difficile."},un_peu_moins:{label:"Un peu moins",desc:"Je commence \u00e0 me relever plus vite quand \u00e7a ne va pas."},bien_moins:{label:"Bien moins",desc:"Je suis clairement plus bienveillante avec moi-m\u00eame qu'au mois 1."},pas_du_tout:{label:"Pas du tout",desc:"J'ai vraiment int\u00e9gr\u00e9 la bienveillance envers moi-m\u00eame."}}},
+      q9:{title:"Qu'est-ce qui a \u00e9t\u00e9 le plus difficile durant ce deuxi\u00e8me mois ?",options:{maintenir_rythme:{label:"Maintenir le rythme",desc:"Le mois 2 a \u00e9t\u00e9 plus dur \u00e0 tenir que le mois 1."},plateau:{label:"L'impression de plateau",desc:"L'impression de plateau s'est installée ce mois."},mental:{label:"Le mental",desc:"G\u00e9rer la comparaison, les doutes, garder foi dans le processus."},intensite:{label:"L'intensit\u00e9",desc:"Les s\u00e9ances plus exigeantes et j'ai parfois eu du mal \u00e0 suivre."},rien:{label:"Rien de difficile",desc:"Ce mois s'est vraiment bien pass\u00e9 pour moi !"}}},
+      q10:{title:"En 2 mois, quelle est la plus grande transformation que tu observes chez toi ?",options:{physique:{label:"Mon corps",desc:"Mon corps a vraiment changé depuis le début du programme."},mental:{label:"Mon mental",desc:"Ma fa\u00e7on de penser, de me parler et de me voir a chang\u00e9."},habitudes:{label:"Mes habitudes",desc:"Je bouge plus, je prends soin de moi diff\u00e9remment."},confiance:{label:"Ma confiance",desc:"Je me sens plus s\u00fbre de moi, dans le sport et dans la vie."},tout:{label:"Tout \u00e7a \u00e0 la fois !",desc:"Corps, mental, habitudes et confiance \u2014 tout a boug\u00e9."}}},
+      q11:{title:"Pour les prochaines semaines, sur quoi tu aimerais qu'on se concentre ?",options:{physique:{label:"La progression physique",desc:"Aller plus loin dans l'intensit\u00e9 et les r\u00e9sultats visibles."},mental:{label:"Le travail mental",desc:"Ancrer les gains mentaux pour qu'ils durent après le programme."},regularite:{label:"La r\u00e9gularit\u00e9",desc:"Consolider les habitudes pour les garder après la fin du programme."},alimentation:{label:"L'alimentation",desc:"Int\u00e9grer davantage les conseils nutritionnels."},surprise:{label:"Je te fais confiance",desc:"Tu sais ce dont j'ai besoin \u2014 je te laisse d\u00e9cider !"}}}
+    };
+    var newQs=['q5','q9','q10','q11'];
+    var multiQs=['q3','q9','q11'];
+    var h='<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Bilan Mois 3 - '+prenom+'</title>';
+    h+='<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">';
+    h+='<style>body{font-family:"Nunito",sans-serif;max-width:800px;margin:40px auto;padding:20px;background:#fdf6e3;color:#3d2b00}.header{text-align:center;margin-bottom:40px;border-bottom:3px solid #f6c846;padding-bottom:20px}.badge{display:inline-block;background:linear-gradient(135deg,#f6c846,#d97706);color:white;font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 16px;border-radius:99px;margin-bottom:10px}.header h1{font-family:"Playfair Display",serif;font-size:2rem;color:#d97706;margin-bottom:8px}.header p{font-style:italic;color:#7c5a1a}.meta{background:#fef3c7;padding:16px;border-radius:12px;margin-bottom:30px;border-left:4px solid #f6c846}.meta strong{color:#d97706}.question-block{margin-bottom:24px;padding:20px;background:#fffbf0;border-radius:12px;border:1.5px solid rgba(246,200,70,0.4)}.question-block.new-q{border-color:rgba(217,119,6,0.35)}.question-num{font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#d97706;margin-bottom:4px}.new-tag{display:inline-block;background:rgba(217,119,6,0.1);color:#d97706;font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid rgba(217,119,6,0.25);margin-bottom:6px}.question-text{font-family:"Playfair Display",serif;font-size:1.05rem;color:#b45309;margin-bottom:12px;line-height:1.5}.answer{background:rgba(246,200,70,0.15);padding:12px 16px;border-radius:10px;border-left:3px solid #f6c846}.answer-title{font-weight:700;color:#d97706;margin-bottom:4px}.answer-desc{font-style:italic;color:#7c5a1a;font-size:0.88rem;line-height:1.5}.answer-text{color:#3d2b00;line-height:1.6;white-space:pre-wrap}.footer{text-align:center;margin-top:40px;padding-top:20px;border-top:2px solid #f6c846;color:#7c5a1a;font-style:italic}@media print{body{background:white}}</style></head><body>';
+    h+='<div class="header"><span class="badge">&#x2728; Bilan &#8212; Semaines 9 &#224; 12</span><h1>&#x1F4CB; Bilan Mois 3</h1><p>by maefitways</p></div>';
+    h+='<div class="meta"><strong>Pr&#233;nom&#160;:</strong> '+prenom+'&nbsp;&nbsp;|&nbsp;&nbsp;<strong>Date&#160;:</strong> '+dateSign+'</div>';
+    var qNum=1;
+    for(var key in questions){
+      var data=questions[key];
+      var isNew=newQs.indexOf(key)!==-1;
+      var isMulti=multiQs.indexOf(key)!==-1;
+      var blockClass=isNew?' new-q':'';
+      if(isMulti){
+        var sel=fd.getAll(key);
+        if(sel.length>0){
+          h+='<div class="question-block'+blockClass+'"><div class="question-num">Question '+qNum+'</div>';
+          if(isNew)h+='<span class="new-tag">&#x2726; Nouveau</span><br>';
+          h+='<div class="question-text">'+data.title+'</div><div class="answer">';
+          sel.forEach(function(v){if(data.options[v]){h+='<div class="answer-title">&#x2713; '+data.options[v].label+'</div><div class="answer-desc">'+data.options[v].desc+'</div>';}});
+          h+='</div></div>';
+        }
+      } else {
+        var val=fd.get(key);
+        if(val&&data.options[val]){
+          h+='<div class="question-block'+blockClass+'"><div class="question-num">Question '+qNum+'</div>';
+          if(isNew)h+='<span class="new-tag">&#x2726; Nouveau</span><br>';
+          h+='<div class="question-text">'+data.title+'</div><div class="answer"><div class="answer-title">'+data.options[val].label+'</div><div class="answer-desc">'+data.options[val].desc+'</div></div></div>';
+        }
+      }
+      qNum++;
+    }
+    var ml=fd.get('message_libre');
+    if(ml&&ml.trim()){h+='<div class="question-block"><div class="question-num">Espace libre</div><div class="question-text">Comment tu te sens vraiment apr\u00e8s ces 2 mois ?</div><div class="answer"><div class="answer-text">'+ml.trim().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</div></div></div>';}
+    h+='<div class="footer">&#x2728; Document g\u00e9n\u00e9r\u00e9 le '+new Date().toLocaleDateString('fr-FR')+' &#8212; maefitways</div></body></html>';
+    var blob=new Blob([h],{type:'text/html'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;a.download='bilan-mois3-'+prenom.toLowerCase().replace(/\s+/g,'-')+'.html';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  }
+</script>
+</body>
+</html>

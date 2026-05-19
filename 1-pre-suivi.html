@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pré-Suivi Mensuel – maefitways</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fdf6e3;
+    --yellow-light: #fef3c7;
+    --yellow: #f6c846;
+    --yellow-dark: #e8a020;
+    --orange: #d97706;
+    --orange-dark: #b45309;
+    --text: #3d2b00;
+    --text-light: #7c5a1a;
+    --white: #ffffff;
+    --shadow: rgba(230, 160, 30, 0.18);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    font-family: 'Nunito', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Watercolor blobs */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -80px; right: -80px;
+    width: 340px; height: 340px;
+    background: radial-gradient(circle, rgba(246,200,70,0.38) 0%, rgba(253,243,199,0.10) 70%, transparent 100%);
+    border-radius: 60% 40% 55% 45%;
+    z-index: 0;
+    pointer-events: none;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -60px; left: -60px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(232,160,32,0.28) 0%, rgba(253,243,199,0.08) 70%, transparent 100%);
+    border-radius: 45% 55% 40% 60%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.7s ease both;
+  }
+  .header .sun {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    display: block;
+    animation: spin 8s linear infinite;
+  }
+  @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--yellow-dark);
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+    text-shadow: 0 2px 12px rgba(246,200,70,0.3);
+  }
+  .header h1 span { color: var(--orange); font-style: italic; }
+  .header p {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: var(--text-light);
+    font-style: italic;
+  }
+  .brand {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--orange-dark);
+    border-top: 1px solid var(--yellow);
+    padding-top: 8px;
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    background: rgba(246,200,70,0.18);
+    border-radius: 99px;
+    height: 8px;
+    margin-bottom: 40px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--yellow), var(--orange));
+    border-radius: 99px;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+  }
+  .progress-label {
+    text-align: right;
+    font-size: 0.78rem;
+    color: var(--text-light);
+    margin-top: 4px;
+    margin-bottom: 32px;
+  }
+
+  /* Question card */
+  .question-card {
+    background: linear-gradient(135deg, #fffbf0 60%, #fef3c7 100%);
+    border: 1.5px solid rgba(246,200,70,0.35);
+    border-radius: 20px;
+    padding: 32px 28px;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 24px var(--shadow);
+    animation: fadeUp 0.5s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+  .question-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--yellow), var(--orange));
+    border-radius: 20px 20px 0 0;
+  }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+  @keyframes fadeDown { from{opacity:0;transform:translateY(-18px)} to{opacity:1;transform:none} }
+
+  .question-number {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 8px;
+  }
+  .question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.18rem;
+    font-weight: 400;
+    color: var(--orange-dark);
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+
+  /* Radio grid */
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+
+  .option-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    padding: 14px 10px;
+    border-radius: 14px;
+    border: 2px solid rgba(246,200,70,0.4);
+    background: rgba(255,251,240,0.8);
+    transition: all 0.22s ease;
+    position: relative;
+  }
+  .option-label:hover {
+    border-color: var(--yellow);
+    background: rgba(246,200,70,0.12);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(246,200,70,0.25);
+  }
+  .option-label input[type="radio"],
+  .option-label input[type="checkbox"] {
+    position: absolute;
+    opacity: 0; width: 0; height: 0;
+  }
+  .option-label input:checked ~ .option-dot {
+    background: var(--yellow);
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(246,200,70,0.4);
+  }
+  .option-label input:checked ~ .option-title { color: var(--orange-dark); }
+  .option-label input:checked ~ .option-desc { color: var(--text); }
+  .option-label:has(input:checked) {
+    border-color: var(--orange);
+    background: rgba(246,200,70,0.22);
+    box-shadow: 0 4px 16px rgba(230,160,30,0.25);
+  }
+
+  .option-dot {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2px solid rgba(246,200,70,0.6);
+    background: var(--yellow-light);
+    margin-bottom: 8px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: transparent;
+  }
+  .option-label input[type="radio"]:checked ~ .option-dot::after {
+    content: '✓';
+    color: var(--orange-dark);
+    font-weight: 900;
+    font-size: 0.8rem;
+  }
+  .option-title {
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--text-light);
+    margin-bottom: 4px;
+    transition: color 0.2s;
+    line-height: 1.3;
+  }
+  .option-desc {
+    font-size: 0.72rem;
+    color: #a07830;
+    font-style: italic;
+    line-height: 1.3;
+    transition: color 0.2s;
+  }
+
+  /* Checkbox style (multi-select) */
+  .option-label .option-check {
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    border: 2px solid rgba(246,200,70,0.6);
+    background: var(--yellow-light);
+    margin-bottom: 8px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+  .option-label input[type="checkbox"]:checked ~ .option-check {
+    background: var(--yellow);
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(246,200,70,0.4);
+  }
+  .option-label input[type="checkbox"]:checked ~ .option-check::after {
+    content: '✓';
+    font-size: 0.8rem;
+    color: var(--orange-dark);
+    font-weight: 800;
+  }
+  .option-label:has(input[type="checkbox"]:checked) {
+    border-color: var(--orange);
+    background: rgba(246,200,70,0.22);
+  }
+
+  /* Textarea */
+  .textarea-wrap textarea {
+    width: 100%;
+    min-height: 110px;
+    border-radius: 14px;
+    border: 2px solid rgba(246,200,70,0.4);
+    background: rgba(255,251,240,0.9);
+    padding: 14px 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.93rem;
+    color: var(--text);
+    resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  .textarea-wrap textarea:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(246,200,70,0.3);
+  }
+  .textarea-wrap textarea::placeholder { color: #c9a060; font-style: italic; }
+
+  /* Hint */
+  .multi-hint {
+    font-size: 0.75rem;
+    color: var(--orange);
+    font-style: italic;
+    margin-bottom: 14px;
+  }
+
+  /* Submit button */
+  .submit-wrap { text-align: center; margin-top: 40px; }
+  .btn-submit {
+    background: linear-gradient(135deg, var(--yellow) 0%, var(--orange) 100%);
+    color: white;
+    border: none;
+    border-radius: 99px;
+    padding: 16px 52px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: 0 6px 28px rgba(230,160,30,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-submit:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 10px 36px rgba(230,160,30,0.45);
+  }
+
+  /* Thank you screen */
+  .thankyou {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    animation: fadeUp 0.7s ease both;
+  }
+  .thankyou.visible { display: block; }
+  .ty-sun { font-size: 4rem; margin-bottom: 16px; animation: spin 8s linear infinite; display: inline-block; }
+  .thankyou h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--orange-dark);
+    margin-bottom: 12px;
+  }
+  .ty-sub {
+    font-size: 1.05rem;
+    color: var(--text-light);
+    font-style: italic;
+    margin-bottom: 32px;
+  }
+  .ty-card {
+    background: linear-gradient(135deg, #fffbf0, #fef3c7);
+    border: 1.5px solid rgba(246,200,70,0.4);
+    border-radius: 20px;
+    padding: 28px 32px;
+    margin: 0 auto 28px;
+    max-width: 520px;
+    text-align: left;
+    box-shadow: 0 4px 24px var(--shadow);
+  }
+  .ty-card > p {
+    font-size: 0.92rem;
+    color: var(--text-light);
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+  .ty-steps { display: flex; flex-direction: column; gap: 16px; }
+  .ty-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 14px;
+    border: 1.5px solid rgba(246,200,70,0.3);
+  }
+  .ty-icon { font-size: 1.6rem; flex-shrink: 0; margin-top: 2px; }
+  .ty-step div { display: flex; flex-direction: column; gap: 2px; }
+  .ty-step strong { font-size: 0.95rem; color: var(--orange-dark); }
+  .ty-step span { font-size: 0.83rem; color: var(--text-light); line-height: 1.5; }
+  .ty-closing {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin-bottom: 24px;
+    line-height: 1.7;
+  }
+  .ty-closing strong { color: var(--orange-dark); }
+  .thankyou .brand { margin-top: 8px; }
+
+  .form-section { display: block; }
+  .form-section.hidden { display: none; }
+
+  /* Coach comment bubble */
+  .coach-bubble {
+    display: none;
+    margin-top: 18px;
+    background: linear-gradient(135deg, rgba(246,200,70,0.18), rgba(232,160,32,0.12));
+    border-left: 3px solid var(--yellow);
+    border-radius: 0 14px 14px 14px;
+    padding: 14px 18px;
+    position: relative;
+    animation: bubbleIn 0.4s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  .coach-bubble.visible { display: block; }
+  @keyframes bubbleIn {
+    from { opacity:0; transform: scale(0.92) translateY(8px); }
+    to   { opacity:1; transform: none; }
+  }
+  .coach-bubble::before {
+    content: '🌟';
+    position: absolute;
+    top: -12px; left: -4px;
+    font-size: 1.1rem;
+  }
+  .coach-bubble p {
+    font-size: 0.88rem;
+    color: var(--orange-dark);
+    font-style: italic;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .coach-bubble strong { font-style: normal; color: var(--orange); }
+
+  /* Signature block */
+  .signature-card {
+    background: linear-gradient(135deg, #fffbf0 60%, #fef3c7 100%);
+    border: 1.5px solid rgba(246,200,70,0.5);
+    border-radius: 20px;
+    padding: 32px 28px;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 24px var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .signature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--yellow), var(--orange));
+    border-radius: 20px 20px 0 0;
+  }
+  .signature-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--orange-dark);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .signature-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+  .sig-field label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 6px;
+  }
+  .sig-field input[type="text"],
+  .sig-field input[type="date"] {
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid rgba(246,200,70,0.4);
+    background: rgba(255,251,240,0.9);
+    padding: 10px 14px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.93rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .sig-field input:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(246,200,70,0.3);
+  }
+  .engagement-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    cursor: pointer;
+    padding: 16px;
+    border-radius: 14px;
+    border: 2px solid rgba(246,200,70,0.4);
+    background: rgba(255,251,240,0.8);
+    transition: all 0.22s ease;
+  }
+  .engagement-check:hover {
+    border-color: var(--yellow);
+    background: rgba(246,200,70,0.1);
+  }
+  .engagement-check:has(input:checked) {
+    border-color: var(--orange);
+    background: rgba(246,200,70,0.2);
+  }
+  .engagement-check input[type="checkbox"] {
+    position: absolute; opacity:0; width:0; height:0;
+  }
+  .eng-box {
+    width: 24px; height: 24px;
+    border-radius: 7px;
+    border: 2px solid rgba(246,200,70,0.7);
+    background: var(--yellow-light);
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+  }
+  .engagement-check input:checked ~ .eng-box {
+    background: var(--yellow);
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(246,200,70,0.35);
+  }
+  .eng-text {
+    font-size: 0.88rem;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+  .eng-text strong { color: var(--orange-dark); }
+
+
+  /* Download button */
+  .btn-download {
+    background: linear-gradient(135deg, var(--yellow) 0%, var(--orange) 100%);
+    color: white;
+    border: none;
+    border-radius: 99px;
+    padding: 14px 40px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: 0 6px 28px rgba(230,160,30,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+  }
+  .btn-download:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 32px rgba(230,160,30,0.45);
+  }
+
+  @media (max-width: 520px) {
+    .options-grid { grid-template-columns: repeat(3, 1fr); }
+    .header h1 { font-size: 2rem; }
+    .question-text { font-size: 1.05rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="sun">☀️</span>
+    <h1>Pré-Suivi <span>Mensuel</span></h1>
+    <p>Un moment pour toi, pour faire le point avant notre suivi.</p>
+    <span class="brand">by maefitways</span>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-section" id="formSection">
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="progress-label" id="progressLabel">0 / 8 questions</div>
+
+    <form id="mainForm" novalidate>
+
+      <!-- Q1 -->
+      <div class="question-card" style="animation-delay:0.05s">
+        <div class="question-number">Question 01</div>
+        <div class="question-text">Comment te sens-tu face à ta future progression ?</div>
+        <div class="options-grid">
+          <label class="option-label">
+            <input type="radio" name="q1" value="pessimiste" required>
+            <span class="option-dot"></span>
+            <span class="option-title">Pessimiste et sceptique</span>
+            <span class="option-desc">J'ai du mal à croire que ça va vraiment marcher pour moi.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q1" value="inquiete">
+            <span class="option-dot"></span>
+            <span class="option-title">Un peu inquiète</span>
+            <span class="option-desc">J'ai peur de ne pas progresser ou de ne pas être régulière.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q1" value="neutre">
+            <span class="option-dot"></span>
+            <span class="option-title">Plutôt neutre</span>
+            <span class="option-desc">Je ne sais pas trop à quoi m'attendre, mais je vais essayer.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q1" value="confiante_doutes">
+            <span class="option-dot"></span>
+            <span class="option-title">Confiante mais avec quelques doutes</span>
+            <span class="option-desc">Je suis motivée, mais j'espère tenir sur la durée.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q1" value="excitee">
+            <span class="option-dot"></span>
+            <span class="option-title">Excitée et motivée</span>
+            <span class="option-desc">J'ai hâte de commencer et de voir mes progrès !</span>
+          </label>
+        </div>
+        <div class="coach-bubble" id="bubble-q1"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="question-card" style="animation-delay:0.1s">
+        <div class="question-number">Question 02</div>
+        <div class="question-text">Comment évalues-tu ta confiance en toi actuellement ?</div>
+        <div class="options-grid">
+          <label class="option-label">
+            <input type="radio" name="q2" value="tres_faible" required>
+            <span class="option-dot"></span>
+            <span class="option-title">Très faible</span>
+            <span class="option-desc">Je doute beaucoup de moi et je manque de confiance.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q2" value="plutot_basse">
+            <span class="option-dot"></span>
+            <span class="option-title">Plutôt basse</span>
+            <span class="option-desc">J'ai des moments de confiance, mais je me remets souvent en question.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q2" value="moyenne">
+            <span class="option-dot"></span>
+            <span class="option-title">Moyenne</span>
+            <span class="option-desc">Je me sens plutôt bien, mais j'ai encore des blocages.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q2" value="plutot_bonne">
+            <span class="option-dot"></span>
+            <span class="option-title">Plutôt bonne</span>
+            <span class="option-desc">J'ai confiance en moi, même si j'ai parfois des moments de doute.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q2" value="tres_elevee">
+            <span class="option-dot"></span>
+            <span class="option-title">Très élevée</span>
+            <span class="option-desc">Je me sens sûre de moi et en pleine maîtrise de mon évolution.</span>
+          </label>
+        </div>
+        <div class="coach-bubble" id="bubble-q2"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="question-card" style="animation-delay:0.15s">
+        <div class="question-number">Question 03</div>
+        <div class="question-text">Quelles sont tes peurs ou croyances limitantes liées au sport et à ton corps ?</div>
+        <p class="multi-hint">✨ Tu peux en choisir plusieurs</p>
+        <div class="options-grid">
+          <label class="option-label">
+            <input type="checkbox" name="q3" value="pas_capable">
+            <span class="option-check"></span>
+            <span class="option-title">J'ai peur de ne pas être capable d'y arriver</span>
+            <span class="option-desc">Je doute de mes capacités physiques et de ma discipline.</span>
+          </label>
+          <label class="option-label">
+            <input type="checkbox" name="q3" value="corps_pas_sport">
+            <span class="option-check"></span>
+            <span class="option-title">Je n'ai pas un corps fait pour le sport</span>
+            <span class="option-desc">J'ai l'impression que peu importe ce que je fais, je n'aurai jamais de résultats.</span>
+          </label>
+          <label class="option-label">
+            <input type="checkbox" name="q3" value="pas_de_progres">
+            <span class="option-check"></span>
+            <span class="option-title">Je crains de ne pas voir de progrès assez vite</span>
+            <span class="option-desc">J'ai peur de ne pas être assez patiente et de me décourager.</span>
+          </label>
+          <label class="option-label">
+            <input type="checkbox" name="q3" value="regard_autres">
+            <span class="option-check"></span>
+            <span class="option-title">J'ai peur du regard des autres</span>
+            <span class="option-desc">Je ne suis pas toujours à l'aise à la salle ou en public.</span>
+          </label>
+          <label class="option-label">
+            <input type="checkbox" name="q3" value="perdre_motivation">
+            <span class="option-check"></span>
+            <span class="option-title">Je vais perdre ma motivation en cours de route</span>
+            <span class="option-desc">J'ai déjà abandonné des programmes et j'ai peur de ne pas tenir.</span>
+          </label>
+        </div>
+        <div class="coach-bubble" id="bubble-q3"></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="question-card" style="animation-delay:0.2s">
+        <div class="question-number">Question 04</div>
+        <div class="question-text">Comment te sens-tu physiquement en ce moment ?</div>
+        <div class="options-grid">
+          <label class="option-label">
+            <input type="radio" name="q4" value="pas_bien" required>
+            <span class="option-dot"></span>
+            <span class="option-title">Pas bien dans mon corps</span>
+            <span class="option-desc">Je ne me sens pas à l'aise physiquement.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q4" value="raide_douleurs">
+            <span class="option-dot"></span>
+            <span class="option-title">Raide ou avec des douleurs</span>
+            <span class="option-desc">Je ressens des tensions, courbatures ou inconforts au quotidien.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q4" value="fatiguee">
+            <span class="option-dot"></span>
+            <span class="option-title">Fatiguée ou en manque d'énergie</span>
+            <span class="option-desc">J'ai souvent des baisses de forme.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q4" value="plutot_bien">
+            <span class="option-dot"></span>
+            <span class="option-title">Plutôt bien</span>
+            <span class="option-desc">J'ai une bonne base.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q4" value="pleine_forme">
+            <span class="option-dot"></span>
+            <span class="option-title">En pleine forme !</span>
+            <span class="option-desc">Je me sens bien dans mon corps, j'ai de l'énergie.</span>
+          </label>
+        </div>
+        <div class="coach-bubble" id="bubble-q4"></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="question-card" style="animation-delay:0.25s">
+        <div class="question-number">Question 05</div>
+        <div class="question-text">Comment te sens-tu par rapport à ta motivation globale ?</div>
+        <div class="options-grid">
+          <label class="option-label">
+            <input type="radio" name="q5" value="perdue" required>
+            <span class="option-dot"></span>
+            <span class="option-title">Perdue</span>
+            <span class="option-desc">Je me sens négative et perdue.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q5" value="insatisfaite">
+            <span class="option-dot"></span>
+            <span class="option-title">Insatisfaite</span>
+            <span class="option-desc">Je me sens un peu stressée et découragée.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q5" value="equilibree">
+            <span class="option-dot"></span>
+            <span class="option-title">Équilibrée</span>
+            <span class="option-desc">J'ai eu des hauts et des bas, mais ça va.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q5" value="satisfaite">
+            <span class="option-dot"></span>
+            <span class="option-title">Satisfaite</span>
+            <span class="option-desc">Je suis globalement bien.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q5" value="tres_satisfaite">
+            <span class="option-dot"></span>
+            <span class="option-title">Très satisfaite</span>
+            <span class="option-desc">Je me sens positive et motivée.</span>
+          </label>
+        </div>
+        <div class="coach-bubble" id="bubble-q5"></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="question-card" style="animation-delay:0.3s">
+        <div class="question-number">Question 06</div>
+        <div class="question-text">Comment te sens-tu mentalement quand tu te regardes dans le miroir ce mois-ci ?</div>
+        <div class="options-grid">
+          <label class="option-label">
+            <input type="radio" name="q6" value="perdue" required>
+            <span class="option-dot"></span>
+            <span class="option-title">Perdue</span>
+            <span class="option-desc">Je me sens mal à l'aise et déçue en me regardant.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q6" value="insatisfaite">
+            <span class="option-dot"></span>
+            <span class="option-title">Insatisfaite</span>
+            <span class="option-desc">Je me sens un peu insatisfaite de ce que je vois.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q6" value="neutre">
+            <span class="option-dot"></span>
+            <span class="option-title">Neutre</span>
+            <span class="option-desc">Je ne me trouve ni bien ni mal.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q6" value="satisfaite">
+            <span class="option-dot"></span>
+            <span class="option-title">Satisfaite</span>
+            <span class="option-desc">Je me sens bien, mais j'aimerais voir plus de progrès.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q6" value="tres_satisfaite">
+            <span class="option-dot"></span>
+            <span class="option-title">Très satisfaite</span>
+            <span class="option-desc">Je me sens fière, confiante et satisfaite de mon reflet.</span>
+          </label>
+        </div>
+        <div class="coach-bubble" id="bubble-q6"></div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="question-card" style="animation-delay:0.35s">
+        <div class="question-number">Question 07</div>
+        <div class="question-text">As-tu tendance à être dure avec toi-même quand tu ne te vois pas progresser aussi vite que tu le voudrais ?</div>
+        <div class="options-grid">
+          <label class="option-label">
+            <input type="radio" name="q7" value="oui_enormement" required>
+            <span class="option-dot"></span>
+            <span class="option-title">Oui, énormément</span>
+            <span class="option-desc">Je me critique beaucoup et j'ai du mal à être patiente avec moi-même.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q7" value="plutot_oui">
+            <span class="option-dot"></span>
+            <span class="option-title">Plutôt oui</span>
+            <span class="option-desc">Je ressens de la frustration quand les résultats ne sont pas là rapidement.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q7" value="ca_depend">
+            <span class="option-dot"></span>
+            <span class="option-title">Ça dépend</span>
+            <span class="option-desc">Parfois je me mets la pression, mais j'essaie de me rappeler que ça prend du temps.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q7" value="pas_vraiment">
+            <span class="option-dot"></span>
+            <span class="option-title">Pas vraiment</span>
+            <span class="option-desc">J'aimerais progresser plus vite, mais je sais que chaque petit pas compte.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q7" value="pas_du_tout">
+            <span class="option-dot"></span>
+            <span class="option-title">Pas du tout</span>
+            <span class="option-desc">Je suis bienveillante avec moi-même et je fais confiance au processus.</span>
+          </label>
+        </div>
+        <div class="coach-bubble" id="bubble-q7"></div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="question-card" style="animation-delay:0.4s">
+        <div class="question-number">Question 08</div>
+        <div class="question-text">As-tu déjà eu des périodes où tu te comparais aux autres physiquement ?</div>
+        <div class="options-grid">
+          <label class="option-label">
+            <input type="radio" name="q8" value="oui_tout_le_temps" required>
+            <span class="option-dot"></span>
+            <span class="option-title">Oui, tout le temps</span>
+            <span class="option-desc">J'ai beaucoup de mal à ne pas me comparer et ça affecte ma confiance.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q8" value="souvent">
+            <span class="option-dot"></span>
+            <span class="option-title">Souvent</span>
+            <span class="option-desc">Il m'arrive régulièrement de me comparer, même si j'essaie de travailler dessus.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q8" value="parfois">
+            <span class="option-dot"></span>
+            <span class="option-title">Parfois</span>
+            <span class="option-desc">J'ai déjà ressenti ça, mais j'essaie de me concentrer sur mon propre parcours.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q8" value="rarement">
+            <span class="option-dot"></span>
+            <span class="option-title">Rarement</span>
+            <span class="option-desc">Ça peut arriver de temps en temps, mais je ne laisse pas ça m'affecter trop.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q8" value="non_jamais">
+            <span class="option-dot"></span>
+            <span class="option-title">Non, jamais</span>
+            <span class="option-desc">Je suis à l'aise avec mon corps et je me focalise sur ma propre progression.</span>
+          </label>
+        </div>
+        <div class="coach-bubble" id="bubble-q8"></div>
+      </div>
+
+      <!-- Q9 - Bonus open -->
+      <div class="question-card" style="animation-delay:0.45s">
+        <div class="question-number">Question 09 — Bonus</div>
+        <div class="question-text">Y a-t-il des parties de ton corps avec lesquelles tu as plus de mal à être en accord ?</div>
+        <div class="options-grid" style="margin-bottom:16px">
+          <label class="option-label">
+            <input type="radio" name="q9" value="oui_plusieurs">
+            <span class="option-dot"></span>
+            <span class="option-title">Oui, plusieurs</span>
+            <span class="option-desc">Il y a plusieurs zones qui me complexent.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q9" value="oui_une">
+            <span class="option-dot"></span>
+            <span class="option-title">Oui, une en particulier</span>
+            <span class="option-desc">J'ai une zone spécifique qui me dérange plus que le reste.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q9" value="parfois">
+            <span class="option-dot"></span>
+            <span class="option-title">Parfois</span>
+            <span class="option-desc">Il y a des jours où certaines parties me gênent, mais d'autres où j'arrive à mieux les accepter.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q9" value="rarement">
+            <span class="option-dot"></span>
+            <span class="option-title">Rarement</span>
+            <span class="option-desc">J'ai quelques petites insécurités, mais globalement j'accepte bien mon corps.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q9" value="non_pas_du_tout">
+            <span class="option-dot"></span>
+            <span class="option-title">Non, pas du tout</span>
+            <span class="option-desc">Je suis en accord avec mon corps et je l'accepte tel qu'il est.</span>
+          </label>
+        </div>
+        <div class="coach-bubble" id="bubble-q9" style="margin-bottom:16px"></div>
+        <div class="textarea-wrap">
+          <textarea name="q9_detail" placeholder="Si tu veux préciser ou partager autre chose, c'est ici ✨"></textarea>
+        </div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="question-card" style="animation-delay:0.5s">
+        <div class="question-number">Question 10</div>
+        <div class="question-text">T'arrive-t-il d'éviter certains vêtements ou situations à cause de ton apparence ?</div>
+        <div class="options-grid">
+          <label class="option-label">
+            <input type="radio" name="q10" value="oui_tres_souvent" required>
+            <span class="option-dot"></span>
+            <span class="option-title">Oui, très souvent</span>
+            <span class="option-desc">Je me prive de certains vêtements ou activités parce que je ne suis pas à l'aise.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q10" value="souvent">
+            <span class="option-dot"></span>
+            <span class="option-title">Souvent</span>
+            <span class="option-desc">Il y a des styles ou situations que j'évite car je ne me sens pas assez confiante.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q10" value="parfois">
+            <span class="option-dot"></span>
+            <span class="option-title">Parfois</span>
+            <span class="option-desc">Il m'arrive d'avoir des hésitations, mais j'essaie de ne pas trop me limiter.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q10" value="rarement">
+            <span class="option-dot"></span>
+            <span class="option-title">Rarement</span>
+            <span class="option-desc">J'ai quelques complexes, mais ils ne m'empêchent pas de porter ce que je veux.</span>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q10" value="non_jamais">
+            <span class="option-dot"></span>
+            <span class="option-title">Non, jamais</span>
+            <span class="option-desc">Je me sens bien dans mon corps et je ne me laisse pas freiner par mon apparence.</span>
+          </label>
+        </div>
+        <div class="coach-bubble" id="bubble-q10"></div>
+      </div>
+
+      <!-- Message libre -->
+      <div class="question-card" style="animation-delay:0.55s">
+        <div class="question-number">Pour finir 🌸</div>
+        <div class="question-text">Exprime-toi librement — comment tu te sens vraiment avant de commencer cet accompagnement ?</div>
+        <p style="font-size:0.85rem;color:var(--text-light);font-style:italic;margin-bottom:14px;">Décris tes émotions, tes espoirs, tes peurs, tout ce que tu as sur le cœur. Il n'y a pas de mauvaise réponse. 💛</p>
+        <div class="textarea-wrap">
+          <textarea name="message_libre" rows="6" placeholder="Ex : Je me sens à la fois excitée et un peu stressée. J'ai vraiment envie de changer mais j'ai peur de ne pas tenir... Je veux vraiment que cette fois soit la bonne et je compte sur toi pour m'aider à y arriver. ✨" style="min-height:160px;"></textarea>
+        </div>
+      </div>
+
+      <!-- SIGNATURE BLOCK -->
+      <div class="signature-card">
+        <div class="question-number">Engagement 🤝</div>
+        <p class="signature-title">Avant de valider, je certifie avoir répondu à ce questionnaire avec sincérité et honnêteté, pour que cet accompagnement soit vraiment adapté à moi.</p>
+        <div class="signature-fields">
+          <div class="sig-field">
+            <label for="sig-prenom">Mon prénom</label>
+            <input type="text" id="sig-prenom" name="prenom" placeholder="Ex : Léa" required>
+          </div>
+          <div class="sig-field">
+            <label for="sig-date">Date</label>
+            <input type="date" id="sig-date" name="date_signature" required>
+          </div>
+        </div>
+        <label class="engagement-check">
+          <input type="checkbox" id="engagement" name="engagement" required>
+          <span class="eng-box"></span>
+          <span class="eng-text">✅ Je coche cette case pour confirmer que <strong>j'ai répondu avec sincérité</strong> et que je suis prête à m'engager pleinement dans cet accompagnement pour avancer vers mes objectifs.</span>
+        </label>
+      </div>
+
+      <div class="submit-wrap">
+        <button type="submit" class="btn-submit">Envoyer mon bilan ☀️</button>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- THANK YOU -->
+  <div class="thankyou" id="thankyou">
+    <div class="ty-sun">☀️</div>
+    <h2>C&apos;est envoyé ! 🎉</h2>
+    <p class="ty-sub">Ton bilan a bien été reçu. Je suis tellement heureuse de t&apos;avoir de l&apos;autre côté !</p>
+    <div class="ty-card">
+      <p>En attendant qu&apos;on se retrouve, voici ce que je t&apos;invite à faire :</p>
+      <div class="ty-steps">
+        <div class="ty-step">
+          <span class="ty-icon">🗂️</span>
+          <div>
+            <strong>Retourne sur la plateforme</strong>
+            <span>et explore les différents modules qui t&apos;attendent.</span>
+          </div>
+        </div>
+        <div class="ty-step">
+          <span class="ty-icon">👀</span>
+          <div>
+            <strong>Fais un tour de chaque section</strong>
+            <span>pour te familiariser avec l&apos;espace et voir tout ce qui t&apos;est préparé.</span>
+          </div>
+        </div>
+        <div class="ty-step">
+          <span class="ty-icon">🌟</span>
+          <div>
+            <strong>Attends avec impatience</strong>
+            <span>le début de ton programme — quelque chose de beau se prépare pour toi !</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="ty-closing">Je suis là pour t&apos;accompagner à chaque étape. <strong>Let&apos;s go ! 💛</strong></p>
+    <button class="btn-download" id="downloadBtn">📄 Télécharger mon récapitulatif</button>
+    <span class="brand">by maefitways</span>
+  </div>
+
+</div>
+
+<script>
+  const form = document.getElementById('mainForm');
+  const progressBar = document.getElementById('progressBar');
+  const progressLabel = document.getElementById('progressLabel');
+  const totalQuestions = 10;
+
+  // Auto-fill today's date
+  document.getElementById('sig-date').valueAsDate = new Date();
+
+  // Coach messages per question and value
+  const coachMessages = {
+    q1: {
+      pessimiste: "C'est tout à fait normal d'avoir des doutes au départ. Le simple fait d'être là et de remplir ce questionnaire, c'est déjà un grand pas. Je suis là pour t'accompagner, pas à pas. 💛",
+      inquiete: "Cette inquiétude, c'est la preuve que tu y tiens vraiment. On va construire quelque chose de solide ensemble, à ton rythme. Tu n'es pas seule dans cette aventure ! 🌸",
+      neutre: "Attendre de voir, c'est déjà une belle ouverture d'esprit. Parfois les plus belles surprises arrivent quand on se lance sans trop d'attentes. J'ai hâte de te montrer ce qu'on peut accomplir ! ✨",
+      confiante_doutes: "Tu as exactement la bonne attitude : motivée mais réaliste. C'est comme ça qu'on construit des résultats durables. On va tenir sur la durée ensemble, promis ! 💪",
+      excitee: "Cette énergie, j'adore ! On va canaliser tout ça et faire des choses incroyables ensemble. La motivation est là, maintenant on la transforme en habitudes solides. Let's go ! 🚀"
+    },
+    q2: {
+      tres_faible: "Merci pour cette honnêteté, ça prend du courage. C'est exactement pour ça qu'on est là : travailler ensemble sur cette confiance, une petite victoire à la fois. Tu vas te surprendre toi-même. 💛",
+      plutot_basse: "Ces moments de doute font partie du chemin. L'important, c'est que tu sois là malgré eux. On va travailler là-dessus ensemble et tu vas voir ta confiance grandir. 🌱",
+      moyenne: "Tu es sur la bonne voie ! Une confiance en construction, c'est une confiance qui dure. On va continuer à la nourrir et à faire tomber ces derniers blocages. 💪",
+      plutot_bonne: "Super ! Cette confiance, c'est ton plus beau muscle. On va continuer à l'entretenir et à la renforcer tout au long de l'accompagnement. 🌟",
+      tres_elevee: "Waouw, cette énergie positive c'est une force immense ! On va s'appuyer sur cette confiance pour aller encore plus loin. Quelle belle base de départ ! ☀️"
+    },
+    q3: {
+      default: "Merci pour ta transparence, c'est tellement précieux. Ces peurs, elles sont là pour une raison. En les nommant comme tu viens de le faire, tu fais déjà un travail énorme. On va les aborder ensemble, une par une. 🌸"
+    },
+    q4: {
+      pas_bien: "Merci de me dire ça. C'est important que je le sache pour adapter le programme à comment tu te sens vraiment. Ton confort physique est une priorité pour moi. 💛",
+      raide_douleurs: "On en prendra bien soin ! Je vais adapter les séances pour respecter ton corps là où il en est. La progression se fait toujours en douceur avec moi. 🌿",
+      fatiguee: "Ce signal d'énergie, je le prends en compte ! On va travailler intelligemment pour recharger tes batteries plutôt que de les vider davantage. Tu vas te sentir de mieux en mieux. ✨",
+      plutot_bien: "Bonne base, c'est parfait pour construire ! On part sur des fondations solides et on va aller encore plus loin ensemble. 💪",
+      pleine_forme: "Quelle belle énergie ! C'est le meilleur état pour commencer. On va en profiter pour aller chercher les meilleurs résultats. 🚀"
+    },
+    q5: {
+      perdue: "Je t'entends, et c'est okay de se sentir perdue parfois. C'est justement pour ça que tu n'es plus seule maintenant. On va retrouver le cap ensemble, doucement. 💛",
+      insatisfaite: "Cette frustration est tout à fait compréhensible. Je suis là pour t'aider à voir les choses différemment et à retrouver une dynamique positive. Ça va aller ! 🌸",
+      equilibree: "Les hauts et les bas font partie du voyage, l'important c'est de garder le cap. Et tu es là, c'est déjà une belle preuve de ta détermination. 🌟",
+      satisfaite: "Super ! Cette satisfaction globale, c'est une super base pour avancer encore plus sereinement. Tu es sur la bonne voie. ☀️",
+      tres_satisfaite: "Cette énergie positive est tellement contagieuse ! On va en faire quelque chose de magnifique. Tu rayonnes déjà ! 💫"
+    },
+    q6: {
+      perdue: "Merci de me partager ça avec autant d'honnêteté. Changer ce regard sur soi-même fait partie du travail qu'on va faire ensemble. Tu mérites de te voir avec bienveillance. 💛",
+      insatisfaite: "Ce ressenti est tellement humain. On va travailler non seulement sur le physique mais aussi sur la façon dont tu te perçois. Les deux vont ensemble. 🌸",
+      neutre: "La neutralité, c'est déjà un espace safe ! On va progressivement cultiver de la bienveillance et de la fierté quand tu te regardes. 🌱",
+      satisfaite: "Tu es sur la bonne voie ! Ce regard globalement positif sur toi-même, c'est une vraie force. On va continuer à le nourrir. ✨",
+      tres_satisfaite: "C'est tellement beau de se sentir fière de soi ! Garde cette énergie, elle va te porter tout au long de l'accompagnement. 🌟"
+    },
+    q7: {
+      oui_enormement: "Je t'entends. Cette sévérité envers toi-même, on va apprendre à la transformer en douceur. Les progrès ne se mesurent pas seulement sur la balance ou dans un miroir. Tu fais déjà tellement bien. 💛",
+      plutot_oui: "Cette frustration, beaucoup de personnes la ressentent. Ce qui compte c'est que tu essaies de relativiser, et c'est déjà énorme. On va travailler là-dessus ensemble. 🌸",
+      ca_depend: "C'est très sage de te rappeler que les progrès prennent du temps ! On va continuer à cultiver cette patience et tu vas voir les résultats arriver. ✨",
+      pas_vraiment: "Bravo ! Cette bienveillance envers toi-même, c'est l'un des ingrédients clés du succès. Tu as déjà une belle mindset. 💪",
+      pas_du_tout: "Waouw, cette bienveillance envers toi-même est un cadeau précieux ! Tu as exactement le bon état d'esprit pour progresser en douceur et durablement. 🌟"
+    },
+    q8: {
+      oui_tout_le_temps: "Merci pour cette honnêteté. La comparaison est l'une des choses les plus dures à gérer dans un parcours fitness. On va travailler à recentrer ton regard sur TON évolution, unique et précieuse. 💛",
+      souvent: "C'est courageux de le reconnaître. Apprendre à se concentrer sur son propre chemin plutôt que celui des autres, c'est un vrai travail — et on va le faire ensemble. 🌸",
+      parfois: "Le fait que tu essaies de te concentrer sur ton parcours, c'est déjà énorme ! On va renforcer cette belle habitude au fil des semaines. ✨",
+      rarement: "Tu as vraiment une belle maturité là-dessus ! Cette capacité à rester centrée sur toi-même est un atout immense pour ta progression. 💪",
+      non_jamais: "C'est une force incroyable ! Rester focalisée sur sa propre évolution sans se laisser distraire par les autres... tu as tout pour réussir. 🌟"
+    },
+    q9: {
+      oui_plusieurs: "Merci de me faire confiance avec ça. Ces zones-là, on va les aborder avec beaucoup de douceur et de bienveillance. Ton corps mérite ton amour, exactement tel qu'il est. 💛",
+      oui_une: "C'est précieux de savoir ça. On va travailler ensemble, autant sur l'aspect physique que sur la façon dont tu regardes cette partie de toi. Doucement mais sûrement. 🌸",
+      parfois: "Ces hauts et ces bas sont tellement normaux ! L'objectif est de rendre les jours de paix avec ton corps de plus en plus fréquents. On y va ensemble. 🌱",
+      rarement: "C'est vraiment bien ! Cette acceptation globale de ton corps est une belle base. On va continuer à la cultiver. ✨",
+      non_pas_du_tout: "Quelle belle relation avec ton corps ! Cet amour propre, c'est la fondation la plus solide qui soit. On construit la suite sur cette base magnifique. 🌟"
+    },
+    q10: {
+      oui_tres_souvent: "Je t'entends, et ça prend du courage de l'avouer. On va travailler ensemble pour que tu te sentes de plus en plus à l'aise dans ta peau — et dans tes vêtements. 💛",
+      souvent: "Ces hésitations sont le signe que tu as encore des choses à explorer avec toi-même. Et c'est exactement pour ça qu'on est là ensemble. Pas à pas. 🌸",
+      parfois: "Le fait que tu essaies de ne pas trop te limiter, c'est déjà une belle victoire ! On va continuer dans ce sens. ✨",
+      rarement: "Tu avances vraiment bien ! Ces quelques complexes qui restent, on va les apprivoiser doucement, sans forcer. 💪",
+      non_jamais: "Quelle liberté magnifique ! Te sentir bien dans ton corps au quotidien, c'est exactement l'objectif qu'on vise. Tu es déjà là, maintenant on va encore plus loin. 🌟"
+    }
+  };
+
+  function showCoachBubble(questionName, value) {
+    const bubble = document.getElementById('bubble-' + questionName);
+    if (!bubble) return;
+    const messages = coachMessages[questionName];
+    if (!messages) return;
+    const msg = messages[value] || messages['default'];
+    if (!msg) return;
+    bubble.innerHTML = '<p>' + msg + '</p>';
+    bubble.classList.remove('visible');
+    // Small delay for animation re-trigger
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => { bubble.classList.add('visible'); });
+    });
+  }
+
+  function updateProgress() {
+    const answered = new Set();
+    document.querySelectorAll('input[type="radio"]:checked').forEach(el => answered.add(el.name));
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(el => answered.add(el.name));
+    const count = answered.size;
+    const pct = Math.round((count / totalQuestions) * 100);
+    progressBar.style.width = pct + '%';
+    progressLabel.textContent = count + ' / ' + totalQuestions + ' questions';
+  }
+
+  document.querySelectorAll('input[type="radio"]').forEach(el => {
+    el.addEventListener('change', function() {
+      updateProgress();
+      showCoachBubble(this.name, this.value);
+    });
+  });
+
+  document.querySelectorAll('input[type="checkbox"]').forEach(el => {
+    el.addEventListener('change', function() {
+      updateProgress();
+      // For checkbox groups, show bubble on first check
+      const anyChecked = document.querySelectorAll('input[name="' + this.name + '"]:checked').length > 0;
+      if (anyChecked) showCoachBubble(this.name, this.value);
+    });
+  });
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Check engagement checkbox
+    const engagement = document.getElementById('engagement');
+    if (!engagement.checked) {
+      alert("Merci de cocher la case d\u2019engagement pour confirmer ta sinc\u00e9rit\u00e9 \uD83D\uDC9B");
+      engagement.closest('.engagement-check').style.border = '2px solid #e74c3c';
+      engagement.closest('.engagement-check').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    
+    // Check prenom
+    const prenom = document.getElementById('sig-prenom');
+    if (!prenom.value.trim()) {
+      alert("N\u2019oublie pas de renseigner ton pr\u00e9nom \uD83C\uDF38");
+      prenom.style.borderColor = '#e74c3c';
+      prenom.focus();
+      return;
+    }
+    
+    // All good - show thank you
+    document.getElementById('formSection').classList.add('hidden');
+    document.getElementById('thankyou').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Attach download handler now that button is visible
+    setTimeout(function() {
+      const downloadBtn = document.getElementById('downloadBtn');
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', downloadRecap);
+      }
+    }, 100);
+  });
+
+
+  // Download recap function
+  function downloadRecap() {
+    const formData = new FormData(form);
+    const prenom = formData.get('prenom') || 'Coachée';
+    const dateSignature = formData.get('date_signature') || new Date().toLocaleDateString('fr-FR');
+    
+    const questions = {
+      q1: { title: "Comment te sens-tu face à ta future progression ?", options: {
+        pessimiste: { label: "Pessimiste et sceptique", desc: "J'ai du mal à croire que ça va vraiment marcher pour moi, mais je vais quand même tenter." },
+        inquiete: { label: "Un peu inquiète", desc: "J'ai peur de ne pas progresser comme je le voudrais ou de ne pas réussir à être régulière." },
+        neutre: { label: "Plutôt neutre", desc: "Je ne sais pas trop à quoi m'attendre, mais je suis prête à essayer et voir ce que ça donne." },
+        confiante_doutes: { label: "Confiante mais avec quelques doutes", desc: "Je suis motivée, mais j'espère que je vais tenir sur la durée et voir des résultats." },
+        excitee: { label: "Excitée et motivée", desc: "J'ai hâte de commencer et de voir mes progrès. Je suis prête à tout donner !" }
+      }},
+      q2: { title: "Comment évalues-tu ta confiance en toi actuellement ?", options: {
+        tres_faible: { label: "Très faible", desc: "Je doute beaucoup de moi et je manque de confiance dans ce que je fais." },
+        plutot_basse: { label: "Plutôt basse", desc: "J'ai des moments de confiance, mais je me remets souvent en question." },
+        moyenne: { label: "Moyenne", desc: "Je me sens plutôt bien, mais j'ai encore des blocages ou des doutes." },
+        plutot_bonne: { label: "Plutôt bonne", desc: "J'ai confiance en moi, même si j'ai parfois des moments de doute." },
+        tres_elevee: { label: "Très élevée", desc: "Je me sens sûre de moi et en pleine maîtrise de mon évolution." }
+      }},
+      q3: { title: "Quelles sont tes peurs ou croyances limitantes liées au sport et à ton corps ?", options: {
+        pas_capable: { label: "J'ai peur de ne pas être capable d'y arriver", desc: "Je doute de mes capacités physiques et de ma discipline." },
+        corps_pas_sport: { label: "Je n'ai pas un corps fait pour le sport", desc: "J'ai l'impression que peu importe ce que je fais, je n'aurai jamais de résultats." },
+        pas_de_progres: { label: "Je crains de ne pas voir de progrès assez vite", desc: "J'ai peur de ne pas être assez patiente et de me décourager." },
+        regard_autres: { label: "J'ai peur du regard des autres", desc: "Je ne suis pas toujours à l'aise à la salle de sport ou quand je fais du sport en public." },
+        perdre_motivation: { label: "Je vais perdre ma motivation en cours de route", desc: "J'ai déjà abandonné des programmes et j'ai peur de ne pas tenir sur la durée." }
+      }},
+      q4: { title: "Comment te sens-tu physiquement en ce moment ?", options: {
+        pas_bien: { label: "Pas bien dans mon corps", desc: "Je ne me sens pas à l'aise physiquement." },
+        raide_douleurs: { label: "Raide ou avec des douleurs", desc: "Je ressens des tensions, des courbatures ou des inconforts qui me gênent au quotidien." },
+        fatiguee: { label: "Fatiguée ou en manque d'énergie", desc: "J'ai souvent des baisses de forme." },
+        plutot_bien: { label: "Plutôt bien", desc: "J'ai une bonne base." },
+        pleine_forme: { label: "En pleine forme !", desc: "Je me sens bien dans mon corps, j'ai de l'énergie." }
+      }},
+      q5: { title: "Comment te sens-tu par rapport à ta motivation globale ?", options: {
+        perdue: { label: "Perdue", desc: "Je me sens négative et perdue." },
+        insatisfaite: { label: "Insatisfaite", desc: "Je me sens un peu stressée et découragée." },
+        equilibree: { label: "Équilibrée", desc: "J'ai eu des hauts et des bas, mais ça va." },
+        satisfaite: { label: "Satisfaite", desc: "Je suis globalement bien." },
+        tres_satisfaite: { label: "Très satisfaite", desc: "Je me sens positive et motivée." }
+      }},
+      q6: { title: "Comment te sens-tu mentalement quand tu te regardes dans le miroir ce mois-ci ?", options: {
+        perdue: { label: "Perdue", desc: "Je me sens mal à l'aise et déçue en me regardant." },
+        insatisfaite: { label: "Insatisfaite", desc: "Je me sens un peu insatisfaite de ce que je vois." },
+        neutre: { label: "Neutre", desc: "Je ne me trouve ni bien ni mal, je me sens neutre." },
+        satisfaite: { label: "Satisfaite", desc: "Je me sens bien, mais j'aimerais voir plus de progrès ou améliorer quelques détails." },
+        tres_satisfaite: { label: "Très satisfaite", desc: "Je me sens fière, confiante et satisfaite de mon reflet." }
+      }},
+      q7: { title: "As-tu tendance à être dure avec toi-même quand tu ne te vois pas progresser aussi vite que tu le voudrais ?", options: {
+        oui_enormement: { label: "Oui, énormément", desc: "Je me critique beaucoup et j'ai du mal à être patiente avec moi-même." },
+        plutot_oui: { label: "Plutôt oui", desc: "Je ressens de la frustration quand les résultats ne sont pas là rapidement, même si j'essaie de relativiser." },
+        ca_depend: { label: "Ça dépend", desc: "Parfois je me mets la pression, mais j'essaie aussi de me rappeler que les progrès prennent du temps." },
+        pas_vraiment: { label: "Pas vraiment", desc: "J'aimerais progresser plus vite, mais je sais que chaque petit pas compte et je reste motivée." },
+        pas_du_tout: { label: "Pas du tout", desc: "Je suis bienveillante avec moi-même et je fais confiance au processus." }
+      }},
+      q8: { title: "As-tu déjà eu des périodes où tu te comparais aux autres physiquement ?", options: {
+        oui_tout_le_temps: { label: "Oui, tout le temps", desc: "J'ai beaucoup de mal à ne pas me comparer et ça affecte ma confiance en moi." },
+        souvent: { label: "Souvent", desc: "Il m'arrive régulièrement de me comparer, même si j'essaie de travailler dessus." },
+        parfois: { label: "Parfois", desc: "J'ai déjà ressenti ça, mais j'essaie de me concentrer sur mon propre parcours." },
+        rarement: { label: "Rarement", desc: "Ça peut arriver de temps en temps, mais je ne laisse pas ça m'affecter trop longtemps." },
+        non_jamais: { label: "Non, jamais", desc: "Je suis à l'aise avec mon corps et je me focalise uniquement sur ma propre progression." }
+      }},
+      q9: { title: "Y a-t-il des parties de ton corps avec lesquelles tu as plus de mal à être en accord ?", options: {
+        oui_plusieurs: { label: "Oui, plusieurs", desc: "Il y a plusieurs zones de mon corps que j'ai du mal à accepter et qui me complexent." },
+        oui_une: { label: "Oui, une en particulier", desc: "J'ai une zone spécifique qui me dérange plus que le reste." },
+        parfois: { label: "Parfois", desc: "Il y a des jours où certaines parties de mon corps me gênent, mais d'autres où j'arrive à mieux les accepter." },
+        rarement: { label: "Rarement", desc: "J'ai quelques petites insécurités, mais globalement, j'accepte bien mon corps." },
+        non_pas_du_tout: { label: "Non, pas du tout", desc: "Je suis en accord avec mon corps et je l'accepte tel qu'il est." }
+      }},
+      q10: { title: "T'arrive-t-il d'éviter certains vêtements ou situations à cause de ton apparence ?", options: {
+        oui_tres_souvent: { label: "Oui, très souvent", desc: "Je me prive de certains vêtements ou activités parce que je ne me sens pas à l'aise avec mon corps." },
+        souvent: { label: "Souvent", desc: "Il y a des styles ou des situations que j'évite parce que je ne me sens pas assez confiante." },
+        parfois: { label: "Parfois", desc: "Il m'arrive d'avoir des hésitations, mais j'essaie de ne pas trop me limiter." },
+        rarement: { label: "Rarement", desc: "J'ai quelques complexes, mais ils ne m'empêchent pas de porter ce que je veux ou de faire certaines activités." },
+        non_jamais: { label: "Non, jamais", desc: "Je me sens bien dans mon corps et je ne me laisse pas freiner par mon apparence." }
+      }}
+    };
+
+    let html = '<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">';
+    html += '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
+    html += '<title>Récapitulatif Pré-Suivi - ' + prenom + '</title>';
+    html += '<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">';
+    html += '<style>body{font-family:"Nunito",sans-serif;max-width:800px;margin:40px auto;padding:20px;background:#fdf6e3;color:#3d2b00}';
+    html += '.header{text-align:center;margin-bottom:40px;border-bottom:3px solid #f6c846;padding-bottom:20px}';
+    html += '.header h1{font-family:"Playfair Display",serif;font-size:2rem;color:#d97706;margin-bottom:8px}';
+    html += '.header p{font-style:italic;color:#7c5a1a}.meta{background:#fef3c7;padding:16px;border-radius:12px;margin-bottom:30px;border-left:4px solid #f6c846}';
+    html += '.meta strong{color:#d97706}.question-block{margin-bottom:28px;padding:20px;background:#fffbf0;border-radius:12px;border:1.5px solid rgba(246,200,70,0.4)}';
+    html += '.question-num{font-size:0.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#d97706;margin-bottom:6px}';
+    html += '.question-text{font-family:"Playfair Display",serif;font-size:1.1rem;color:#b45309;margin-bottom:12px}';
+    html += '.answer{background:rgba(246,200,70,0.15);padding:12px 16px;border-radius:10px;border-left:3px solid #f6c846}';
+    html += '.answer-title{font-weight:700;color:#d97706;margin-bottom:4px}.answer-desc{font-style:italic;color:#7c5a1a;font-size:0.88rem;line-height:1.5}.answer-text{color:#3d2b00;line-height:1.6}';
+    html += '.footer{text-align:center;margin-top:40px;padding-top:20px;border-top:2px solid #f6c846;color:#7c5a1a;font-style:italic}';
+    html += '@media print{body{background:white}}</style></head><body>';
+    html += '<div class="header"><h1>📋 Récapitulatif Pré-Suivi Mensuel</h1><p>by maefitways</p></div>';
+    html += '<div class="meta"><strong>Prénom :</strong> ' + prenom + '<br><strong>Date :</strong> ' + dateSignature + '</div>';
+
+    let qNum = 1;
+    for (const key in questions) {
+      const data = questions[key];
+      if (key === 'q3') {
+        const selected = formData.getAll(key);
+        if (selected.length > 0) {
+          html += '<div class="question-block"><div class="question-num">Question ' + qNum + '</div>';
+          html += '<div class="question-text">' + data.title + '</div><div class="answer">';
+          selected.forEach(function(val) {
+            if (data.options[val]) {
+              html += '<div class="answer-title">✓ ' + data.options[val].label + '</div>';
+              html += '<div class="answer-desc">' + data.options[val].desc + '</div>';
+            }
+          });
+          html += '</div></div>';
+        }
+      } else {
+        const value = formData.get(key);
+        if (value && data.options[value]) {
+          html += '<div class="question-block"><div class="question-num">Question ' + qNum + '</div>';
+          html += '<div class="question-text">' + data.title + '</div>';
+          html += '<div class="answer"><div class="answer-title">' + data.options[value].label + '</div>';
+          html += '<div class="answer-desc">' + data.options[value].desc + '</div></div></div>';
+        }
+      }
+      qNum++;
+    }
+
+    const q9Detail = formData.get('q9_detail');
+    if (q9Detail && q9Detail.trim()) {
+      html += '<div class="question-block"><div class="question-num">Question 9 — Précisions</div>';
+      html += '<div class="answer"><div class="answer-text">' + q9Detail.trim().replace(/\n/g, '<br>') + '</div></div></div>';
+    }
+
+    const messageLibre = formData.get('message_libre');
+    if (messageLibre && messageLibre.trim()) {
+      html += '<div class="question-block"><div class="question-num">Message libre</div>';
+      html += '<div class="question-text">Y a-t-il quelque chose que tu voudrais me partager avant le début de l\'accompagnement ?</div>';
+      html += '<div class="answer"><div class="answer-text">' + messageLibre.trim().replace(/\n/g, '<br>') + '</div></div></div>';
+    }
+
+    html += '<div class="footer">✨ Document généré le ' + new Date().toLocaleDateString('fr-FR') + ' — maefitways</div>';
+    html += '</body></html>';
+
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'recapitulatif-pre-suivi-' + prenom.toLowerCase().replace(/\s+/g, '-') + '.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+</script>
+</body>
+</html>

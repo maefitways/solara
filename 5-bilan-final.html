@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bilan Final – Mois 4 – maefitways</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#fdf6e3;--yellow-light:#fef3c7;--yellow:#f6c846;--yellow-dark:#e8a020;--orange:#d97706;--orange-dark:#b45309;--text:#3d2b00;--text-light:#7c5a1a;--shadow:rgba(230,160,30,0.18)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);font-family:'Nunito',sans-serif;color:var(--text);min-height:100vh;position:relative;overflow-x:hidden}
+  body::before{content:'';position:fixed;top:-80px;right:-80px;width:340px;height:340px;background:radial-gradient(circle,rgba(246,200,70,0.38) 0%,rgba(253,243,199,0.10) 70%,transparent 100%);border-radius:60% 40% 55% 45%;z-index:0;pointer-events:none}
+  body::after{content:'';position:fixed;bottom:-60px;left:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(232,160,32,0.28) 0%,rgba(253,243,199,0.08) 70%,transparent 100%);border-radius:45% 55% 40% 60%;z-index:0;pointer-events:none}
+  .container{max-width:720px;margin:0 auto;padding:48px 24px 80px;position:relative;z-index:1}
+
+  .header{text-align:center;margin-bottom:48px;animation:fadeDown 0.7s ease both}
+  .badge{display:inline-block;background:linear-gradient(135deg,var(--yellow),var(--orange));color:white;font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 18px;border-radius:99px;margin-bottom:14px}
+  .badge-final{background:linear-gradient(135deg,#c2410c,var(--orange-dark))}
+  .header .sun{font-size:2rem;margin-bottom:8px;display:block;animation:spin 8s linear infinite}
+  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  .header h1{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:700;color:var(--yellow-dark);line-height:1.15;text-shadow:0 2px 12px rgba(246,200,70,0.3)}
+  .header h1 span{color:var(--orange);font-style:italic}
+  .header .subtitle{margin-top:12px;font-size:1rem;color:var(--text-light);line-height:1.6;max-width:500px;margin-left:auto;margin-right:auto}
+  .brand{display:inline-block;margin-top:14px;font-size:0.85rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange-dark);border-top:1px solid var(--yellow);padding-top:8px}
+
+  .progress-wrap{background:rgba(246,200,70,0.18);border-radius:99px;height:8px;margin-bottom:40px;overflow:hidden}
+  .progress-bar{height:100%;background:linear-gradient(90deg,var(--yellow),var(--orange));border-radius:99px;transition:width 0.5s cubic-bezier(.4,0,.2,1);width:0%}
+  .progress-label{text-align:right;font-size:0.78rem;color:var(--text-light);margin-top:4px;margin-bottom:32px}
+
+  .question-card{background:linear-gradient(135deg,#fffbf0 60%,#fef3c7 100%);border:1.5px solid rgba(246,200,70,0.35);border-radius:20px;padding:32px 28px;margin-bottom:28px;box-shadow:0 4px 24px var(--shadow);animation:fadeUp 0.5s ease both;position:relative;overflow:hidden}
+  .question-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--yellow),var(--orange));border-radius:20px 20px 0 0}
+  .question-card.new-q::before{background:linear-gradient(90deg,var(--orange),#c2410c)}
+  .question-card.coaching-q::before{background:linear-gradient(90deg,#c2410c,#9a1c1c)}
+  .new-tag{display:inline-block;background:rgba(217,119,6,0.12);color:var(--orange);font-size:0.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:99px;border:1px solid rgba(217,119,6,0.25);margin-bottom:6px}
+  .coaching-tag{display:inline-block;background:rgba(194,65,12,0.1);color:#c2410c;font-size:0.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:99px;border:1px solid rgba(194,65,12,0.25);margin-bottom:6px}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:none}}
+
+  .question-number{font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+  .question-text{font-family:'Playfair Display',serif;font-size:1.18rem;color:var(--orange-dark);line-height:1.5;margin-bottom:24px}
+  .question-sub{font-size:0.85rem;color:var(--text-light);font-style:italic;margin-bottom:20px;margin-top:-16px;line-height:1.5}
+
+  .options-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .option-label{display:flex;flex-direction:column;align-items:center;text-align:center;cursor:pointer;padding:14px 10px;border-radius:14px;border:2px solid rgba(246,200,70,0.4);background:rgba(255,251,240,0.8);transition:all 0.22s ease;position:relative}
+  .option-label:hover{border-color:var(--yellow);background:rgba(246,200,70,0.12);transform:translateY(-2px);box-shadow:0 4px 14px rgba(246,200,70,0.25)}
+  .option-label input[type="radio"],.option-label input[type="checkbox"]{position:absolute;opacity:0;width:0;height:0}
+  .option-label:has(input:checked){border-color:var(--orange);background:rgba(246,200,70,0.22);box-shadow:0 4px 16px rgba(230,160,30,0.25)}
+  .option-dot{width:22px;height:22px;border-radius:50%;border:2px solid rgba(246,200,70,0.6);background:var(--yellow-light);margin-bottom:8px;transition:all 0.2s ease;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .option-label input[type="radio"]:checked~.option-dot{background:var(--yellow);border-color:var(--orange);box-shadow:0 0 0 3px rgba(246,200,70,0.4)}
+  .option-label input[type="radio"]:checked~.option-dot::after{content:'✓';color:var(--orange-dark);font-weight:900;font-size:0.8rem}
+  .option-title{font-weight:700;font-size:0.82rem;color:var(--text-light);margin-bottom:4px;transition:color 0.2s;line-height:1.3}
+  .option-desc{font-size:0.72rem;color:#a07830;font-style:italic;line-height:1.3}
+  .option-label:has(input:checked) .option-title{color:var(--orange-dark)}
+  .option-check{width:20px;height:20px;border-radius:6px;border:2px solid rgba(246,200,70,0.6);background:var(--yellow-light);margin-bottom:8px;display:flex;align-items:center;justify-content:center;transition:all 0.2s ease;flex-shrink:0}
+  .option-label input[type="checkbox"]:checked~.option-check{background:var(--yellow);border-color:var(--orange);box-shadow:0 0 0 3px rgba(246,200,70,0.4)}
+  .option-label input[type="checkbox"]:checked~.option-check::after{content:'✓';font-size:0.8rem;color:var(--orange-dark);font-weight:800}
+  .option-label:has(input[type="checkbox"]:checked){border-color:var(--orange);background:rgba(246,200,70,0.22)}
+
+  .textarea-wrap textarea{width:100%;min-height:140px;border-radius:14px;border:2px solid rgba(246,200,70,0.4);background:rgba(255,251,240,0.9);padding:14px 16px;font-family:'Nunito',sans-serif;font-size:0.93rem;color:var(--text);resize:vertical;transition:border-color 0.2s,box-shadow 0.2s;outline:none}
+  .textarea-wrap textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(246,200,70,0.3)}
+  .textarea-wrap textarea::placeholder{color:#c9a060;font-style:italic}
+  .multi-hint{font-size:0.75rem;color:var(--orange);font-style:italic;margin-bottom:14px}
+
+  /* Stars rating */
+  .stars-wrap{display:flex;gap:12px;justify-content:center;margin-bottom:4px}
+  .star-label{cursor:pointer;font-size:2rem;transition:transform 0.15s ease;user-select:none}
+  .star-label:hover{transform:scale(1.2)}
+  .star-label input{position:absolute;opacity:0;width:0;height:0}
+  .star-icon{color:#e2d5b0;transition:color 0.15s}
+  .star-label:has(input:checked)~.star-label .star-icon,
+  .star-label:has(input:checked) .star-icon{color:var(--yellow)}
+  .stars-container{display:flex;flex-direction:row-reverse;justify-content:center;gap:8px;margin-bottom:8px}
+  .stars-container .star-label:hover .star-icon,
+  .stars-container .star-label:hover~.star-label .star-icon{color:var(--yellow)}
+  .stars-container .star-label input:checked~* .star-icon{color:var(--yellow)}
+  .star-hint{font-size:0.78rem;color:var(--text-light);font-style:italic;text-align:center}
+
+  .coach-bubble{display:none;margin-top:18px;background:linear-gradient(135deg,rgba(246,200,70,0.18),rgba(232,160,32,0.12));border-left:3px solid var(--yellow);border-radius:0 14px 14px 14px;padding:14px 18px;position:relative;animation:bubbleIn 0.4s cubic-bezier(.34,1.56,.64,1) both}
+  .coach-bubble.visible{display:block}
+  @keyframes bubbleIn{from{opacity:0;transform:scale(0.92) translateY(8px)}to{opacity:1;transform:none}}
+  .coach-bubble::before{content:'🌟';position:absolute;top:-12px;left:-4px;font-size:1.1rem}
+  .coach-bubble p{font-size:0.88rem;color:var(--orange-dark);font-style:italic;line-height:1.55;margin:0}
+
+  /* WhatsApp CTA */
+  .whatsapp-card{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid rgba(34,197,94,0.3);border-radius:20px;padding:28px;margin-bottom:28px;text-align:center;position:relative;overflow:hidden}
+  .whatsapp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#22c55e,#16a34a);border-radius:20px 20px 0 0}
+  .whatsapp-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:#15803d;margin-bottom:8px}
+  .whatsapp-desc{font-size:0.88rem;color:#166534;line-height:1.6;margin-bottom:20px}
+  .whatsapp-steps{text-align:left;background:rgba(255,255,255,0.6);border-radius:12px;padding:16px 20px;margin-bottom:20px}
+  .whatsapp-steps p{font-size:0.83rem;color:#166534;margin-bottom:6px;line-height:1.5}
+  .whatsapp-steps p:last-child{margin-bottom:0}
+  .btn-whatsapp{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#22c55e,#16a34a);color:white;border:none;border-radius:99px;padding:14px 32px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(34,197,94,0.35);transition:transform 0.2s,box-shadow 0.2s;text-decoration:none}
+  .btn-whatsapp:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 32px rgba(34,197,94,0.45)}
+  .msg-copy{background:rgba(255,255,255,0.8);border:1px solid rgba(34,197,94,0.3);border-radius:10px;padding:12px 16px;margin:14px 0;font-size:0.8rem;color:#166534;text-align:left;line-height:1.6;font-style:italic}
+  .btn-copy{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1.5px solid rgba(34,197,94,0.5);color:#16a34a;border-radius:99px;padding:7px 18px;font-family:'Nunito',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.2s}
+  .btn-copy:hover{background:rgba(34,197,94,0.1)}
+  .copy-confirm{display:none;font-size:0.78rem;color:#16a34a;margin-top:6px;font-style:italic}
+  .copy-confirm.visible{display:block}
+
+  .signature-card{background:linear-gradient(135deg,#fffbf0 60%,#fef3c7 100%);border:1.5px solid rgba(246,200,70,0.5);border-radius:20px;padding:32px 28px;margin-bottom:28px;box-shadow:0 4px 24px var(--shadow);position:relative;overflow:hidden}
+  .signature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--yellow),var(--orange));border-radius:20px 20px 0 0}
+  .signature-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--orange-dark);margin-bottom:20px;line-height:1.5}
+  .signature-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px}
+  .sig-field label{display:block;font-size:0.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+  .sig-field input[type="text"],.sig-field input[type="date"]{width:100%;border-radius:10px;border:2px solid rgba(246,200,70,0.4);background:rgba(255,251,240,0.9);padding:10px 14px;font-family:'Nunito',sans-serif;font-size:0.93rem;color:var(--text);outline:none;transition:border-color 0.2s,box-shadow 0.2s}
+  .sig-field input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(246,200,70,0.3)}
+  .engagement-check{display:flex;align-items:flex-start;gap:14px;cursor:pointer;padding:16px;border-radius:14px;border:2px solid rgba(246,200,70,0.4);background:rgba(255,251,240,0.8);transition:all 0.22s ease}
+  .engagement-check:hover{border-color:var(--yellow);background:rgba(246,200,70,0.1)}
+  .engagement-check:has(input:checked){border-color:var(--orange);background:rgba(246,200,70,0.2)}
+  .engagement-check input[type="checkbox"]{position:absolute;opacity:0;width:0;height:0}
+  .eng-box{width:24px;height:24px;border-radius:7px;border:2px solid rgba(246,200,70,0.7);background:var(--yellow-light);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.2s ease}
+  .engagement-check input:checked~.eng-box{background:var(--yellow);border-color:var(--orange);box-shadow:0 0 0 3px rgba(246,200,70,0.35)}
+  .engagement-check input:checked~.eng-box::after{content:'✓';font-size:0.9rem;color:var(--orange-dark);font-weight:900}
+  .eng-text{font-size:0.88rem;color:var(--text-light);line-height:1.6}
+  .eng-text strong{color:var(--orange-dark)}
+
+  .submit-wrap{text-align:center;margin-top:40px}
+  .btn-submit{background:linear-gradient(135deg,var(--yellow) 0%,var(--orange) 100%);color:white;border:none;border-radius:99px;padding:16px 52px;font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:700;letter-spacing:0.5px;cursor:pointer;box-shadow:0 6px 28px rgba(230,160,30,0.35);transition:transform 0.2s,box-shadow 0.2s}
+  .btn-submit:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 10px 36px rgba(230,160,30,0.45)}
+
+  .btn-download{background:linear-gradient(135deg,var(--yellow) 0%,var(--orange) 100%);color:white;border:none;border-radius:99px;padding:14px 40px;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;box-shadow:0 6px 28px rgba(230,160,30,0.35);transition:transform 0.2s,box-shadow 0.2s;display:inline-flex;align-items:center;gap:8px;margin-top:24px}
+  .btn-download:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 32px rgba(230,160,30,0.45)}
+
+  .thankyou{display:none;text-align:center;padding:60px 20px;animation:fadeUp 0.7s ease both}
+  .thankyou.visible{display:block}
+  .ty-sun{font-size:4rem;margin-bottom:16px;animation:spin 8s linear infinite;display:inline-block}
+  .thankyou h2{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--orange-dark);margin-bottom:12px}
+  .ty-sub{font-size:1.05rem;color:var(--text-light);font-style:italic;margin-bottom:32px;line-height:1.7}
+  .ty-card{background:linear-gradient(135deg,#fffbf0,#fef3c7);border:1.5px solid rgba(246,200,70,0.4);border-radius:20px;padding:28px 32px;margin:0 auto 28px;max-width:520px;text-align:left;box-shadow:0 4px 24px var(--shadow)}
+  .ty-card>p{font-size:0.92rem;color:var(--text-light);margin-bottom:20px;font-style:italic}
+  .ty-steps{display:flex;flex-direction:column;gap:16px}
+  .ty-step{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:rgba(255,255,255,0.6);border-radius:14px;border:1.5px solid rgba(246,200,70,0.3)}
+  .ty-icon{font-size:1.6rem;flex-shrink:0;margin-top:2px}
+  .ty-step div{display:flex;flex-direction:column;gap:2px}
+  .ty-step strong{font-size:0.95rem;color:var(--orange-dark)}
+  .ty-step span{font-size:0.83rem;color:var(--text-light);line-height:1.5}
+  .ty-closing{font-size:1.05rem;color:var(--text-light);margin-bottom:24px;line-height:1.8;max-width:480px;margin-left:auto;margin-right:auto}
+  .ty-closing strong{color:var(--orange-dark)}
+  .thankyou .brand{margin-top:8px}
+  .form-section{display:block}
+  .form-section.hidden{display:none}
+
+  @media(max-width:520px){.options-grid{grid-template-columns:repeat(3,1fr)}.header h1{font-size:2rem}.question-text{font-size:1.05rem}.signature-fields{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <span class="badge badge-final">🏆 Bilan Final — Semaines 13 à 16</span>
+    <span class="sun">🌟</span>
+    <h1>Bilan <span>Final</span></h1>
+    <p class="subtitle">16 semaines. 4 mois. Tu es arrivée jusqu'au bout. Ce bilan est spécial — il marque la fin d'un chapitre et le début d'une nouvelle version de toi. Prends le temps qu'il faut pour y répondre avec tout ton cœur. 💛</p>
+    <span class="brand">by maefitways</span>
+  </div>
+
+  <div class="form-section" id="formSection">
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="progress-label" id="progressLabel">0 / 16 questions</div>
+
+    <form id="mainForm" novalidate>
+
+      <!-- Q1 SAME — progression globale -->
+      <div class="question-card" style="animation-delay:0.05s">
+        <div class="question-number">Question 01</div>
+        <div class="question-text">Au terme de ces 4 mois, comment tu te sens face à l'ensemble de ta progression ?</div>
+        <p class="question-sub">💬 Pense au tout premier jour — et à aujourd'hui. Quel chemin parcouru.</p>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q1" value="deçue" required><span class="option-dot"></span><span class="option-title">Déçue</span><span class="option-desc">Je n'ai pas vu les résultats que j'espérais malgré 4 mois d'efforts.</span></label>
+          <label class="option-label"><input type="radio" name="q1" value="mitigee"><span class="option-dot"></span><span class="option-title">Mitigée</span><span class="option-desc">Des avancées réelles, mais aussi des déceptions en cours de route.</span></label>
+          <label class="option-label"><input type="radio" name="q1" value="satisfaite"><span class="option-dot"></span><span class="option-title">Satisfaite</span><span class="option-desc">Je suis contente du chemin parcouru et des changements que je vois.</span></label>
+          <label class="option-label"><input type="radio" name="q1" value="tres_fiere"><span class="option-dot"></span><span class="option-title">Très fière</span><span class="option-desc">Je suis fière de tout ce que j'ai accompli en 4 mois.</span></label>
+          <label class="option-label"><input type="radio" name="q1" value="transformee"><span class="option-dot"></span><span class="option-title">Transformée</span><span class="option-desc">Ces 4 mois ont changé ma vie, mon corps et ma façon de me voir.</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q1"></div>
+      </div>
+
+      <!-- Q2 SAME — confiance -->
+      <div class="question-card" style="animation-delay:0.08s">
+        <div class="question-number">Question 02</div>
+        <div class="question-text">Ta confiance en toi aujourd'hui, comparée au tout début du programme — comment tu la décrirais ?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q2" value="pas_change" required><span class="option-dot"></span><span class="option-title">Inchangée</span><span class="option-desc">Je me sens pareil qu'avant, rien n'a vraiment changé dans ma façon de me voir.</span></label>
+          <label class="option-label"><input type="radio" name="q2" value="un_peu_mieux"><span class="option-dot"></span><span class="option-title">Un peu mieux</span><span class="option-desc">Je me sens légèrement plus confiante, mais j'ai encore du travail.</span></label>
+          <label class="option-label"><input type="radio" name="q2" value="bien_mieux"><span class="option-dot"></span><span class="option-title">Bien mieux</span><span class="option-desc">En 4 mois, ma confiance a clairement progressé.</span></label>
+          <label class="option-label"><input type="radio" name="q2" value="transformee"><span class="option-dot"></span><span class="option-title">Transformée</span><span class="option-desc">Ma façon de me voir et de me parler a profondément changé.</span></label>
+          <label class="option-label"><input type="radio" name="q2" value="nouvelle_moi"><span class="option-dot"></span><span class="option-title">Nouvelle moi</span><span class="option-desc">Je ne me reconnais presque plus — dans le meilleur sens du terme.</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q2"></div>
+      </div>
+
+      <!-- Q3 SAME — peurs -->
+      <div class="question-card" style="animation-delay:0.11s">
+        <div class="question-number">Question 03</div>
+        <div class="question-text">Les peurs que tu avais au départ — où en es-tu avec elles aujourd'hui ?</div>
+        <p class="multi-hint">✨ Tu peux en choisir plusieurs</p>
+        <div class="options-grid">
+          <label class="option-label"><input type="checkbox" name="q3" value="encore_la"><span class="option-check"></span><span class="option-title">Certaines sont encore là</span><span class="option-desc">Malgré 4 mois, certaines peurs persistent encore.</span></label>
+          <label class="option-label"><input type="checkbox" name="q3" value="reduites"><span class="option-check"></span><span class="option-title">Réduites</span><span class="option-desc">Elles sont encore présentes mais elles ont moins de pouvoir sur moi.</span></label>
+          <label class="option-label"><input type="checkbox" name="q3" value="transformees"><span class="option-check"></span><span class="option-title">Transformées</span><span class="option-desc">Elles se sont transformées en forces ou en leviers de progression.</span></label>
+          <label class="option-label"><input type="checkbox" name="q3" value="disparues"><span class="option-check"></span><span class="option-title">Disparues</span><span class="option-desc">Ce programme m'a aidée à les dépasser complètement.</span></label>
+          <label class="option-label"><input type="checkbox" name="q3" value="nouvelles"><span class="option-check"></span><span class="option-title">De nouvelles ont émergé</span><span class="option-desc">J'ai découvert de nouvelles peurs en cours de route — et c'est ok.</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q3"></div>
+      </div>
+
+      <!-- Q4 SAME — physique -->
+      <div class="question-card" style="animation-delay:0.14s">
+        <div class="question-number">Question 04</div>
+        <div class="question-text">Physiquement, comment tu te sens aujourd'hui comparé au jour 1 ?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q4" value="pareil" required><span class="option-dot"></span><span class="option-title">Pareille</span><span class="option-desc">Je ne sens pas de grande différence physique après 4 mois.</span></label>
+          <label class="option-label"><input type="radio" name="q4" value="un_peu_mieux"><span class="option-dot"></span><span class="option-title">Un peu mieux</span><span class="option-desc">Je me sens légèrement mieux, avec quelques changements notables.</span></label>
+          <label class="option-label"><input type="radio" name="q4" value="bien_mieux"><span class="option-dot"></span><span class="option-title">Bien mieux</span><span class="option-desc">Mon corps a clairement changé — plus d'énergie, plus de légèreté.</span></label>
+          <label class="option-label"><input type="radio" name="q4" value="forte"><span class="option-dot"></span><span class="option-title">Plus forte</span><span class="option-desc">Je me sens plus forte, plus capable, plus à l'aise dans mon corps.</span></label>
+          <label class="option-label"><input type="radio" name="q4" value="transformee"><span class="option-dot"></span><span class="option-title">Transformée</span><span class="option-desc">Mon corps est méconnaissable par rapport au début — dans le meilleur sens.</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q4"></div>
+      </div>
+
+      <!-- Q5 SAME — motivation -->
+      <div class="question-card" style="animation-delay:0.17s">
+        <div class="question-number">Question 05</div>
+        <div class="question-text">Comment décrirais-tu ta motivation sur l'ensemble des 4 mois ?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q5" value="difficile" required><span class="option-dot"></span><span class="option-title">Difficile à maintenir</span><span class="option-desc">J'ai beaucoup lutté pour rester motivée tout au long du programme.</span></label>
+          <label class="option-label"><input type="radio" name="q5" value="hauts_bas"><span class="option-dot"></span><span class="option-title">Des hauts et des bas</span><span class="option-desc">Une montagne russe — mais j'ai toujours fini par me relever.</span></label>
+          <label class="option-label"><input type="radio" name="q5" value="stable"><span class="option-dot"></span><span class="option-title">Globalement stable</span><span class="option-desc">J'ai maintenu un cap régulier sans grandes chutes ni grands pics.</span></label>
+          <label class="option-label"><input type="radio" name="q5" value="en_hausse"><span class="option-dot"></span><span class="option-title">En hausse progressive</span><span class="option-desc">Plus le temps passait, plus j'étais motivée.</span></label>
+          <label class="option-label"><input type="radio" name="q5" value="au_top"><span class="option-dot"></span><span class="option-title">Au top du début à la fin</span><span class="option-desc">Je me suis donnée à fond pendant 4 mois sans jamais lâcher.</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q5"></div>
+      </div>
+
+      <!-- Q6 SAME — miroir -->
+      <div class="question-card" style="animation-delay:0.20s">
+        <div class="question-number">Question 06</div>
+        <div class="question-text">Quand tu te regardes dans le miroir aujourd'hui — qu'est-ce que tu vois, comparé au tout début ?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q6" value="pareil" required><span class="option-dot"></span><span class="option-title">La même chose</span><span class="option-desc">Mon regard sur moi n'a pas vraiment évolué en 4 mois.</span></label>
+          <label class="option-label"><input type="radio" name="q6" value="plus_douce"><span class="option-dot"></span><span class="option-title">Plus de douceur</span><span class="option-desc">Je me regarde avec plus de bienveillance qu'avant.</span></label>
+          <label class="option-label"><input type="radio" name="q6" value="changements"><span class="option-dot"></span><span class="option-title">Des changements concrets</span><span class="option-desc">Je vois des transformations physiques réelles dont je suis fière.</span></label>
+          <label class="option-label"><input type="radio" name="q6" value="fierte"><span class="option-dot"></span><span class="option-title">De la fierté</span><span class="option-desc">Je me sens fière de ce que je vois — ce corps a travaillé dur.</span></label>
+          <label class="option-label"><input type="radio" name="q6" value="reconciliee"><span class="option-dot"></span><span class="option-title">Réconciliée</span><span class="option-desc">Je me suis réconciliée avec mon corps. C'est un cadeau immense.</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q6"></div>
+      </div>
+
+      <!-- Q7 NEW — bienveillance globale -->
+      <div class="question-card new-q" style="animation-delay:0.23s">
+        <div class="question-number">Question 07</div>
+        <span class="new-tag">✦ Nouveau</span>
+        <div class="question-text">Sur l'ensemble du programme, as-tu réussi à être plus douce et bienveillante avec toi-même ?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q7" value="pas_du_tout" required><span class="option-dot"></span><span class="option-title">Pas du tout</span><span class="option-desc">Je suis encore très dure avec moi-même — c'est un travail de longue haleine.</span></label>
+          <label class="option-label"><input type="radio" name="q7" value="un_peu"><span class="option-dot"></span><span class="option-title">Un peu</span><span class="option-desc">J'ai progressé sur ce point, mais c'est encore difficile.</span></label>
+          <label class="option-label"><input type="radio" name="q7" value="oui_globalement"><span class="option-dot"></span><span class="option-title">Globalement oui</span><span class="option-desc">J'ai appris à me relever plus vite et à moins me juger.</span></label>
+          <label class="option-label"><input type="radio" name="q7" value="vraiment"><span class="option-dot"></span><span class="option-title">Vraiment oui</span><span class="option-desc">La bienveillance envers moi-même est devenue une vraie habitude.</span></label>
+          <label class="option-label"><input type="radio" name="q7" value="entierement"><span class="option-dot"></span><span class="option-title">Entièrement</span><span class="option-desc">Je me parle avec amour et douceur. Ce programme a tout changé sur ce point.</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q7"></div>
+      </div>
+
+      <!-- Q8 NEW — plus grande transformation -->
+      <div class="question-card new-q" style="animation-delay:0.26s">
+        <div class="question-number">Question 08</div>
+        <span class="new-tag">✦ Nouveau</span>
+        <div class="question-text">Quelle est LA transformation dont tu es la plus fière après ces 4 mois ?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q8" value="corps" required><span class="option-dot"></span><span class="option-title">Mon corps</span><span class="option-desc">Les changements physiques visibles que j'ai construits semaine après semaine.</span></label>
+          <label class="option-label"><input type="radio" name="q8" value="mental"><span class="option-dot"></span><span class="option-title">Mon mental</span><span class="option-desc">Ma façon de me voir, de me parler et de gérer les obstacles.</span></label>
+          <label class="option-label"><input type="radio" name="q8" value="regularite"><span class="option-dot"></span><span class="option-title">Ma régularité</span><span class="option-desc">Avoir tenu 4 mois — quoi qu'il arrive, j'étais là.</span></label>
+          <label class="option-label"><input type="radio" name="q8" value="confiance"><span class="option-dot"></span><span class="option-title">Ma confiance</span><span class="option-desc">Je me sens plus sûre de moi dans le sport et dans la vie.</span></label>
+          <label class="option-label"><input type="radio" name="q8" value="tout"><span class="option-dot"></span><span class="option-title">Tout à la fois</span><span class="option-desc">Corps, mental, régularité, confiance — tout a changé en 4 mois.</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q8"></div>
+      </div>
+
+      <!-- Q9 NEW — la suite -->
+      <div class="question-card new-q" style="animation-delay:0.29s">
+        <div class="question-number">Question 09</div>
+        <span class="new-tag">✦ Nouveau</span>
+        <div class="question-text">Maintenant que le programme est terminé, comment tu envisages la suite ?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q9" value="ancrer" required><span class="option-dot"></span><span class="option-title">Ancrer les habitudes</span><span class="option-desc">Je veux consolider tout ce que j'ai appris pour que ça reste dans ma vie.</span></label>
+          <label class="option-label"><input type="radio" name="q9" value="continuer_seule"><span class="option-dot"></span><span class="option-title">Voler de mes propres ailes</span><span class="option-desc">Je me sens suffisamment solide pour maintenir mes habitudes de façon autonome.</span></label>
+          <label class="option-label"><input type="radio" name="q9" value="aller_plus_loin"><span class="option-dot"></span><span class="option-title">Aller encore plus loin</span><span class="option-desc">Ce programme m'a donné encore plus envie de progresser — je veux continuer à évoluer.</span></label>
+          <label class="option-label"><input type="radio" name="q9" value="nouveau_objectif"><span class="option-dot"></span><span class="option-title">Nouveau défi</span><span class="option-desc">Je veux me fixer un nouvel objectif et repartir sur quelque chose de nouveau.</span></label>
+          <label class="option-label"><input type="radio" name="q9" value="continuer_avec_toi"><span class="option-dot"></span><span class="option-title">Continuer avec toi</span><span class="option-desc">Je veux poursuivre l'accompagnement — ce qu'on a construit ensemble est trop précieux pour s'arrêter là.</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q9"></div>
+      </div>
+
+      <!-- Q10 COACHING — globale -->
+      <div class="question-card coaching-q" style="animation-delay:0.32s">
+        <div class="question-number">Question 10</div>
+        <span class="coaching-tag">💬 Retour coaching</span>
+        <div class="question-text">Comment tu évalues globalement l'accompagnement que tu as reçu sur ces 4 mois ?</div>
+        <p class="question-sub">Tes retours m'aident à m'améliorer — sois aussi honnête que possible. 🙏</p>
+        <div class="options-grid" style="grid-template-columns:repeat(5,1fr)">
+          <label class="option-label"><input type="radio" name="q10" value="1" required><span class="option-dot"></span><span class="option-title">À améliorer</span><span class="option-desc">Plusieurs points m'ont manqué ou déçue.</span></label>
+          <label class="option-label"><input type="radio" name="q10" value="2"><span class="option-dot"></span><span class="option-title">Passable</span><span class="option-desc">C'était bien par moments, insuffisant à d'autres.</span></label>
+          <label class="option-label"><input type="radio" name="q10" value="3"><span class="option-dot"></span><span class="option-title">Bien</span><span class="option-desc">J'ai été bien accompagnée, même si certaines choses pourraient être améliorées.</span></label>
+          <label class="option-label"><input type="radio" name="q10" value="4"><span class="option-dot"></span><span class="option-title">Très bien</span><span class="option-desc">J'ai été vraiment bien suivie et soutenue tout au long du programme.</span></label>
+          <label class="option-label"><input type="radio" name="q10" value="5"><span class="option-dot"></span><span class="option-title">Exceptionnel</span><span class="option-desc">Cet accompagnement a dépassé toutes mes attentes.</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q10"></div>
+      </div>
+
+      <!-- Q11 COACHING — ce qui a le mieux marché -->
+      <div class="question-card coaching-q" style="animation-delay:0.35s">
+        <div class="question-number">Question 11</div>
+        <span class="coaching-tag">💬 Retour coaching</span>
+        <div class="question-text">Qu'est-ce qui t'a le plus aidée dans la façon dont je t'ai accompagnée ?</div>
+        <p class="multi-hint">✨ Tu peux en choisir plusieurs</p>
+        <div class="options-grid">
+          <label class="option-label"><input type="checkbox" name="q11" value="disponibilite"><span class="option-check"></span><span class="option-title">Ta disponibilité</span><span class="option-desc">Je me suis sentie soutenue et jamais seule dans ce parcours.</span></label>
+          <label class="option-label"><input type="checkbox" name="q11" value="programme"><span class="option-check"></span><span class="option-title">La qualité du programme</span><span class="option-desc">Le contenu était adapté à moi, progressif et bien construit.</span></label>
+          <label class="option-label"><input type="checkbox" name="q11" value="bienveillance"><span class="option-check"></span><span class="option-title">Ta bienveillance</span><span class="option-desc">Tu m'as toujours encouragée sans jamais me juger.</span></label>
+          <label class="option-label"><input type="checkbox" name="q11" value="suivi"><span class="option-check"></span><span class="option-title">Le suivi personnalisé</span><span class="option-desc">J'avais l'impression que tout était vraiment fait pour moi.</span></label>
+          <label class="option-label"><input type="checkbox" name="q11" value="mental"><span class="option-check"></span><span class="option-title">Le travail mental</span><span class="option-desc">Travailler sur ma façon de me voir, pas seulement sur mon corps.</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q11"></div>
+      </div>
+
+      <!-- Q12 COACHING — ce qu'on pourrait améliorer -->
+      <div class="question-card coaching-q" style="animation-delay:0.38s">
+        <div class="question-number">Question 12</div>
+        <span class="coaching-tag">💬 Retour coaching</span>
+        <div class="question-text">Y a-t-il des choses que tu aurais aimé avoir en plus, ou différemment dans cet accompagnement ?</div>
+        <p class="question-sub">Ton honnêteté est un cadeau — il n'y a rien de blessant à dire ici. 💛</p>
+        <div class="textarea-wrap">
+          <textarea name="q12" rows="5" placeholder="Ex : J'aurais aimé avoir plus de... / J'aurais préféré que... / Ce qui m'a manqué c'est... / Je pense que ça pourrait être mieux si... ✨"></textarea>
+        </div>
+      </div>
+
+      <!-- Q13 COACHING — recommander -->
+      <div class="question-card coaching-q" style="animation-delay:0.41s">
+        <div class="question-number">Question 13</div>
+        <span class="coaching-tag">💬 Retour coaching</span>
+        <div class="question-text">Est-ce que tu recommanderais cet accompagnement à quelqu'un que tu aimes ?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q13" value="non" required><span class="option-dot"></span><span class="option-title">Non</span><span class="option-desc">Je ne le recommanderais pas dans l'état actuel.</span></label>
+          <label class="option-label"><input type="radio" name="q13" value="peut_etre"><span class="option-dot"></span><span class="option-title">Peut-être</span><span class="option-desc">Ça dépend du profil de la personne et de ses attentes.</span></label>
+          <label class="option-label"><input type="radio" name="q13" value="probablement"><span class="option-dot"></span><span class="option-title">Probablement</span><span class="option-desc">Oui, si la personne est prête à vraiment s'impliquer.</span></label>
+          <label class="option-label"><input type="radio" name="q13" value="oui"><span class="option-dot"></span><span class="option-title">Oui</span><span class="option-desc">Je le recommanderais sans hésitation.</span></label>
+          <label class="option-label"><input type="radio" name="q13" value="absolument"><span class="option-dot"></span><span class="option-title">Absolument !</span><span class="option-desc">Je l'ai déjà dit autour de moi, ou je compte le faire.</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q13"></div>
+      </div>
+
+      <!-- Q14 — Témoignage -->
+      <div class="question-card new-q" style="animation-delay:0.44s">
+        <div class="question-number">Question 14 — Témoignage ✨</div>
+        <span class="new-tag">✦ Témoignage</span>
+        <div class="question-text">Si tu devais écrire quelques phrases pour décrire ton expérience à quelqu'un qui hésite à se lancer — qu'est-ce que tu lui dirais ?</div>
+        <p class="question-sub">Ton témoignage peut aider d'autres personnes à oser franchir le pas. Écris comme si tu parlais à une amie. 💛</p>
+        <div class="textarea-wrap">
+          <textarea name="q14" rows="6" placeholder="Ex : Avant de commencer, j'avais peur de ne pas tenir, de ne pas voir de résultats... Aujourd'hui je peux dire que... Si tu hésites encore, je t'assure que... ✨"></textarea>
+        </div>
+      </div>
+
+      <!-- Q14b — Visibilité témoignage -->
+      <div class="question-card coaching-q" style="animation-delay:0.46s">
+        <div class="question-number">Question 14b — Ton confort 🤍</div>
+        <span class="coaching-tag">💬 Témoignage</span>
+        <div class="question-text">Si je souhaitais partager ton témoignage ou tes résultats, quel niveau de visibilité tu serais à l'aise avec ?</div>
+        <p class="question-sub">Aucune pression — ta réponse guide simplement ce que je peux ou non partager. Tu peux changer d'avis à tout moment en me le disant sur WhatsApp. 💛</p>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q14b" value="non"><span class="option-dot"></span><span class="option-title">Je préfère rester anonyme</span><span class="option-desc">Je ne souhaite pas que mon témoignage ou mes résultats soient partagés.</span></label>
+          <label class="option-label"><input type="radio" name="q14b" value="texte_seul"><span class="option-dot"></span><span class="option-title">Témoignage écrit uniquement</span><span class="option-desc">Tu peux partager mes mots, sans photos ni prénom.</span></label>
+          <label class="option-label"><input type="radio" name="q14b" value="corps_flou"><span class="option-dot"></span><span class="option-title">Photos sans visage</span><span class="option-desc">Tu peux montrer mes résultats physiques — visage flouté, recadré ou non visible.</span></label>
+          <label class="option-label"><input type="radio" name="q14b" value="tout_sauf_prenom"><span class="option-dot"></span><span class="option-title">Photos + témoignage</span><span class="option-desc">Tu peux tout partager mais sans mentionner mon prénom.</span></label>
+          <label class="option-label"><input type="radio" name="q14b" value="tout"><span class="option-dot"></span><span class="option-title">Tout partager</span><span class="option-desc">Témoignage, photos et prénom — je suis fière de mon parcours et j'assume !</span></label>
+        </div>
+        <div class="coach-bubble" id="bubble-q14b"></div>
+      </div>
+
+      <!-- Q15 — Ressenti final libre -->
+      <div class="question-card" style="animation-delay:0.47s">
+        <div class="question-number">Question 15 — Ton espace libre 🌸</div>
+        <div class="question-text">Comment tu te sens vraiment au terme de ces 4 mois ? Qu'est-ce que tu veux que je sache ?</div>
+        <p class="question-sub">C'est ton dernier bilan — exprime-toi sans filtre. Ce que tu gardes de cette aventure, ce qui t'a marquée, ce qui reste à travailler, comment tu te vois dans 4 mois... 💛</p>
+        <div class="textarea-wrap">
+          <textarea name="message_libre" rows="7" placeholder="Ex : Je ne pensais vraiment pas que j'allais tenir 4 mois. Il y a eu des semaines très difficiles, des moments où j'avais juste envie d'abandonner... Mais aujourd'hui je réalise que quelque chose a changé profondément en moi. Pas seulement mon corps — ma façon de me voir, de me parler, de me faire confiance. Merci pour... ✨"></textarea>
+        </div>
+      </div>
+
+      <!-- WHATSAPP CTA -->
+      <div class="whatsapp-card">
+        <p class="whatsapp-title">📸 Envoie tes photos avant/après</p>
+        <p class="whatsapp-desc">Pour compléter ce bilan, j'aimerais recevoir tes photos avant/après via WhatsApp. C'est le moyen le plus sécurisé et le plus simple pour partager tes images en privé.</p>
+        <div class="whatsapp-steps">
+          <p>1️⃣ Copie le message ci-dessous</p>
+          <p>2️⃣ Ouvre WhatsApp et envoie-le moi avec tes photos</p>
+          <p>3️⃣ Ajoute une photo de face, de profil, et une de dos si tu te sens à l'aise</p>
+        </div>
+        <div class="msg-copy" id="msgCopy">Bonjour ! Je viens de terminer mon bilan final du mois 4. Je t'envoie mes photos avant/après. 📸✨</div>
+        <button class="btn-copy" onclick="copyMessage()">📋 Copier le message</button>
+        <p class="copy-confirm" id="copyConfirm">✅ Message copié ! Ouvre WhatsApp et colle-le.</p>
+      </div>
+
+      <!-- SIGNATURE -->
+      <div class="signature-card">
+        <div class="question-number">Engagement final 🤝</div>
+        <p class="signature-title">Je certifie avoir répondu à ce bilan final avec sincérité et honnêteté, pour clôturer ce programme de la façon la plus juste et authentique possible.</p>
+        <div class="signature-fields">
+          <div class="sig-field"><label for="sig-prenom">Mon prénom</label><input type="text" id="sig-prenom" name="prenom" placeholder="Ex : Léa" required></div>
+          <div class="sig-field"><label for="sig-date">Date</label><input type="date" id="sig-date" name="date_signature" required></div>
+        </div>
+        <label class="engagement-check">
+          <input type="checkbox" id="engagement" name="engagement" required>
+          <span class="eng-box"></span>
+          <span class="eng-text">✅ Je coche cette case pour confirmer que <strong>j'ai répondu avec sincérité</strong> et que je suis fière du chemin accompli pendant ces 4 mois.</span>
+        </label>
+      </div>
+
+      <div class="submit-wrap">
+        <button type="submit" class="btn-submit">Envoyer mon bilan final ☀️</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- THANK YOU -->
+  <div class="thankyou" id="thankyou">
+    <div class="ty-sun">🏆</div>
+    <h2>Tu as fait quelque chose d'exceptionnel. 🌟</h2>
+    <p class="ty-sub">4 mois. 16 semaines. Des dizaines de séances, de petites victoires, de doutes traversés et de limites repoussées. Tu n'es plus la même personne qu'au jour 1 — et c'est entièrement grâce à toi. 💛</p>
+    <div class="ty-card">
+      <p>Pour clôturer ce beau chapitre :</p>
+      <div class="ty-steps">
+        <div class="ty-step"><span class="ty-icon">📸</span><div><strong>Envoie tes photos avant/après sur WhatsApp</strong><span>si ce n'est pas encore fait — c'est la meilleure façon de mesurer le chemin parcouru.</span></div></div>
+        <div class="ty-step"><span class="ty-icon">🗂️</span><div><strong>Retourne sur la plateforme</strong><span>et redécouvre tous les modules et tout le contenu que tu as traversé en 4 mois.</span></div></div>
+        <div class="ty-step"><span class="ty-icon">🌟</span><div><strong>Savoure cette victoire</strong><span>— tu as accompli quelque chose que beaucoup n'osent même pas commencer.</span></div></div>
+      </div>
+    </div>
+    <button class="btn-download" id="downloadBtn">📄 Télécharger mon récapitulatif final</button>
+    <p class="ty-closing" style="margin-top:28px">Merci d'avoir fait confiance à ce programme et à moi pour t'accompagner. <strong>Ce que tu as construit en 4 mois t'appartient pour toujours. 💛</strong></p>
+    <span class="brand">by maefitways</span>
+  </div>
+
+</div>
+
+<script>
+  var form=document.getElementById('mainForm');
+  var progressBar=document.getElementById('progressBar');
+  var progressLabel=document.getElementById('progressLabel');
+  var totalQuestions=16;
+  document.getElementById('sig-date').valueAsDate=new Date();
+
+  function copyMessage(){
+    var msg=document.getElementById('msgCopy').innerText;
+    navigator.clipboard.writeText(msg).then(function(){
+      document.getElementById('copyConfirm').classList.add('visible');
+      setTimeout(function(){document.getElementById('copyConfirm').classList.remove('visible');},3000);
+    }).catch(function(){
+      var ta=document.createElement('textarea');
+      ta.value=msg;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+      document.getElementById('copyConfirm').classList.add('visible');
+      setTimeout(function(){document.getElementById('copyConfirm').classList.remove('visible');},3000);
+    });
+  }
+
+  var coachMessages={
+    q1:{
+      deçue:"Merci pour cette honnêteté — ça me touche profondément. 4 mois c'est un vrai investissement, et si les résultats n'ont pas été à la hauteur de tes attentes, je veux comprendre pourquoi. Tes retours dans les prochaines questions vont beaucoup m'aider. 💛",
+      mitigee:"4 mois avec des hauts et des bas, c'est une réalité honnête que beaucoup n'osent pas admettre. Je suis là pour entendre les deux côtés — les avancées comme les déceptions. 🌸",
+      satisfaite:"Être satisfaite après 4 mois de travail, c'est une belle victoire ! Le chemin parcouru est réel, concret, et il t'appartient pour toujours. ✨",
+      tres_fiere:"Cette fierté, tu l'as construite semaine après semaine, effort après effort. Elle est entièrement méritée. 💪",
+      transformee:"Transformer sa vie en 4 mois — c'est rare, c'est précieux, et c'est tellement courageux. Tu n'es plus la même. 🌟"
+    },
+    q2:{
+      pas_change:"Merci pour cette honnêteté. La confiance est souvent la dernière chose à changer — et parfois 4 mois ne suffisent pas. Ce n'est pas un échec, c'est un point de départ pour la suite. 💛",
+      un_peu_mieux:"Chaque petit pas compte. Un peu plus confiante après 4 mois, c'est déjà un mouvement dans la bonne direction. 🌸",
+      bien_mieux:"En 4 mois, faire progresser sa confiance de façon claire — c'est un travail profond dont tu peux être fière. ✨",
+      transformee:"Changer profondément sa façon de se voir en 4 mois — c'est peut-être la plus grande transformation de toutes. 💪",
+      nouvelle_moi:"Ne plus se reconnaître dans le meilleur sens — c'est ça, la vraie transformation. Bienvenue dans cette nouvelle version de toi. 🌟"
+    },
+    q3:{
+      encore_la:"Ces peurs qui persistent, elles font partie du chemin. Le fait de pouvoir les nommer et de continuer malgré elles — c'est déjà immense. 💛",
+      reduites:"Des peurs réduites, c'est des peurs apprivoisées. Tu as pris le pouvoir sur elles — même si elles sont encore là. 🌸",
+      transformees:"Transformer ses peurs en forces — c'est le travail le plus profond qui soit. Tu l'as fait. ✨",
+      disparues:"Les voir disparaître après 4 mois, c'est la plus belle des libérations. Tu méritais ça. 💪",
+      nouvelles:"De nouvelles peurs qui émergent — c'est le signe que tu grandis et que tu t'ouvres à de nouveaux possibles. 🌱"
+    },
+    q4:{
+      pareil:"Je prends note, et c'est important à entendre. Tes retours dans les prochaines questions vont m'aider à comprendre ce qui s'est passé. 💛",
+      un_peu_mieux:"Des changements notables après 4 mois, même légers — c'est ton corps qui t'a entendue et qui a répondu. 🌸",
+      bien_mieux:"Plus d'énergie, plus de légèreté — c'est ça, un corps qui a été bien traité pendant 4 mois. ✨",
+      forte:"Plus forte, plus capable — c'est exactement ce qu'on voulait construire. Et tu l'as fait. 💪",
+      transformee:"Méconnaissable dans le meilleur sens — 4 mois de travail se lisent sur toi. C'est magnifique. 🌟"
+    },
+    q5:{
+      difficile:"Tenir 4 mois même en luttant contre la motivation — c'est une forme de courage immense. Tu aurais pu abandonner. Tu ne l'as pas fait. 💛",
+      hauts_bas:"Une montagne russe sur 4 mois — et tu es arrivée en haut quand même. C'est ça, la vraie résilience. 🌸",
+      stable:"Un cap régulier sur 4 mois entiers, c'est plus rare et plus précieux qu'on ne le croit. C'est de la discipline pure. ✨",
+      en_hausse:"Une motivation qui grandit avec le temps plutôt que de diminuer — c'est le signe que ce programme te correspondait vraiment. 💪",
+      au_top:"À fond du premier au dernier jour pendant 4 mois — tu portes quelque chose d'exceptionnel en toi. 🌟"
+    },
+    q6:{
+      pareil:"Je t'entends. Le regard sur soi est souvent le dernier à évoluer, même quand tout le reste a changé. Ce travail continue bien après la fin du programme. 💛",
+      plus_douce:"Plus de douceur dans le regard — c'est peut-être la victoire la plus silencieuse et la plus profonde de ces 4 mois. 🌸",
+      changements:"Voir des transformations concrètes dans le miroir après 4 mois — c'est la récompense de chaque effort fait en silence. ✨",
+      fierte:"Se sentir fière de son reflet — c'est un cadeau qu'on se donne rarement. Tu le mérites. 💪",
+      reconciliee:"Se réconcilier avec son corps en 4 mois — c'est l'une des choses les plus belles et les plus difficiles qui soit. Tu l'as fait. 🌟"
+    },
+    q7:{
+      pas_du_tout:"C'est courageux de le dire. La bienveillance envers soi-même est un travail de toute une vie — et le fait de l'identifier comme un chantier, c'est déjà un grand pas. 💛",
+      un_peu:"Progresser sur ce point, même un peu, c'est immense. Ce n'est pas un interrupteur — c'est une habitude qui se construit. 🌸",
+      oui_globalement:"Apprendre à se relever plus vite et à moins se juger — c'est l'une des compétences les plus précieuses que tu emportes de ce programme. ✨",
+      vraiment:"Avoir fait de la bienveillance une vraie habitude en 4 mois — c'est un travail intérieur profond dont tu peux être très fière. 💪",
+      entierement:"Se parler avec amour et douceur — c'est la transformation la plus rare et la plus précieuse. Tu l'as intégrée pour toujours. 🌟"
+    },
+    q8:{
+      corps:"Ton corps qui a changé — semaine après semaine, effort par effort. Il t'a entendue et il a répondu. Belle victoire. 💛",
+      mental:"La transformation mentale, c'est souvent la plus durable. Changer sa façon de se voir et de se parler, ça ne se perd jamais. 🌸",
+      regularite:"Tenir 4 mois quoi qu'il arrive — c'est une preuve de caractère que très peu de personnes peuvent se donner. 💪",
+      confiance:"La confiance qui rayonne au-delà du sport — c'est exactement l'objectif qu'on visait depuis le début. Tu y es. ✨",
+      tout:"Tout à la fois — corps, mental, régularité, confiance. C'est une transformation complète et profonde. Tu peux en être immensément fière. 🌟"
+    },
+    q9:{
+      ancrer:"Consolider ce qu'on a construit pour que ça reste dans ta vie — c'est la décision la plus sage. Les habitudes profondes se créent dans la durée, et tu as les bases pour y arriver. ✨",
+      continuer_seule:"Voler de ses propres ailes après 4 mois — c'est exactement ce qu'on voulait construire ensemble. Tu as tout ce qu'il faut en toi maintenant. 🌸",
+      aller_plus_loin:"Cette envie d'aller encore plus loin après 4 mois — c'est la plus belle récompense pour moi en tant que coach. Ton potentiel est infini. 💪",
+      nouveau_objectif:"Un nouveau défi après 4 mois — j'adore cette énergie ! Te fixer de nouveaux objectifs, c'est la preuve que tu as pris goût à progresser. 🌟",
+      continuer_avec_toi:"Continuer ensemble — je serais tellement heureuse de poursuivre ce beau chemin avec toi. On en parle très vite ! 💛"
+    },
+    q10:{
+      "1":"Merci pour cette honnêteté courageuse. Tes retours dans les prochaines questions vont m'aider à comprendre ce qui n'a pas fonctionné et à m'améliorer. 💛",
+      "2":"Je prends note avec humilité. Il y a clairement des choses à améliorer — et tes retours détaillés sont précieux pour que je puisse progresser. 🌸",
+      "3":"Bien avec des pistes d'amélioration — c'est exactement le type de retour qui me fait grandir. Merci. ✨",
+      "4":"Être vraiment bien suivie et soutenue — c'est ce que je m'efforce de faire à chaque accompagnement. Merci pour ce retour. 💪",
+      "5":"Dépasser toutes les attentes — c'est le plus beau cadeau qu'une coachée puisse me faire. Merci infiniment. 🌟"
+    },
+    q11:{
+      disponibilite:"Ma disponibilité — je suis tellement contente que tu t'es sentie soutenue. Ne jamais être seule dans ce parcours, c'est fondamental. 💛",
+      programme:"La qualité du programme — j'y travaille avec soin pour chaque coachée. Merci de l'avoir ressenti. 🌸",
+      bienveillance:"La bienveillance sans jugement — c'est la base de tout ce que je fais. Merci de l'avoir reçue. ✨",
+      suivi:"Le suivi personnalisé — chaque personne mérite un accompagnement qui lui ressemble. Merci de l'avoir senti. 💪",
+      mental:"Le travail mental — parce qu'un corps qui évolue sans un mental qui suit, ça ne tient pas dans le temps. Merci de l'avoir apprécié. 🌟"
+    },
+    q13:{
+      non:"Merci pour cette honnêteté. J'aimerais vraiment comprendre ce qui n'a pas été à la hauteur — tes retours dans cette question et les suivantes sont précieux. 💛",
+      peut_etre:"Ça dépend du profil — c'est une réponse honnête et nuancée que j'apprécie. 🌸",
+      probablement:"Probablement oui — c'est déjà une belle marque de confiance. Merci. ✨",
+      oui:"Recommander sans hésitation — c'est ce qui me donne envie de continuer à faire ce métier. Merci. 💪",
+      absolument:"L'avoir déjà dit ou compter le faire — c'est le plus beau des retours qu'on puisse me donner. Merci du fond du cœur. 🌟"
+    },
+    q14b:{
+      non:"Je respecte totalement ta décision — ta vie privée passe avant tout. Merci quand même pour ton témoignage écrit, il m'est précieux. 💛",
+      texte_seul:"Parfait ! Je pourrai partager tes mots pour inspirer d'autres personnes, de façon totalement anonyme. Merci pour cette confiance. 🌸",
+      corps_flou:"Super ! Je veillerai à ce que ton visage ne soit jamais visible. Tes résultats vont inspirer tellement de personnes. ✨",
+      tout_sauf_prenom:"Merci pour cette générosité ! Je ferai toujours en sorte de valoriser tes résultats avec respect — et je n'utiliserai pas ton prénom. 💪",
+      tout:"Quelle générosité et quelle fierté ! Ton parcours complet va vraiment donner de la force à d'autres femmes qui hésitent encore. 🌟"
+    }
+  };
+
+  function showCoachBubble(name,value){
+    var b=document.getElementById('bubble-'+name);
+    if(!b)return;
+    var m=coachMessages[name];
+    if(!m)return;
+    var msg=m[value];
+    if(!msg)return;
+    b.innerHTML='<p>'+msg+'</p>';
+    b.classList.remove('visible');
+    requestAnimationFrame(function(){requestAnimationFrame(function(){b.classList.add('visible');});});
+  }
+
+  function updateProgress(){
+    var answered=new Set();
+    document.querySelectorAll('input[type="radio"]:checked').forEach(function(el){answered.add(el.name);});
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(function(el){answered.add(el.name);});
+    var count=answered.size;
+    progressBar.style.width=Math.round((count/totalQuestions)*100)+'%';
+    progressLabel.textContent=count+' / '+totalQuestions+' questions';
+  }
+
+  document.querySelectorAll('input[type="radio"]').forEach(function(el){
+    el.addEventListener('change',function(){updateProgress();showCoachBubble(this.name,this.value);});
+  });
+  document.querySelectorAll('input[type="checkbox"]').forEach(function(el){
+    el.addEventListener('change',function(){
+      updateProgress();
+      if(document.querySelectorAll('input[name="'+this.name+'"]:checked').length>0)showCoachBubble(this.name,this.value);
+    });
+  });
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var eng=document.getElementById('engagement');
+    if(!eng.checked){alert("Merci de cocher la case d\u2019engagement pour confirmer ta sinc\u00e9rit\u00e9 \uD83D\uDC9B");eng.closest('.engagement-check').style.border='2px solid #e74c3c';eng.closest('.engagement-check').scrollIntoView({behavior:'smooth',block:'center'});return;}
+    var p=document.getElementById('sig-prenom');
+    if(!p.value.trim()){alert("N\u2019oublie pas de renseigner ton pr\u00e9nom \uD83C\uDF38");p.style.borderColor='#e74c3c';p.focus();return;}
+    document.getElementById('formSection').classList.add('hidden');
+    document.getElementById('thankyou').classList.add('visible');
+    window.scrollTo({top:0,behavior:'smooth'});
+    setTimeout(function(){var btn=document.getElementById('downloadBtn');if(btn)btn.addEventListener('click',downloadRecap);},100);
+  });
+
+  function downloadRecap(){
+    var fd=new FormData(form);
+    var prenom=fd.get('prenom')||'Coach\u00e9e';
+    var dateSign=fd.get('date_signature')||new Date().toLocaleDateString('fr-FR');
+
+    var qData={
+      q1:{title:"Au terme des 4 mois, comment tu te sens face \u00e0 ta progression ?",options:{deçue:{label:"D\u00e9\u00e7ue",desc:"Je n'ai pas vu les r\u00e9sultats que j'esp\u00e9rais malgr\u00e9 4 mois d'efforts."},mitigee:{label:"Mitig\u00e9e",desc:"Des avanc\u00e9es r\u00e9elles, mais aussi des d\u00e9ceptions en cours de route."},satisfaite:{label:"Satisfaite",desc:"Je suis contente du chemin parcouru et des changements que je vois."},tres_fiere:{label:"Tr\u00e8s fi\u00e8re",desc:"Je suis fi\u00e8re de tout ce que j'ai accompli en 4 mois."},transformee:{label:"Transform\u00e9e",desc:"Ces 4 mois ont chang\u00e9 ma vie, mon corps et ma fa\u00e7on de me voir."}}},
+      q2:{title:"Ta confiance en toi aujourd'hui, compar\u00e9e au tout d\u00e9but",options:{pas_change:{label:"Inchang\u00e9e",desc:"Je me sens pareil qu'avant, rien n'a vraiment chang\u00e9."},un_peu_mieux:{label:"Un peu mieux",desc:"L\u00e9g\u00e8rement plus confiante, mais j'ai encore du travail."},bien_mieux:{label:"Bien mieux",desc:"En 4 mois, ma confiance a clairement progress\u00e9."},transformee:{label:"Transform\u00e9e",desc:"Ma fa\u00e7on de me voir et de me parler a profond\u00e9ment chang\u00e9."},nouvelle_moi:{label:"Nouvelle moi",desc:"Je ne me reconnais presque plus \u2014 dans le meilleur sens du terme."}}},
+      q3:{title:"Les peurs du d\u00e9part \u2014 o\u00f9 en es-tu avec elles aujourd'hui ?",options:{encore_la:{label:"Certaines sont encore l\u00e0",desc:"Malgr\u00e9 4 mois, certaines peurs persistent encore."},reduites:{label:"R\u00e9duites",desc:"Encore pr\u00e9sentes mais elles ont moins de pouvoir sur moi."},transformees:{label:"Transform\u00e9es",desc:"Elles se sont transform\u00e9es en forces ou en leviers de progression."},disparues:{label:"Disparues",desc:"Ce programme m'a aid\u00e9e \u00e0 les d\u00e9passer compl\u00e8tement."},nouvelles:{label:"De nouvelles ont \u00e9merg\u00e9",desc:"J'ai d\u00e9couvert de nouvelles peurs en cours de route \u2014 et c'est ok."}}},
+      q4:{title:"Physiquement, comment tu te sens aujourd'hui compar\u00e9 au jour 1 ?",options:{pareil:{label:"Pareille",desc:"Je ne sens pas de grande diff\u00e9rence physique apr\u00e8s 4 mois."},un_peu_mieux:{label:"Un peu mieux",desc:"L\u00e9g\u00e8rement mieux, avec quelques changements notables."},bien_mieux:{label:"Bien mieux",desc:"Mon corps a clairement chang\u00e9 \u2014 plus d'\u00e9nergie, plus de l\u00e9g\u00e8ret\u00e9."},forte:{label:"Plus forte",desc:"Plus forte, plus capable, plus \u00e0 l'aise dans mon corps."},transformee:{label:"Transform\u00e9e",desc:"Mon corps est m\u00e9connaissable par rapport au d\u00e9but."}}},
+      q5:{title:"Ma motivation sur l'ensemble des 4 mois",options:{difficile:{label:"Difficile \u00e0 maintenir",desc:"J'ai beaucoup lutt\u00e9 pour rester motiv\u00e9e tout au long du programme."},hauts_bas:{label:"Des hauts et des bas",desc:"Une montagne russe \u2014 mais j'ai toujours fini par me relever."},stable:{label:"Globalement stable",desc:"Un cap r\u00e9gulier sans grandes chutes ni grands pics."},en_hausse:{label:"En hausse progressive",desc:"Plus le temps passait, plus j'\u00e9tais motiv\u00e9e."},au_top:{label:"Au top du d\u00e9but \u00e0 la fin",desc:"Je me suis donn\u00e9e \u00e0 fond pendant 4 mois sans jamais l\u00e2cher."}}},
+      q6:{title:"Quand tu te regardes dans le miroir aujourd'hui vs jour 1",options:{pareil:{label:"La m\u00eame chose",desc:"Mon regard sur moi n'a pas vraiment \u00e9volu\u00e9 en 4 mois."},plus_douce:{label:"Plus de douceur",desc:"Je me regarde avec plus de bienveillance qu'avant."},changements:{label:"Des changements concrets",desc:"Je vois des transformations physiques r\u00e9elles dont je suis fi\u00e8re."},fierte:{label:"De la fiert\u00e9",desc:"Je me sens fi\u00e8re de ce que je vois \u2014 ce corps a travaill\u00e9 dur."},reconciliee:{label:"R\u00e9concili\u00e9e",desc:"Je me suis r\u00e9concili\u00e9e avec mon corps. C'est un cadeau immense."}}},
+      q7:{title:"As-tu r\u00e9ussi \u00e0 \u00eatre plus douce et bienveillante avec toi-m\u00eame ?",options:{pas_du_tout:{label:"Pas du tout",desc:"Je suis encore tr\u00e8s dure avec moi-m\u00eame."},un_peu:{label:"Un peu",desc:"J'ai progress\u00e9 sur ce point, mais c'est encore difficile."},oui_globalement:{label:"Globalement oui",desc:"J'ai appris \u00e0 me relever plus vite et \u00e0 moins me juger."},vraiment:{label:"Vraiment oui",desc:"La bienveillance envers moi-m\u00eame est devenue une vraie habitude."},entierement:{label:"Enti\u00e8rement",desc:"Je me parle avec amour et douceur. Ce programme a tout chang\u00e9."}}},
+      q8:{title:"LA transformation dont je suis la plus fi\u00e8re",options:{corps:{label:"Mon corps",desc:"Les changements physiques visibles construits semaine apr\u00e8s semaine."},mental:{label:"Mon mental",desc:"Ma fa\u00e7on de me voir, de me parler et de g\u00e9rer les obstacles."},regularite:{label:"Ma r\u00e9gularit\u00e9",desc:"Avoir tenu 4 mois \u2014 quoi qu'il arrive, j'\u00e9tais l\u00e0."},confiance:{label:"Ma confiance",desc:"Je me sens plus s\u00fbre de moi dans le sport et dans la vie."},tout:{label:"Tout \u00e0 la fois",desc:"Corps, mental, r\u00e9gularit\u00e9, confiance \u2014 tout a chang\u00e9 en 4 mois."}}},
+      q9:{title:"Maintenant que le programme est termin\u00e9, comment j'envisage la suite",options:{ancrer:{label:"Ancrer les habitudes",desc:"Je veux consolider tout ce que j'ai appris pour que \u00e7a reste dans ma vie."},continuer_seule:{label:"Voler de mes propres ailes",desc:"Je me sens suffisamment solide pour maintenir mes habitudes de fa\u00e7on autonome."},aller_plus_loin:{label:"Aller encore plus loin",desc:"Ce programme m'a donn\u00e9 encore plus envie de progresser."},nouveau_objectif:{label:"Nouveau d\u00e9fi",desc:"Je veux me fixer un nouvel objectif et repartir sur quelque chose de nouveau."},continuer_avec_toi:{label:"Continuer avec toi",desc:"Je veux poursuivre l'accompagnement \u2014 ce qu'on a construit est trop pr\u00e9cieux."}}},
+      q10:{title:"\u00c9valuation globale de l'accompagnement",options:{"1":{label:"À am\u00e9liorer",desc:"Plusieurs points m'ont manqu\u00e9 ou d\u00e9\u00e7ue."},"2":{label:"Passable",desc:"Bien par moments, insuffisant \u00e0 d'autres."},"3":{label:"Bien",desc:"Bien accompagn\u00e9e, avec des pistes d'am\u00e9lioration."},"4":{label:"Tr\u00e8s bien",desc:"Vraiment bien suivie et soutenue tout au long du programme."},"5":{label:"Exceptionnel",desc:"Cet accompagnement a d\u00e9pass\u00e9 toutes mes attentes."}}},
+      q11:{title:"Ce qui m'a le plus aid\u00e9e dans l'accompagnement",options:{disponibilite:{label:"La disponibilit\u00e9",desc:"Je me suis sentie soutenue et jamais seule dans ce parcours."},programme:{label:"La qualit\u00e9 du programme",desc:"Le contenu \u00e9tait adapt\u00e9, progressif et bien construit."},bienveillance:{label:"La bienveillance",desc:"Toujours encou rag\u00e9e sans jamais \u00eatre jug\u00e9e."},suivi:{label:"Le suivi personnalis\u00e9",desc:"J'avais l'impression que tout \u00e9tait vraiment fait pour moi."},mental:{label:"Le travail mental",desc:"Travailler sur ma fa\u00e7on de me voir, pas seulement sur mon corps."}}},
+      q13:{title:"Est-ce que tu recommanderais cet accompagnement ?",options:{non:{label:"Non",desc:"Je ne le recommanderais pas dans l'\u00e9tat actuel."},peut_etre:{label:"Peut-\u00eatre",desc:"Ca d\u00e9pend du profil de la personne et de ses attentes."},probablement:{label:"Probablement",desc:"Oui, si la personne est pr\u00eate \u00e0 vraiment s'impliquer."},oui:{label:"Oui",desc:"Je le recommanderais sans h\u00e9sitation."},absolument:{label:"Absolument !",desc:"Je l'ai d\u00e9j\u00e0 dit autour de moi, ou je compte le faire."}}}
+    };
+
+    var multiQs=['q3','q11'];
+    var coachingQs=['q10','q11','q12','q13'];
+
+    var h='<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Bilan Final Mois 4 - '+prenom+'</title>';
+    h+='<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">';
+    h+='<style>body{font-family:"Nunito",sans-serif;max-width:800px;margin:40px auto;padding:20px;background:#fdf6e3;color:#3d2b00}';
+    h+='.header{text-align:center;margin-bottom:40px;border-bottom:3px solid #f6c846;padding-bottom:20px}';
+    h+='.badge{display:inline-block;background:linear-gradient(135deg,#c2410c,#b45309);color:white;font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 16px;border-radius:99px;margin-bottom:10px}';
+    h+='.header h1{font-family:"Playfair Display",serif;font-size:2rem;color:#d97706;margin-bottom:8px}.header p{font-style:italic;color:#7c5a1a}';
+    h+='.meta{background:#fef3c7;padding:16px;border-radius:12px;margin-bottom:30px;border-left:4px solid #f6c846}.meta strong{color:#d97706}';
+    h+='.question-block{margin-bottom:24px;padding:20px;background:#fffbf0;border-radius:12px;border:1.5px solid rgba(246,200,70,0.4)}';
+    h+='.question-block.coaching{border-color:rgba(194,65,12,0.3);background:#fff8f5}';
+    h+='.question-num{font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#d97706;margin-bottom:4px}';
+    h+='.tag{display:inline-block;font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:99px;margin-bottom:6px}';
+    h+='.tag-new{background:rgba(217,119,6,0.1);color:#d97706;border:1px solid rgba(217,119,6,0.25)}';
+    h+='.tag-coaching{background:rgba(194,65,12,0.1);color:#c2410c;border:1px solid rgba(194,65,12,0.25)}';
+    h+='.question-text{font-family:"Playfair Display",serif;font-size:1.05rem;color:#b45309;margin-bottom:12px;line-height:1.5}';
+    h+='.answer{background:rgba(246,200,70,0.15);padding:12px 16px;border-radius:10px;border-left:3px solid #f6c846}';
+    h+='.answer.coaching{border-left-color:#c2410c;background:rgba(194,65,12,0.08)}';
+    h+='.answer-title{font-weight:700;color:#d97706;margin-bottom:4px}.answer-desc{font-style:italic;color:#7c5a1a;font-size:0.88rem;line-height:1.5}';
+    h+='.answer-text{color:#3d2b00;line-height:1.6;white-space:pre-wrap}';
+    h+='.footer{text-align:center;margin-top:40px;padding-top:20px;border-top:2px solid #f6c846;color:#7c5a1a;font-style:italic}';
+    h+='@media print{body{background:white}}</style></head><body>';
+    h+='<div class="header"><span class="badge">&#x1F3C6; Bilan Final &#8212; Semaines 13 &#224; 16</span><h1>&#x1F4CB; Bilan Final Mois 4</h1><p>by maefitways</p></div>';
+    h+='<div class="meta"><strong>Pr\u00e9nom&#160;:</strong> '+prenom+'&nbsp;&nbsp;|&nbsp;&nbsp;<strong>Date&#160;:</strong> '+dateSign+'</div>';
+
+    var qNum=1;
+    for(var key in qData){
+      var data=qData[key];
+      var isCoaching=coachingQs.indexOf(key)!==-1;
+      var isMulti=multiQs.indexOf(key)!==-1;
+      var blockClass=isCoaching?' coaching':'';
+      var answerClass=isCoaching?' coaching':'';
+      if(isMulti){
+        var sel=fd.getAll(key);
+        if(sel.length>0){
+          h+='<div class="question-block'+blockClass+'"><div class="question-num">Question '+qNum+'</div>';
+          if(isCoaching)h+='<span class="tag tag-coaching">&#x1F4AC; Retour coaching</span><br>';
+          h+='<div class="question-text">'+data.title+'</div><div class="answer'+answerClass+'">';
+          sel.forEach(function(v){if(data.options[v]){h+='<div class="answer-title">&#x2713; '+data.options[v].label+'</div><div class="answer-desc">'+data.options[v].desc+'</div>';}});
+          h+='</div></div>';
+        }
+      } else {
+        var val=fd.get(key);
+        if(val&&data.options[val]){
+          h+='<div class="question-block'+blockClass+'"><div class="question-num">Question '+qNum+'</div>';
+          if(isCoaching)h+='<span class="tag tag-coaching">&#x1F4AC; Retour coaching</span><br>';
+          h+='<div class="question-text">'+data.title+'</div><div class="answer'+answerClass+'"><div class="answer-title">'+data.options[val].label+'</div><div class="answer-desc">'+data.options[val].desc+'</div></div></div>';
+        }
+      }
+      qNum++;
+    }
+
+    // Q12 - améliorer
+    var q12=fd.get('q12');
+    if(q12&&q12.trim()){
+      h+='<div class="question-block coaching"><div class="question-num">Question 12</div><span class="tag tag-coaching">&#x1F4AC; Retour coaching</span><br>';
+      h+='<div class="question-text">Ce que j\'aurais aim\u00e9 avoir en plus ou diff\u00e9remment</div>';
+      h+='<div class="answer coaching"><div class="answer-text">'+q12.trim().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</div></div></div>';
+    }
+
+    // Q14b - visibilité témoignage
+    var q14bData={non:{label:"Anonymat total",desc:"Ne souhaite pas que son t\u00e9moignage ou r\u00e9sultats soient partag\u00e9s."},texte_seul:{label:"T\u00e9moignage \u00e9crit uniquement",desc:"T\u00e9moignage \u00e9crit ok, sans photos ni pr\u00e9nom."},corps_flou:{label:"Photos sans visage",desc:"R\u00e9sultats physiques ok \u2014 visage flout\u00e9, recadr\u00e9 ou non visible."},tout_sauf_prenom:{label:"Photos + t\u00e9moignage (sans pr\u00e9nom)",desc:"Tout ok sauf mentionner le pr\u00e9nom."},tout:{label:"Tout partager",desc:"T\u00e9moignage + photos + pr\u00e9nom \u2014 fi\u00e8re de son parcours !"}};
+    var q14bVal=fd.get('q14b');
+    if(q14bVal&&q14bData[q14bVal]){
+      h+='<div class="question-block coaching"><div class="question-num">Question 14b \u2014 Visibilit\u00e9 t\u00e9moignage</div><span class="tag tag-coaching">&#x1F4AC; T\u00e9moignage</span><br>';
+      h+='<div class="question-text">Niveau de confort pour partager son t\u00e9moignage</div>';
+      h+='<div class="answer coaching"><div class="answer-title">'+q14bData[q14bVal].label+'</div><div class="answer-desc">'+q14bData[q14bVal].desc+'</div></div></div>';
+    }
+
+    // Q14 - témoignage
+    var q14=fd.get('q14');
+    if(q14&&q14.trim()){
+      h+='<div class="question-block"><div class="question-num">Question 14 \u2014 T\u00e9moignage</div>';
+      h+='<div class="question-text">Ce que je dirais \u00e0 quelqu\'un qui h\u00e9site \u00e0 se lancer</div>';
+      h+='<div class="answer"><div class="answer-text">'+q14.trim().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</div></div></div>';
+    }
+
+    // Q15 - message libre
+    var ml=fd.get('message_libre');
+    if(ml&&ml.trim()){
+      h+='<div class="question-block"><div class="question-num">Question 15 \u2014 Ressenti final</div>';
+      h+='<div class="question-text">Comment je me sens vraiment au terme de ces 4 mois</div>';
+      h+='<div class="answer"><div class="answer-text">'+ml.trim().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</div></div></div>';
+    }
+
+    h+='<div class="footer">&#x2728; Bilan Final g\u00e9n\u00e9r\u00e9 le '+new Date().toLocaleDateString('fr-FR')+' &#8212; maefitways</div></body></html>';
+
+    var blob=new Blob([h],{type:'text/html'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;a.download='bilan-final-'+prenom.toLowerCase().replace(/\s+/g,'-')+'.html';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  }
+</script>
+</body>
+</html>
