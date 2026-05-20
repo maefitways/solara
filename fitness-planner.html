@@ -266,6 +266,11 @@ tr:nth-child(even) td{background:rgba(240,232,216,.22)}
 .tpl-field label{display:block;font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--br);margin-bottom:4px}
 .tpl-field input,.tpl-field textarea{width:100%;border-radius:8px;border:1.5px solid var(--bd);background:var(--wh);padding:9px 12px;font-family:'Nunito',sans-serif;font-size:.86rem;color:var(--tx);outline:none}
 .tpl-field input:focus,.tpl-field textarea:focus{border-color:var(--yd)}
+.tpl-exo-row{display:grid;grid-template-columns:1.8fr .6fr .6fr 1fr auto auto;gap:6px;align-items:center;margin-bottom:7px}
+.tpl-exo-row input,.tpl-exo-row select{border-radius:7px;border:1.5px solid var(--bd);background:var(--cream);padding:7px 9px;font-family:'Nunito',sans-serif;font-size:.8rem;color:var(--tx);outline:none;width:100%}
+.tpl-exo-row input:focus,.tpl-exo-row select:focus{border-color:var(--yd)}
+.biset-check{display:flex;align-items:center;gap:4px;font-size:.7rem;color:var(--tl);cursor:pointer;white-space:nowrap}
+.biset-check input{width:14px;height:14px;accent-color:var(--sage,#8fad8a);flex-shrink:0}
 .tpl-field textarea{min-height:80px;resize:vertical}
 </style>
 </head>
@@ -950,8 +955,13 @@ function manageProg(prenom) {
     .then(function(s) {
       currentTemplates = s.exists && s.data().list ? s.data().list : [];
       renderTplList();
+      // Init one exo row
+      setTimeout(function() {
+        var list = document.getElementById('tpl-exo-list');
+        if (list && list.children.length === 0) addTplExoRow();
+      }, 100);
     })
-    .catch(function() { currentTemplates = []; renderTplList(); });
+    .catch(function() { currentTemplates = []; renderTplList(); setTimeout(function(){addTplExoRow();},100); });
 }
 
 function closeProgModal() {
@@ -972,31 +982,75 @@ function renderTplList() {
   currentTemplates.forEach(function(tpl, i) {
     var item = document.createElement('div');
     item.className = 'tpl-item';
-    var exoNames = tpl.exercices ? tpl.exercices.map(function(e){return e.nom;}).join(', ') : '—';
-    var cardioNames = tpl.cardio && tpl.cardio.length > 0 ? ' · Cardio: ' + tpl.cardio.map(function(c){return c.nom;}).join(', ') : '';
+    var exoLines = tpl.exercices ? tpl.exercices.map(function(e){
+      var line = h(e.nom);
+      if(e.series||e.reps) line += ' <span style="color:var(--sage-dark,#5a7a55);font-size:.72rem;font-weight:700">'+h(e.series||'')+'×'+h(e.reps||'')+'</span>';
+      if(e.repos) line += ' <span style="color:var(--tl);font-size:.7rem">'+h(e.repos)+'</span>';
+      if(e.biset) line += ' <span style="font-size:.63rem;background:#e8f5e5;color:#5a7a55;border-radius:3px;padding:1px 4px;border:1px solid #a8d5b0">BI</span>';
+      return line;
+    }).join('<br>') : '—';
+    var cardioStr = tpl.cardio && tpl.cardio.length > 0 ? '<br><span style="color:var(--sage-dark,#5a7a55);font-size:.72rem;font-weight:700">Cardio:</span> '+tpl.cardio.map(function(c){return h(c.nom)+(c.duree?' ('+h(c.duree)+')':'');}).join(', ') : '';
     item.innerHTML =
       '<div class="tpl-item-hdr">' +
         '<div class="tpl-item-name">' + h(tpl.nom) + '</div>' +
         '<button class="btn-red" onclick="deleteTpl(' + i + ')">✕</button>' +
       '</div>' +
-      '<div class="tpl-exo-list">' + h(exoNames) + h(cardioNames) + '</div>';
+      '<div class="tpl-exo-list" style="line-height:1.8">' + exoLines + cardioStr + '</div>';
     list.appendChild(item);
   });
   wrap.appendChild(list);
 }
 
+function addTplExoRow(data) {
+  data = data || {};
+  var list = document.getElementById('tpl-exo-list');
+  if (!list) return;
+  var row = document.createElement('div');
+  row.className = 'tpl-exo-row';
+  var reposOptions = ['','30s','45s','1min','1min30','2min','2min30','3min'];
+  var reposHtml = reposOptions.map(function(r){return '<option value="'+r+'"'+(data.repos===r?' selected':'')+'>'+( r||'Repos...')+'</option>';}).join('');
+  row.innerHTML =
+    '<input type="text" placeholder="Nom exercice" value="'+esc(data.nom||'')+'">' +
+    '<input type="text" placeholder="Séries" value="'+esc(data.series||'')+'">' +
+    '<input type="text" placeholder="Reps" value="'+esc(data.reps||'')+'">' +
+    '<select>'+reposHtml+'</select>' +
+    '<label class="biset-check"><input type="checkbox"'+(data.biset?' checked':'')+'>Bi-set</label>' +
+    '<button onclick="this.closest('.tpl-exo-row').remove()" style="background:rgba(220,80,60,.1);color:#c0392b;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:.8rem;flex-shrink:0">✕</button>';
+  list.appendChild(row);
+}
+
 function addTemplate() {
   var nom = document.getElementById('tpl-nom').value.trim();
-  var exosRaw = document.getElementById('tpl-exos').value.trim();
-  var cardioRaw = document.getElementById('tpl-cardio').value.trim();
   if (!nom) { alert('Merci de donner un nom à la séance !'); return; }
-  var exos = exosRaw ? exosRaw.split('\n').filter(function(l){return l.trim();}).map(function(l){return {nom:l.trim()};}) : [];
-  var cardio = cardioRaw ? cardioRaw.split('\n').filter(function(l){return l.trim();}).map(function(l){return {nom:l.trim()};}) : [];
-  currentTemplates.push({nom:nom, exercices:exos, cardio:cardio});
+  
+  var exos = [];
+  document.querySelectorAll('#tpl-exo-list .tpl-exo-row').forEach(function(row) {
+    var inputs = row.querySelectorAll('input[type=text]');
+    var sel = row.querySelector('select');
+    var cb = row.querySelector('input[type=checkbox]');
+    if (inputs[0] && inputs[0].value.trim()) {
+      exos.push({
+        nom: inputs[0].value.trim(),
+        series: inputs[1] ? inputs[1].value.trim() : '',
+        reps: inputs[2] ? inputs[2].value.trim() : '',
+        repos: sel ? sel.value : '',
+        biset: cb ? cb.checked : false
+      });
+    }
+  });
+
+  var cardioNom = document.getElementById('tpl-cardio-nom') ? document.getElementById('tpl-cardio-nom').value.trim() : '';
+  var cardioDuree = document.getElementById('tpl-cardio-duree') ? document.getElementById('tpl-cardio-duree').value.trim() : '';
+  var cardio = cardioNom ? [{nom: cardioNom, duree: cardioDuree}] : [];
+
+  currentTemplates.push({nom: nom, exercices: exos, cardio: cardio});
   saveTpl();
   document.getElementById('tpl-nom').value = '';
-  document.getElementById('tpl-exos').value = '';
-  document.getElementById('tpl-cardio').value = '';
+  document.getElementById('tpl-exo-list').innerHTML = '';
+  if (document.getElementById('tpl-cardio-nom')) document.getElementById('tpl-cardio-nom').value = '';
+  if (document.getElementById('tpl-cardio-duree')) document.getElementById('tpl-cardio-duree').value = '';
+  // Add one empty row for next template
+  addTplExoRow();
 }
 
 function deleteTpl(i) {
@@ -1013,6 +1067,7 @@ function saveTpl() {
     .catch(function(e) { console.error('saveTpl:', e); });
 }
 
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function h(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 </script>
 
@@ -1022,33 +1077,32 @@ function h(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replac
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
       <div>
         <div class="modal-title" id="modal-title">Programme de —</div>
-        <div class="modal-sub" id="modal-sub">Crée les séances template pour cette coachée</div>
+        <div class="modal-sub">Crée les séances du programme de ta coachée</div>
       </div>
       <button class="btn-red" onclick="closeProgModal()">✕ Fermer</button>
     </div>
-
-    <!-- LISTE TEMPLATES EXISTANTS -->
     <div id="tpl-list-wrap"></div>
-
-    <!-- AJOUTER UN TEMPLATE -->
     <div class="tpl-add-form" id="tpl-add-form">
-      <h4>➕ Ajouter une séance au programme</h4>
+      <h4>➕ Ajouter une séance</h4>
       <div class="tpl-field">
         <label>Nom de la séance</label>
-        <input type="text" id="tpl-nom" placeholder="Ex : Séance Jambes, Séance Haut du corps...">
+        <input type="text" id="tpl-nom" placeholder="Ex : Séance Jambes A, Haut du corps...">
       </div>
       <div class="tpl-field">
-        <label>Exercices (un par ligne)</label>
-        <textarea id="tpl-exos" placeholder="Squat&#10;Leg press&#10;Fentes&#10;Hip thrust&#10;Leg curl"></textarea>
+        <label>Exercices</label>
+        <div id="tpl-exo-list"></div>
+        <button onclick="addTplExoRow()" style="margin-top:8px;background:var(--beige);color:var(--brd);border:1.5px solid var(--bd);border-radius:99px;padding:7px 14px;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer">+ Exercice</button>
       </div>
       <div class="tpl-field">
-        <label>Cardio (optionnel, un par ligne)</label>
-        <textarea id="tpl-cardio" placeholder="Tapis de course&#10;Vélo elliptique" style="min-height:56px"></textarea>
+        <label>Cardio (optionnel)</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <input type="text" id="tpl-cardio-nom" placeholder="Ex : Tapis de course">
+          <input type="text" id="tpl-cardio-duree" placeholder="Ex : 20 min">
+        </div>
       </div>
-      <button class="btn-y" onclick="addTemplate()" style="margin-top:4px">✓ Ajouter cette séance</button>
+      <button class="btn-y" onclick="addTemplate()" style="margin-top:12px">✓ Ajouter cette séance</button>
     </div>
-
-    <p style="font-size:.74rem;color:var(--tl);font-style:italic;text-align:center;margin-top:8px">Les modifications sont sauvegardées instantanément dans Firebase. 💛</p>
+    <p style="font-size:.72rem;color:var(--tl);font-style:italic;text-align:center;margin-top:8px">Sauvegardé instantanément dans Firebase. 💛</p>
   </div>
 </div>
 </body>
