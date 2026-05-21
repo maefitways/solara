@@ -100,9 +100,9 @@
   .signature-card{background:linear-gradient(135deg,#fffbf0 60%,#fef3c7 100%);border:1.5px solid rgba(246,200,70,0.5);border-radius:20px;padding:32px 28px;margin-bottom:28px;box-shadow:0 4px 24px var(--shadow);position:relative;overflow:hidden}
   .signature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--yellow),var(--orange));border-radius:20px 20px 0 0}
   .signature-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--orange-dark);margin-bottom:20px;line-height:1.5}
-  .signature-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px}
+  .signature-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px;align-items:start}
   .sig-field label{display:block;font-size:0.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
-  .sig-field input[type="text"],.sig-field input[type="date"]{width:100%;border-radius:10px;border:2px solid rgba(246,200,70,0.4);background:rgba(255,251,240,0.9);padding:10px 14px;font-family:'Nunito',sans-serif;font-size:0.93rem;color:var(--text);outline:none;transition:border-color 0.2s,box-shadow 0.2s}
+  .sig-field input[type="text"],.sig-field input[type="date"]{width:100%;border-radius:10px;border:2px solid rgba(246,200,70,0.4);background:rgba(255,251,240,0.9);padding:10px 14px;font-family:'Nunito',sans-serif;font-size:0.93rem;color:var(--text);outline:none;transition:border-color 0.2s,box-shadow 0.2s;box-sizing:border-box;max-width:100%;overflow:hidden}
   .sig-field input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(246,200,70,0.3)}
   .engagement-check{display:flex;align-items:flex-start;gap:14px;cursor:pointer;padding:16px;border-radius:14px;border:2px solid rgba(246,200,70,0.4);background:rgba(255,251,240,0.8);transition:all 0.22s ease}
   .engagement-check:hover{border-color:var(--yellow);background:rgba(246,200,70,0.1)}
@@ -404,7 +404,7 @@
       <div class="signature-card">
         <div class="question-number">Engagement final 🤝</div>
         <p class="signature-title">Je certifie avoir répondu à ce bilan final avec sincérité et honnêteté, pour clôturer ce programme de la façon la plus juste et authentique possible.</p>
-        <div class="signature-fields">
+        <div class="signature-fields" style="overflow:hidden">
           <div class="sig-field"><label for="sig-prenom">Mon prénom</label><input type="text" id="sig-prenom" name="prenom" placeholder="Ex : Léa" required></div>
           <div class="sig-field"><label for="sig-date">Date</label><input type="date" id="sig-date" name="date_signature" required></div>
         </div>
@@ -416,7 +416,7 @@
       </div>
 
       <div class="submit-wrap">
-        <button type="submit" class="btn-submit">Envoyer mon bilan final ☀️</button>
+        <button type="submit" class="btn-submit">Valider mon bilan final ☀️</button>
       </div>
     </form>
   </div>
@@ -425,16 +425,17 @@
   <div class="thankyou" id="thankyou">
     <div class="ty-sun">🏆</div>
     <h2>Tu as fait quelque chose d'exceptionnel. 🌟</h2>
-    <p class="ty-sub">4 mois. 16 semaines. Des dizaines de séances, de petites victoires, de doutes traversés et de limites repoussées. Tu n'es plus la même personne qu'au jour 1 — et c'est entièrement grâce à toi. 💛</p>
+    
     <div class="ty-card">
       <p>Pour clôturer ce beau chapitre :</p>
       <div class="ty-steps">
         <div class="ty-step"><span class="ty-icon">📸</span><div><strong>Envoie tes photos avant/après sur WhatsApp</strong><span>si ce n'est pas encore fait — c'est la meilleure façon de mesurer le chemin parcouru.</span></div></div>
-        <div class="ty-step"><span class="ty-icon">🗂️</span><div><strong>Retourne sur la plateforme</strong><span>et redécouvre tous les modules et tout le contenu que tu as traversé en 4 mois.</span></div></div>
+        <div class="ty-step"><span class="ty-icon">📤</span><div><strong>Télécharge ton récapitulatif</strong><span>clique sur le bouton ci-dessous et envoie-le moi directement sur WhatsApp.</span></div></div>
         <div class="ty-step"><span class="ty-icon">🌟</span><div><strong>Savoure cette victoire</strong><span>— tu as accompli quelque chose que beaucoup n'osent même pas commencer.</span></div></div>
       </div>
     </div>
-    <button class="btn-download" id="downloadBtn">📄 Télécharger mon récapitulatif final</button>
+    
+        <button class="btn-download" id="downloadBtn">📄 Télécharger mon récapitulatif 📤 📤</button>
     <p class="ty-closing" style="margin-top:28px">Merci d'avoir fait confiance à ce programme et à moi pour t'accompagner. <strong>Ce que tu as construit en 4 mois t'appartient pour toujours. 💛</strong></p>
     <span class="brand">by maefitways</span>
   </div>

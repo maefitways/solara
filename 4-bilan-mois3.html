@@ -59,9 +59,9 @@
   .signature-card{background:linear-gradient(135deg,#fffbf0 60%,#fef3c7 100%);border:1.5px solid rgba(246,200,70,0.5);border-radius:20px;padding:32px 28px;margin-bottom:28px;box-shadow:0 4px 24px var(--shadow);position:relative;overflow:hidden}
   .signature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--yellow),var(--orange));border-radius:20px 20px 0 0}
   .signature-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--orange-dark);margin-bottom:20px;line-height:1.5}
-  .signature-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px}
+  .signature-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px;align-items:start}
   .sig-field label{display:block;font-size:0.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
-  .sig-field input[type="text"],.sig-field input[type="date"]{width:100%;border-radius:10px;border:2px solid rgba(246,200,70,0.4);background:rgba(255,251,240,0.9);padding:10px 14px;font-family:'Nunito',sans-serif;font-size:0.93rem;color:var(--text);outline:none;transition:border-color 0.2s,box-shadow 0.2s}
+  .sig-field input[type="text"],.sig-field input[type="date"]{width:100%;border-radius:10px;border:2px solid rgba(246,200,70,0.4);background:rgba(255,251,240,0.9);padding:10px 14px;font-family:'Nunito',sans-serif;font-size:0.93rem;color:var(--text);outline:none;transition:border-color 0.2s,box-shadow 0.2s;box-sizing:border-box;max-width:100%;overflow:hidden}
   .sig-field input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(246,200,70,0.3)}
   .engagement-check{display:flex;align-items:flex-start;gap:14px;cursor:pointer;padding:16px;border-radius:14px;border:2px solid rgba(246,200,70,0.4);background:rgba(255,251,240,0.8);transition:all 0.22s ease}
   .engagement-check:hover{border-color:var(--yellow);background:rgba(246,200,70,0.1)}
@@ -296,7 +296,7 @@
       <div class="signature-card">
         <div class="question-number">Engagement 🤝</div>
         <p class="signature-title">Je certifie avoir répondu à ce bilan avec sincérité et honnêteté, pour que mon accompagnement continue à être vraiment adapté à moi et à mon évolution.</p>
-        <div class="signature-fields">
+        <div class="signature-fields" style="overflow:hidden">
           <div class="sig-field"><label for="sig-prenom">Mon prénom</label><input type="text" id="sig-prenom" name="prenom" placeholder="Ex : Léa" required></div>
           <div class="sig-field"><label for="sig-date">Date</label><input type="date" id="sig-date" name="date_signature" required></div>
         </div>
@@ -308,7 +308,7 @@
       </div>
 
       <div class="submit-wrap">
-        <button type="submit" class="btn-submit">Envoyer mon bilan ☀️</button>
+        <button type="submit" class="btn-submit">Valider mon bilan ☀️</button>
       </div>
     </form>
   </div>
@@ -317,16 +317,17 @@
   <div class="thankyou" id="thankyou">
     <div class="ty-sun">🌟</div>
     <h2>3 mois. Tu y es presque ! 🌟</h2>
-    <p class="ty-sub">8 semaines de travail, d'effort et de courage — et tu es encore là, plus forte qu'au départ. Je suis immensément fière de toi. 💛</p>
+    
     <div class="ty-card">
       <p>Le dernier mois s'ouvre — voilà ce que je t'invite à faire :</p>
       <div class="ty-steps">
-        <div class="ty-step"><span class="ty-icon">🗂️</span><div><strong>Retourne sur la plateforme</strong><span>et découvre ton programme final qui vient de se débloquer.</span></div></div>
+        <div class="ty-step"><span class="ty-icon">📤</span><div><strong>Télécharge ton récapitulatif</strong><span>et envoie-le moi sur WhatsApp avec tes notes.</span></div></div>
         <div class="ty-step"><span class="ty-icon">👀</span><div><strong>Fais un tour de chaque section</strong><span>pour découvrir ce que j'ai préparé spécialement pour ce dernier mois.</span></div></div>
         <div class="ty-step"><span class="ty-icon">🚀</span><div><strong>Lance-toi dans ce dernier mois</strong><span>— avec toute l'énergie et la confiance que tu as construites. La ligne d'arrivée est en vue !</span></div></div>
       </div>
     </div>
-    <button class="btn-download" id="downloadBtn">📄 Télécharger mon récapitulatif</button>
+    
+        <button class="btn-download" id="downloadBtn">📄 Télécharger mon récapitulatif 📤</button>
     <p class="ty-closing" style="margin-top:24px">Je suis tellement fière de toi. <strong>Un dernier mois, et on y est ! 💛</strong></p>
     <span class="brand">by maefitways</span>
   </div>
