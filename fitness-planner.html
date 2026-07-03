@@ -564,7 +564,7 @@ function ld(k,d){var v=DATA[k];return(v!==undefined&&v!==null)?v:d;}
 function flash(){
   clearTimeout(SI_T);
   var e=document.getElementById('si');
-  e.textContent='✓ Sauvegardé';e.classList.add('ok');
+  e.textContent='Sauvegardé';e.classList.add('ok');
   SI_T=setTimeout(function(){e.classList.remove('ok');},2000);
 }
 
@@ -580,14 +580,14 @@ function doLogin(){
   var err=document.getElementById('le');
   if(!p||!w){err.textContent='Merci de renseigner ton prénom et ton mot de passe.';err.classList.add('on');return;}
   err.classList.remove('on');
-  document.getElementById('si').textContent='⏳ Vérification...';
+  document.getElementById('si').textContent=' Vérification...';
   fbGetUsers(function(users){
     if(users[p]&&users[p]===w){
       CU=p;
       document.getElementById('lp').style.display='none';
       document.getElementById('app').classList.add('on');
-      document.getElementById('wm').textContent='Bonjour '+p.charAt(0).toUpperCase()+p.slice(1)+' 💛';
-      document.getElementById('si').textContent='⏳ Chargement...';
+      document.getElementById('wm').textContent='Bonjour '+p.charAt(0).toUpperCase()+p.slice(1)+' ';
+      document.getElementById('si').textContent=' Chargement...';
       loadData(function(){
         initApp();
         setTimeout(function(){fireworks(1600);},400);
@@ -652,7 +652,7 @@ function renderAdmin(){
         document.getElementById('sm').textContent=mois;
         var g=document.getElementById('agrid');g.innerHTML='';
         if(keys.length===0){
-          g.innerHTML='<div class="aempty"><em>🌱</em><h3>Aucune coachée pour l\'instant</h3><p>Ajoute ta première coachée ci-dessus.</p></div>';
+          g.innerHTML='<div class="aempty"><em></em><h3>Aucune coachée pour l\'instant</h3><p>Ajoute ta première coachée ci-dessus.</p></div>';
           return;
         }
         keys.forEach(function(n,i){
@@ -664,13 +664,13 @@ function renderAdmin(){
           var c=document.createElement('div');c.className='ac';c.dataset.c=ci;
           c.innerHTML=
             '<div class="acat"><div class="acav" data-c="'+ci+'">'+n.charAt(0).toUpperCase()+'</div>'+
-            '<div><div class="acn">'+h(dn)+'</div><div class="acm">'+h(added)+'</div>'+(note?'<div class="acno">📌 '+h(note)+'</div>':'')+'</div></div>'+
+            '<div><div class="acn">'+h(dn)+'</div><div class="acm">'+h(added)+'</div>'+(note?'<div class="acno">'+h(note)+'</div>':'')+'</div></div>'+
             '<div class="accr">'+
               '<div class="acr"><span class="acrl">IDENTIFIANT</span><div style="display:flex;align-items:center;gap:5px"><span class="acrv">'+h(n)+'</span><button class="bcp" onclick="cp(\''+h(n)+'\',this)">Copier</button></div></div>'+
               '<div class="acr"><span class="acrl">MOT DE PASSE</span><div style="display:flex;align-items:center;gap:5px"><span class="acrv">'+h(pw)+'</span><button class="bcp" onclick="cp(\''+h(pw)+'\',this)">Copier</button></div></div>'+
             '</div>'+
             '<div class="acac">'+
-              '<button class="bep" onclick="togEP(this)">✏️ Changer le mdp</button>'+
+              '<button class="bep" onclick="togEP(this)">Changer le mdp</button>'+
               '<button class="bdl" onclick="delU(\''+h(n)+'\')">Supprimer</button>'+
             '</div>'+
             '<button class="btn-prog" data-user="'+h(n)+'" onclick="manageProg(this.dataset.user)" style="width:100%;margin-top:8px;background:linear-gradient(135deg,#f6c846,#e8a020);color:#3d2510;border:none;border-radius:8px;padding:9px;font-family:Nunito,sans-serif;font-size:.78rem;font-weight:800;cursor:pointer">Gérer son programme</button>'+
@@ -686,14 +686,14 @@ function renderAdmin(){
 }
 function cp(t,btn){
   navigator.clipboard.writeText(t).catch(function(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);});
-  var o=btn.textContent;btn.textContent='✓';btn.style.color='#16a34a';
+  var o=btn.textContent;btn.textContent='OK';btn.style.color='#16a34a';
   setTimeout(function(){btn.textContent=o;btn.style.color='';},1500);
 }
 function togEP(btn){
   var f=btn.closest('.ac').querySelector('.epf');
   var op=f.style.display==='block';
   f.style.display=op?'none':'block';
-  btn.textContent=op?'✏️ Changer le mdp':'✕ Annuler';
+  btn.textContent=op?'Changer le mdp':'x Annuler';
   if(!op)f.querySelector('input').focus();
 }
 function saveP(btn,n){
@@ -703,7 +703,7 @@ function saveP(btn,n){
     u[n]=np;
     fbSetUsers(u,function(){
       renderAdmin();
-      showM('✅ Mot de passe de '+n.charAt(0).toUpperCase()+n.slice(1)+' mis à jour !','ok');
+      showM('Mot de passe de '+n.charAt(0).toUpperCase()+n.slice(1)+' mis à jour !','ok');
     });
   });
 }
@@ -735,7 +735,7 @@ function doAdd(){
       document.getElementById('nn').value='';
       document.getElementById('np').value='';
       document.getElementById('no').value='';
-      showM('✅ '+n.charAt(0).toUpperCase()+n.slice(1)+' a bien été ajoutée !','ok');
+      showM(''+n.charAt(0).toUpperCase()+n.slice(1)+' a bien été ajoutée !','ok');
       renderAdmin();
     });
   });
@@ -773,7 +773,7 @@ function renderHabs(){
   var L=document.getElementById('hlist');L.innerHTML='';
   HABS.forEach(function(hb,i){
     var r=document.createElement('div');r.className='hr';
-    r.innerHTML='<input class="hni" placeholder="Ex : Boire 2L..." value="'+hb.replace(/"/g,'&quot;')+'"><button class="btnrm" onclick="rmHab('+i+')">✕</button>';
+    r.innerHTML='<input class="hni" placeholder="Ex : Boire 2L..." value="'+hb.replace(/"/g,'&quot;')+'"><button class="btnrm" onclick="rmHab('+i+')">x</button>';
     r.querySelector('input').addEventListener('input',function(){HABS[i]=this.value;sv('habs',HABS);renderHabT();});
     L.appendChild(r);
   });
@@ -834,7 +834,7 @@ function renderML(){
     ci.addEventListener('input',function(){ML[i].c=this.value;sw.style.background=this.value;sv('ml',ML);renderMC();});
     var ni=document.createElement('input');ni.className='mni';ni.placeholder='Humeur...';ni.value=m.n;
     ni.addEventListener('input',function(){ML[i].n=this.value;sv('ml',ML);});
-    var rm=document.createElement('button');rm.className='btnrm';rm.textContent='✕';
+    var rm=document.createElement('button');rm.className='btnrm';rm.textContent='x';
     rm.onclick=function(){ML.splice(i,1);sv('ml',ML);renderML();renderMC();};
     d.appendChild(sw);d.appendChild(ci);d.appendChild(ni);d.appendChild(rm);w.appendChild(d);
   });
@@ -904,7 +904,7 @@ function initPG(){
 function addPC(i,data){
   var g=document.getElementById('pgrid');
   var it=document.createElement('div');it.className='pasi';
-  it.innerHTML='<span class="pase">👟</span><div class="pasf"><label>Date</label><input placeholder="Ex : 15 jan" value="'+((data&&data['d'+i])||'').replace(/"/g,'&quot;')+'"><label style="margin-top:6px">Nombre de pas</label><input type="number" placeholder="Ex : 8500" value="'+((data&&data['p'+i])||'')+'"></div>';
+  it.innerHTML='<span class="pase"></span><div class="pasf"><label>Date</label><input placeholder="Ex : 15 jan" value="'+((data&&data['d'+i])||'').replace(/"/g,'&quot;')+'"><label style="margin-top:6px">Nombre de pas</label><input type="number" placeholder="Ex : 8500" value="'+((data&&data['p'+i])||'')+'"></div>';
   var ins=it.querySelectorAll('input');
   (function(idx){
     ins[0].addEventListener('input',function(){var d=ld('pdata',{});d['d'+idx]=ins[0].value;sv('pdata',d);});
@@ -923,7 +923,7 @@ function initHG(){
 function addHC(i,data){
   var g=document.getElementById('hgrid');
   var it=document.createElement('div');it.className='hi';
-  it.innerHTML='<span style="font-size:1.7rem;display:block;margin-bottom:5px">💧</span><label>Date</label><input placeholder="Ex : 15 jan" value="'+((data&&data['d'+i])||'').replace(/"/g,'&quot;')+'"><label style="margin-top:6px">Litres</label><input type="number" step="0.1" placeholder="1.5L" value="'+((data&&data['l'+i])||'')+'"></div>';
+  it.innerHTML='<span style="font-size:1.7rem;display:block;margin-bottom:5px"></span><label>Date</label><input placeholder="Ex : 15 jan" value="'+((data&&data['d'+i])||'').replace(/"/g,'&quot;')+'"><label style="margin-top:6px">Litres</label><input type="number" step="0.1" placeholder="1.5L" value="'+((data&&data['l'+i])||'')+'"></div>';
   var ins=it.querySelectorAll('input');
   (function(idx){
     ins[0].addEventListener('input',function(){var d=ld('hdata',{});d['d'+idx]=ins[0].value;sv('hdata',d);});
@@ -944,7 +944,7 @@ var currentTemplates = [];
 function manageProg(prenom) {
   currentProgUser = prenom;
   currentTemplates = [];
-  document.getElementById('modal-title').textContent = '🏋️ Programme de ' + prenom.charAt(0).toUpperCase() + prenom.slice(1);
+  document.getElementById('modal-title').textContent = ' Programme de ' + prenom.charAt(0).toUpperCase() + prenom.slice(1);
   document.getElementById('progModal').style.display = 'flex';
   // Clear form
   document.getElementById('tpl-nom').value = '';
@@ -993,7 +993,7 @@ function renderTplList() {
     item.innerHTML =
       '<div class="tpl-item-hdr">' +
         '<div class="tpl-item-name">' + h(tpl.nom) + '</div>' +
-        '<button class="btn-red" onclick="deleteTpl(' + i + ')">✕</button>' +
+        '<button class="btn-red" onclick="deleteTpl(' + i + ')">x</button>' +
       '</div>' +
       '<div class="tpl-exo-list" style="line-height:1.8">' + exoLines + cardioStr + '</div>';
     list.appendChild(item);
@@ -1015,7 +1015,7 @@ function addTplExoRow(data) {
     '<input type="text" placeholder="Reps" value="'+esc(data.reps||'')+'">' +
     '<select>'+reposHtml+'</select>' +
     '<label class="biset-check"><input type="checkbox"'+(data.biset?' checked':'')+'>Bi-set</label>' +
-    '<button onclick="this.closest('.tpl-exo-row').remove()" style="background:rgba(220,80,60,.1);color:#c0392b;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:.8rem;flex-shrink:0">✕</button>';
+    '<button onclick="this.closest('.tpl-exo-row').remove()" style="background:rgba(220,80,60,.1);color:#c0392b;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:.8rem;flex-shrink:0">x</button>';
   list.appendChild(row);
 }
 
