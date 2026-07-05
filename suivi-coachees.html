@@ -257,11 +257,9 @@ async function loadAllFiles(){
   filesByCoachee = {};
   for(const id of Object.keys(coachees)){
     try{
-      const folderRef = ref(storage, `documents`);
+      const folderRef = ref(storage, `documents/${id}`);
       const res = await listAll(folderRef);
-      filesByCoachee[id] = res.items
-        .filter(f=> f.name.includes(coachees[id].name||id))
-        .map(f=>({name:f.name, path:f.fullPath}));
+      filesByCoachee[id] = res.items.map(f=>({name:f.name, path:f.fullPath}));
     }catch(e){
       filesByCoachee[id] = [];
     }
@@ -368,7 +366,7 @@ window.uploadFileModal = id=>{
   input.type = "file";
   input.onchange = async e=>{
     const file = e.target.files?.[0]; if(!file) return;
-    const fileRef = ref(storage, `documents/${file.name}`);
+    const fileRef = ref(storage, `documents/${id}/${file.name}`);
     try{
       await uploadBytes(fileRef, file);
       await loadAllFiles(); render();
