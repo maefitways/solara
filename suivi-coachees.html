@@ -256,23 +256,13 @@ async function loadAllFiles(){
   if(!storage) return;
   filesByCoachee = {};
   for(const id of Object.keys(coachees)){
-    filesByCoachee[id] = [];
-  }
-  try{
-    const folderRef = ref(storage, `documents`);
-    const res = await listAll(folderRef);
-    res.items.forEach(f=>{
-      for(const id of Object.keys(coachees)){
-        const coacheeName = (coachees[id].name||"").toLowerCase();
-        const fileName = f.name.toLowerCase();
-        if(coacheeName && fileName.includes(coacheeName)){
-          filesByCoachee[id].push({name:f.name, path:f.fullPath});
-          break;
-        }
-      }
-    });
-  }catch(e){
-    console.error("Erreur chargement fichiers:", e);
+    try{
+      const folderRef = ref(storage, `documents/${id}`);
+      const res = await listAll(folderRef);
+      filesByCoachee[id] = res.items.map(f=>({name:f.name, path:f.fullPath}));
+    }catch(e){
+      filesByCoachee[id] = [];
+    }
   }
 }
 
@@ -376,7 +366,7 @@ window.uploadFileModal = id=>{
   input.type = "file";
   input.onchange = async e=>{
     const file = e.target.files?.[0]; if(!file) return;
-    const fileRef = ref(storage, `documents/${file.name}`);
+    const fileRef = ref(storage, `documents/${id}/${file.name}`);
     try{
       await uploadBytes(fileRef, file);
       await loadAllFiles(); render();
