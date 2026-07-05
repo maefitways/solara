@@ -19,6 +19,7 @@
     --grey:#9a8f7c;
     --grey-wash:#f0ebe0;
     --red:#c9603f;
+    --red-wash:#fbe6df;
     --shadow:0 1px 2px rgba(80,60,20,.06),0 8px 24px rgba(80,60,20,.06);
   }
   *{box-sizing:border-box}
@@ -26,10 +27,10 @@
   body{
     margin:0;background:var(--paper);color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    line-height:1.5;padding-bottom:80px;
+    line-height:1.5;padding-bottom:20px;
   }
-  .wrap{max-width:1080px;margin:0 auto;padding:20px 16px}
-  header.top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+  .wrap{max-width:1400px;margin:0 auto;padding:20px 16px}
+  header.top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px}
   .brand{display:flex;align-items:center;gap:10px}
   .sun{width:26px;height:26px;flex:none;border-radius:50%;
     background:radial-gradient(circle at 50% 50%,var(--gold) 0 42%,transparent 46%),
@@ -45,7 +46,7 @@
   .dot.on{background:var(--green)}
   .dot.err{background:var(--red)}
 
-  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
   .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
   .stat b{display:block;font-size:1.5rem;line-height:1;font-weight:800}
   .stat small{color:var(--ink-soft);font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
@@ -53,52 +54,41 @@
   .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
   .search{flex:1;min-width:180px;position:relative}
   .search input{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:11px;font-size:.95rem;background:var(--card)}
-  .filters{display:flex;gap:6px;flex-wrap:wrap}
-  .chip{border:1px solid var(--line);background:var(--card);color:var(--ink-soft);
-    padding:8px 13px;border-radius:20px;font-size:.82rem;cursor:pointer;transition:.15s}
-  .chip.active{background:var(--gold-wash);border-color:var(--gold);color:var(--gold-deep);font-weight:600}
   .btn{border:none;border-radius:11px;padding:11px 16px;font-size:.9rem;font-weight:700;cursor:pointer;transition:.15s}
   .btn.primary{background:var(--gold);color:#3a2c0a}
   .btn.primary:hover{background:var(--gold-deep);color:#fff}
-  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink-soft)}
 
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
-  .card-h{padding:14px 16px 10px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-  .who{display:flex;flex-direction:column;gap:2px;min-width:0}
-  .who .name{font-weight:800;font-size:1.05rem}
-  .who .goal{font-size:.8rem;color:var(--ink-soft)}
-  .tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:4px 9px;border-radius:20px;white-space:nowrap;flex:none}
-  .tag.active{background:var(--green-wash);color:var(--green)}
-  .tag.pause{background:var(--grey-wash);color:var(--grey)}
-  .tag.done{background:var(--gold-wash);color:var(--gold-deep)}
+  .tbl-wrap{overflow-x:auto;box-shadow:var(--shadow);border-radius:16px;background:var(--card);border:1px solid var(--line)}
+  table{width:100%;border-collapse:collapse;font-size:.88rem}
+  th{background:var(--gold-wash);color:var(--ink);font-weight:700;padding:12px 10px;text-align:left;border-bottom:2px solid var(--gold);text-transform:uppercase;font-size:.75rem;letter-spacing:.04em}
+  td{padding:12px 10px;border-bottom:1px solid var(--line)}
+  tr:hover td{background:var(--gold-wash)}
+  tr:last-child td{border-bottom:none}
 
-  .progress{padding:0 16px 4px}
-  .months{display:flex;gap:5px}
-  .month{flex:1;height:34px;border-radius:8px;background:var(--grey-wash);border:1px solid var(--line);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.6rem;color:var(--grey);position:relative}
-  .month.on{background:var(--gold-wash);border-color:var(--gold);color:var(--gold-deep)}
-  .month b{font-size:.78rem;line-height:1}
-  .month small{font-size:.55rem}
+  .name-cell{font-weight:700;color:var(--ink)}
+  .date-cell{color:var(--ink-soft);font-size:.82rem}
+  .date-cell.done{background:var(--green-wash);color:var(--green);font-weight:600;border-radius:6px;padding:4px 8px;display:inline-block}
+  .date-cell.empty{color:var(--grey)}
 
-  .next{margin:10px 16px;padding:10px 12px;background:var(--gold-wash);border-radius:11px;font-size:.85rem;display:flex;gap:8px;align-items:flex-start}
-  .next.overdue{background:#fbe6df}
-  .next .lbl{font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:var(--gold-deep);font-weight:700;display:block;margin-bottom:1px}
-  .next.overdue .lbl{color:var(--red)}
+  .status-select{padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-size:.82rem;background:var(--paper);font-weight:600;cursor:pointer;color:var(--ink)}
+  .status-select option{padding:4px}
 
-  .meta{padding:2px 16px 14px;display:flex;flex-direction:column;gap:5px;font-size:.83rem;color:var(--ink-soft)}
-  .meta .row{display:flex;justify-content:space-between;gap:10px}
-  .meta .row span:last-child{color:var(--ink);font-weight:600;text-align:right}
-  .notes-preview{padding:0 16px 12px;font-size:.8rem;color:var(--ink-soft);font-style:italic}
-  .card-f{margin-top:auto;border-top:1px solid var(--line);display:flex}
-  .card-f button{flex:1;border:none;background:transparent;padding:11px;font-size:.82rem;font-weight:600;color:var(--ink-soft);cursor:pointer}
-  .card-f button:hover{background:var(--gold-wash);color:var(--gold-deep)}
-  .card-f button+button{border-left:1px solid var(--line)}
+  .files-cell{display:flex;flex-direction:column;gap:6px}
+  .file-item{background:var(--gold-wash);padding:6px 10px;border-radius:8px;font-size:.8rem;color:var(--gold-deep);font-weight:600;word-break:break-word;display:flex;justify-content:space-between;align-items:start;gap:8px}
+  .file-item a{color:var(--gold-deep);text-decoration:none;flex:1}
+  .file-item a:hover{text-decoration:underline}
+  .file-del{color:var(--red);cursor:pointer;font-weight:700;font-size:1rem;line-height:1}
+  .file-del:hover{color:var(--red-wash)}
 
-  .empty{text-align:center;padding:60px 20px;color:var(--ink-soft)}
+  .upload-btn{background:var(--green-wash);color:var(--green);border:none;border-radius:8px;padding:6px 12px;font-size:.8rem;font-weight:700;cursor:pointer;transition:.15s}
+  .upload-btn:hover{background:var(--green);color:#fff}
+
+  .empty{text-align:center;padding:40px 20px;color:var(--ink-soft)}
   .empty .sun{width:44px;height:44px;margin:0 auto 14px}
 
-  /* modal */
+  .fab{position:fixed;right:18px;bottom:18px;background:var(--gold);color:#3a2c0a;border:none;border-radius:16px;padding:15px 20px;font-size:.95rem;font-weight:800;box-shadow:0 8px 24px rgba(200,144,26,.4);cursor:pointer;z-index:40}
+
+  /* Modal */
   .overlay{position:fixed;inset:0;background:rgba(43,33,21,.45);display:none;align-items:flex-start;justify-content:center;padding:20px;overflow:auto;z-index:50}
   .overlay.show{display:flex}
   .modal{background:var(--card);border-radius:18px;width:100%;max-width:540px;box-shadow:0 20px 60px rgba(0,0,0,.25);margin:auto}
@@ -112,11 +102,13 @@
   .field textarea{resize:vertical;min-height:70px}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .modal-f{padding:16px 20px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:space-between}
-  .fab{position:fixed;right:18px;bottom:18px;background:var(--gold);color:#3a2c0a;border:none;border-radius:16px;padding:15px 20px;font-size:.95rem;font-weight:800;box-shadow:0 8px 24px rgba(200,144,26,.4);cursor:pointer;z-index:40}
-  @media(max-width:560px){
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink-soft)}
+
+  @media(max-width:768px){
     .stats{grid-template-columns:repeat(2,1fr)}
-    .grid{grid-template-columns:1fr}
-    .two{grid-template-columns:1fr}
+    table{font-size:.75rem}
+    th,td{padding:8px 6px}
+    .tbl-wrap{font-size:.8rem}
   }
 </style>
 </head>
@@ -127,7 +119,7 @@
       <div class="sun"></div>
       <div>
         <h1>Suivi <span>coachées</span></h1>
-        <p class="sub">SOLARA · ton tableau de bord perso</p>
+        <p class="sub">SOLARA · tableau de bord</p>
       </div>
     </div>
     <div class="sync"><span class="dot" id="syncDot"></span><span id="syncTxt">Connexion…</span></div>
@@ -136,24 +128,36 @@
   <div class="stats">
     <div class="stat"><b id="stTotal">0</b><small>Coachées</small></div>
     <div class="stat"><b id="stActive">0</b><small>En cours</small></div>
-    <div class="stat"><b id="stSoon">0</b><small>À relancer</small></div>
     <div class="stat"><b id="stDone">0</b><small>Terminées</small></div>
+    <div class="stat"><b id="stFiles">0</b><small>Fichiers</small></div>
   </div>
 
   <div class="bar">
     <div class="search"><input id="search" placeholder="Rechercher une coachée…"></div>
-    <div class="filters" id="filters">
-      <button class="chip active" data-f="all">Toutes</button>
-      <button class="chip" data-f="active">En cours</button>
-      <button class="chip" data-f="pause">En pause</button>
-      <button class="chip" data-f="done">Terminées</button>
-    </div>
+    <button class="btn primary" onclick="openModal()">+ Nouvelle coachée</button>
   </div>
 
-  <div class="grid" id="grid"></div>
+  <div class="tbl-wrap">
+    <table id="table">
+      <thead>
+        <tr>
+          <th>Prénom</th>
+          <th>Début</th>
+          <th>M1</th>
+          <th>M2</th>
+          <th>M3</th>
+          <th>M4</th>
+          <th>Statut</th>
+          <th>Fichiers</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
   <div class="empty" id="empty" style="display:none">
     <div class="sun"></div>
-    <p>Aucune coachée pour l'instant.<br>Ajoute ta première pour lancer le suivi.</p>
+    <p>Aucune coachée pour l'instant.</p>
     <button class="btn primary" onclick="openModal()">+ Ajouter une coachée</button>
   </div>
 </div>
@@ -170,48 +174,34 @@
     <div class="modal-b">
       <div class="field">
         <label>Prénom / nom</label>
-        <input id="f-name" placeholder="Ex. Julie">
+        <input id="f-name" placeholder="Ex. Salomé">
       </div>
       <div class="two">
-        <div class="field"><label>Statut</label>
-          <select id="f-status">
-            <option value="active">En cours</option>
-            <option value="pause">En pause</option>
-            <option value="done">Terminée</option>
-          </select>
-        </div>
-        <div class="field"><label>Contact (@ / tel)</label>
+        <div class="field"><label>Contact</label>
           <input id="f-contact" placeholder="@handle ou n°">
         </div>
-      </div>
-      <div class="field"><label>Objectif</label>
-        <input id="f-goal" placeholder="Ex. reprendre le sport, régularité">
+        <div class="field"><label>Objectif</label>
+          <input id="f-goal" placeholder="Ex. reprendre le sport">
+        </div>
       </div>
       <div class="field"><label>Point de départ</label>
-        <input id="f-start-level" placeholder="Ex. sédentaire, 0 sport depuis 2 ans">
+        <input id="f-start-level" placeholder="Ex. sédentaire">
       </div>
       <div class="two">
         <div class="field"><label>Visio découverte</label><input type="date" id="f-visio"></div>
         <div class="field"><label>Début du programme</label><input type="date" id="f-begin"></div>
       </div>
-      <div class="field"><label>Fin des mois (laisse vide si pas atteint)</label></div>
-      <div class="two">
-        <div class="field"><label style="font-weight:500;text-transform:none">Fin mois 1</label><input type="date" id="f-m1"></div>
-        <div class="field"><label style="font-weight:500;text-transform:none">Fin mois 2</label><input type="date" id="f-m2"></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+        <div class="field"><label style="font-weight:500;text-transform:none">Fin M1</label><input type="date" id="f-m1"></div>
+        <div class="field"><label style="font-weight:500;text-transform:none">Fin M2</label><input type="date" id="f-m2"></div>
+        <div class="field"><label style="font-weight:500;text-transform:none">Fin M3</label><input type="date" id="f-m3"></div>
+        <div class="field"><label style="font-weight:500;text-transform:none">Fin M4</label><input type="date" id="f-m4"></div>
       </div>
-      <div class="two">
-        <div class="field"><label style="font-weight:500;text-transform:none">Fin mois 3</label><input type="date" id="f-m3"></div>
-        <div class="field"><label style="font-weight:500;text-transform:none">Fin mois 4</label><input type="date" id="f-m4"></div>
+      <div class="field"><label>Notes</label>
+        <textarea id="f-notes" placeholder="Blocages, vie perso, ce qui aide…"></textarea>
       </div>
-      <div class="two">
-        <div class="field"><label>Prochaine action</label><input id="f-next" placeholder="Ex. relancer bilan M1"></div>
-        <div class="field"><label>Pour le</label><input type="date" id="f-next-date"></div>
-      </div>
-      <div class="field"><label>Notes (blocages, vie perso, régularité…)</label>
-        <textarea id="f-notes" placeholder="Ce qui l'aide, ce qui coince…"></textarea>
-      </div>
-      <div class="field"><label>Feedback / verbatim (pour tes témoignages)</label>
-        <textarea id="f-feedback" placeholder="Ses retours à chaud, ses petites victoires…"></textarea>
+      <div class="field"><label>Feedback / verbatim</label>
+        <textarea id="f-feedback" placeholder="Ses retours, victoires…"></textarea>
       </div>
     </div>
     <div class="modal-f">
@@ -228,8 +218,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, listAll, deleteObject, getDownloadURL }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
-// ⚠️ Remplace par la config de ton projet maefitways-e370d
 const firebaseConfig = {
   apiKey: "AIzaSyBzuKFixLQEx8YarRVaB09vnsUFzVKfDJs",
   authDomain: "maefitways-e370d.firebaseapp.com",
@@ -239,97 +230,116 @@ const firebaseConfig = {
   appId: "1:788313661868:web:f04b2d40f1666593df5a09"
 };
 
-let db, coachees = {}, filter="all", search="", editingId=null, syncOk=false;
+let db, storage, coachees = {}, filesByCoachee = {}, search = "", editingId = null, syncOk = false;
 const $ = id => document.getElementById(id);
 
 try {
   const app = initializeApp(firebaseConfig);
   db = getFirestore(app);
+  storage = getStorage(app);
   onSnapshot(collection(db,"coachees"), snap=>{
     coachees = {};
     snap.forEach(d=> coachees[d.id]=d.data());
-    setSync(true); render();
+    setSync(true); loadAllFiles(); render();
   }, err=>{ console.error(err); setSync(false,err.message); });
 } catch(e){ console.error(e); setSync(false,"config manquante"); }
 
 function setSync(ok,msg){
   syncOk=ok;
   $("syncDot").className = "dot "+(ok?"on":"err");
-  $("syncTxt").textContent = ok ? "Synchronisé" : "Hors-ligne · "+(msg||"vérifie la config");
+  $("syncTxt").textContent = ok ? "Synchronisé" : "Hors-ligne";
 }
 
-const fmt = d => d ? new Date(d+"T00:00").toLocaleDateString("fr-FR",{day:"2-digit",month:"short",year:"2-digit"}) : "—";
-const daysTo = d => Math.ceil((new Date(d+"T00:00") - new Date().setHours(0,0,0,0))/864e5);
+const fmt = d => d ? new Date(d+"T00:00").toLocaleDateString("fr-FR",{day:"2-digit",month:"short"}) : "—";
+
+async function loadAllFiles(){
+  if(!storage) return;
+  filesByCoachee = {};
+  for(const id of Object.keys(coachees)){
+    try{
+      const folderRef = ref(storage, `documents`);
+      const res = await listAll(folderRef);
+      filesByCoachee[id] = res.items
+        .filter(f=> f.name.includes(coachees[id].name||id))
+        .map(f=>({name:f.name, path:f.fullPath}));
+    }catch(e){
+      filesByCoachee[id] = [];
+    }
+  }
+}
 
 function render(){
   const list = Object.entries(coachees)
-    .filter(([_,c])=> filter==="all" || c.status===filter)
-    .filter(([_,c])=> (c.name||"").toLowerCase().includes(search))
+    .filter(([_,c])=> (c.name||"").toLowerCase().includes(search.toLowerCase()))
     .sort((a,b)=> (a[1].name||"").localeCompare(b[1].name||""));
 
   const all = Object.values(coachees);
+  const totalFiles = Object.values(filesByCoachee).reduce((a,b)=>a+b.length,0);
   $("stTotal").textContent = all.length;
   $("stActive").textContent = all.filter(c=>c.status==="active").length;
   $("stDone").textContent = all.filter(c=>c.status==="done").length;
-  $("stSoon").textContent = all.filter(c=> c.nextDate && daysTo(c.nextDate)<=3 && c.status!=="done").length;
+  $("stFiles").textContent = totalFiles;
 
-  const grid=$("grid"), empty=$("empty");
-  if(!list.length){ grid.innerHTML=""; empty.style.display = all.length?"none":"block";
-    if(all.length) grid.innerHTML='<div class="empty" style="grid-column:1/-1">Aucun résultat pour ce filtre.</div>';
-    return; }
+  const tbody = $("tbody"), empty = $("empty");
+  if(!list.length){ tbody.innerHTML=""; empty.style.display = all.length?"none":"block"; return; }
   empty.style.display="none";
 
-  grid.innerHTML = list.map(([id,c])=>{
-    const months=[1,2,3,4].map(n=>{
-      const dt=c["m"+n];
-      return `<div class="month ${dt?"on":""}"><b>M${n}</b><small>${dt?fmt(dt):"—"}</small></div>`;
-    }).join("");
-    let next="";
-    if(c.next){
-      const dd = c.nextDate ? daysTo(c.nextDate):null;
-      const over = dd!==null && dd<0;
-      next=`<div class="next ${over?"overdue":""}"><div><span class="lbl">${over?"En retard":"Prochaine action"}</span>${esc(c.next)}${c.nextDate?" · "+fmt(c.nextDate):""}</div></div>`;
-    }
-    const notes = c.notes ? `<div class="notes-preview">“${esc(c.notes.slice(0,90))}${c.notes.length>90?"…":""}”</div>`:"";
-    return `<div class="card">
-      <div class="card-h">
-        <div class="who"><span class="name">${esc(c.name||"Sans nom")}</span>
-          ${c.goal?`<span class="goal">${esc(c.goal)}</span>`:""}</div>
-        <span class="tag ${c.status}">${({active:"En cours",pause:"En pause",done:"Terminée"})[c.status]}</span>
+  tbody.innerHTML = list.map(([id,c])=>{
+    const files = filesByCoachee[id]||[];
+    const filesHtml = files.length ? files.map(f=>`
+      <div class="file-item">
+        <a href="#" onclick="downloadFile('${f.path}'); return false">📄 ${esc(f.name)}</a>
+        <span class="file-del" onclick="delFile('${f.path}')">✕</span>
       </div>
-      <div class="progress"><div class="months">${months}</div></div>
-      ${next}
-      <div class="meta">
-        <div class="row"><span>Visio découverte</span><span>${fmt(c.visio)}</span></div>
-        <div class="row"><span>Début programme</span><span>${fmt(c.begin)}</span></div>
-        ${c.contact?`<div class="row"><span>Contact</span><span>${esc(c.contact)}</span></div>`:""}
-      </div>
-      ${notes}
-      <div class="card-f">
-        <button onclick="editCoachee('${id}')">Modifier</button>
-        <button onclick="editCoachee('${id}')">Voir tout</button>
-      </div>
-    </div>`;
+    `).join("") : '<span style="color:var(--grey);font-size:.75rem">—</span>';
+
+    return `<tr>
+      <td><span class="name-cell">${esc(c.name||"—")}</span></td>
+      <td><span class="date-cell">${fmt(c.begin)}</span></td>
+      <td><span class="date-cell ${c.m1?"done":"empty"}">${fmt(c.m1)}</span></td>
+      <td><span class="date-cell ${c.m2?"done":"empty"}">${fmt(c.m2)}</span></td>
+      <td><span class="date-cell ${c.m3?"done":"empty"}">${fmt(c.m3)}</span></td>
+      <td><span class="date-cell ${c.m4?"done":"empty"}">${fmt(c.m4)}</span></td>
+      <td>
+        <select class="status-select" onchange="updateStatus('${id}', this.value)">
+          <option value="active" ${c.status==="active"?"selected":""}>En cours</option>
+          <option value="done" ${c.status==="done"?"selected":""}>Terminée</option>
+          <option value="pause" ${c.status==="pause"?"selected":""}>En pause</option>
+          <option value="abandon" ${c.status==="abandon"?"selected":""}>Abandon</option>
+        </select>
+      </td>
+      <td>
+        <div class="files-cell">
+          ${filesHtml}
+          <button class="upload-btn" onclick="uploadFileModal('${id}', '${esc(c.name||"coachee")}')">+ Ajouter</button>
+          <button class="btn ghost" onclick="editCoachee('${id}')" style="font-size:.75rem;padding:4px 8px">Modifier</button>
+        </div>
+      </td>
+    </tr>`;
   }).join("");
 }
 
 const esc = s => (s||"").replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 
+window.updateStatus = async (id, status)=>{
+  coachees[id].status = status;
+  render();
+  if(db) try{ await setDoc(doc(db,"coachees",id), coachees[id], {merge:true}); }catch(e){ alert(e.message); }
+};
+
 window.openModal = ()=>{ editingId=null; $("modalTitle").textContent="Nouvelle coachée";
-  ["name","contact","goal","start-level","visio","begin","m1","m2","m3","m4","next","next-date","notes","feedback"]
-    .forEach(k=>$("f-"+k).value=""); $("f-status").value="active";
-  $("deleteBtn").style.display="none"; $("overlay").classList.add("show"); };
+  ["name","contact","goal","start-level","visio","begin","m1","m2","m3","m4","notes","feedback"].forEach(k=>$("f-"+k).value="");
+  $("deleteBtn").style.display="none"; $("overlay").classList.add("show");
+};
 
 window.closeModal = ()=> $("overlay").classList.remove("show");
 
 window.editCoachee = id=>{
   editingId=id; const c=coachees[id]; $("modalTitle").textContent=c.name||"Coachée";
-  $("f-name").value=c.name||""; $("f-status").value=c.status||"active";
-  $("f-contact").value=c.contact||""; $("f-goal").value=c.goal||"";
-  $("f-start-level").value=c.startLevel||"";
+  $("f-name").value=c.name||""; $("f-contact").value=c.contact||"";
+  $("f-goal").value=c.goal||""; $("f-start-level").value=c.startLevel||"";
   $("f-visio").value=c.visio||""; $("f-begin").value=c.begin||"";
   ["m1","m2","m3","m4"].forEach(m=>$("f-"+m).value=c[m]||"");
-  $("f-next").value=c.next||""; $("f-next-date").value=c.nextDate||"";
   $("f-notes").value=c.notes||""; $("f-feedback").value=c.feedback||"";
   $("deleteBtn").style.display="block"; $("overlay").classList.add("show");
 };
@@ -337,16 +347,14 @@ window.editCoachee = id=>{
 window.saveCoachee = async ()=>{
   const name=$("f-name").value.trim();
   if(!name){ alert("Ajoute au moins un prénom."); return; }
-  const data={ name, status:$("f-status").value, contact:$("f-contact").value.trim(),
+  const data={ name, status:"active", contact:$("f-contact").value.trim(),
     goal:$("f-goal").value.trim(), startLevel:$("f-start-level").value.trim(),
     visio:$("f-visio").value, begin:$("f-begin").value,
-    m1:$("f-m1").value,m2:$("f-m2").value,m3:$("f-m3").value,m4:$("f-m4").value,
-    next:$("f-next").value.trim(), nextDate:$("f-next-date").value,
+    m1:$("f-m1").value, m2:$("f-m2").value, m3:$("f-m3").value, m4:$("f-m4").value,
     notes:$("f-notes").value.trim(), feedback:$("f-feedback").value.trim() };
   const id = editingId || ("c_"+Date.now());
-  coachees[id]=data; render();            // maj optimiste
-  closeModal();
-  if(db){ try{ await setDoc(doc(db,"coachees",id),data);}catch(e){alert("Erreur de sauvegarde : "+e.message);} }
+  coachees[id]=data; render(); closeModal();
+  if(db){ try{ await setDoc(doc(db,"coachees",id),data); }catch(e){alert(e.message);} }
 };
 
 window.delCoachee = async ()=>{
@@ -355,12 +363,43 @@ window.delCoachee = async ()=>{
   if(db){ try{ await deleteDoc(doc(db,"coachees",id)); }catch(e){alert(e.message);} }
 };
 
-$("search").addEventListener("input",e=>{ search=e.target.value.toLowerCase(); render(); });
-$("filters").addEventListener("click",e=>{
-  const b=e.target.closest(".chip"); if(!b)return;
-  document.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"));
-  b.classList.add("active"); filter=b.dataset.f; render();
-});
+window.uploadFileModal = id=>{
+  const input = document.createElement("input");
+  input.type = "file";
+  input.onchange = async e=>{
+    const file = e.target.files?.[0]; if(!file) return;
+    const fileRef = ref(storage, `documents/${file.name}`);
+    try{
+      await uploadBytes(fileRef, file);
+      await loadAllFiles(); render();
+    }catch(err){
+      alert("Erreur : "+err.message);
+    }
+  };
+  input.click();
+};
+
+window.downloadFile = async path=>{
+  try{
+    const fileRef = ref(storage, path);
+    const url = await getDownloadURL(fileRef);
+    window.open(url, "_blank");
+  }catch(err){
+    alert("Erreur : "+err.message);
+  }
+};
+
+window.delFile = async path=>{
+  if(!confirm("Supprimer ce fichier ?"))return;
+  try{
+    await deleteObject(ref(storage, path));
+    await loadAllFiles(); render();
+  }catch(err){
+    alert("Erreur : "+err.message);
+  }
+};
+
+$("search").addEventListener("input",e=>{ search=e.target.value; render(); });
 $("overlay").addEventListener("click",e=>{ if(e.target.id==="overlay")closeModal(); });
 
 render();
