@@ -381,7 +381,12 @@ window.downloadFile = async path=>{
   try{
     const fileRef = ref(storage, path);
     const url = await getDownloadURL(fileRef);
-    window.open(url, "_blank");
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = path.split("/").pop();
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }catch(err){
     alert("Erreur : "+err.message);
   }
