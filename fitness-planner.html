@@ -522,7 +522,14 @@ function loadData(cb) {
 function sv(k, v) {
   DATA[k] = v; DIRTY[k] = v;
   clearTimeout(ST);
-  ST = setTimeout(flush, 1500);
+  ST = setTimeout(flush, 500);
+  // Also flush immediately to Firebase
+  if (CU) {
+    var update = {};
+    update[k] = v;
+    DB.collection('planners').doc(CU).set(update, { merge: true })
+      .catch(function(e) { console.error('sv direct:', e); });
+  }
   flash();
 }
 function flush() {
@@ -1047,6 +1054,9 @@ function addHC(i, data) {
 document.getElementById('btn-add-h').addEventListener('click', function() { var cnt = ld('hcnt', 28), data = ld('hdata', {}); addHC(cnt, data); sv('hcnt', cnt + 1); });
 
 // UTILS
+// Save immediately when closing the app
+window.addEventListener('beforeunload', function() { flush(); });
+window.addEventListener('pagehide', function() { flush(); });
 function h(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
 function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 </script>
